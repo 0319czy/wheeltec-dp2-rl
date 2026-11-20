@@ -19,11 +19,10 @@
 
 ## 实拍素材
 
-<a href="media/chassis-photo.jpg"><img src="media/chassis-photo.jpg" alt="四轮底盘实拍" width="180"></a>
 <a href="media/demo-vertical.mp4"><img src="media/demo-vertical.jpg" alt="四轮底盘竖屏视频封面" width="180"></a>
 <a href="media/demo-landscape.mp4"><img src="media/demo-landscape.jpg" alt="四轮底盘横屏视频封面" width="320"></a>
 
-照片和两段实拍视频记录另一台四轮底盘。点击封面可查看照片或下载 MP4。[文件来源、尺寸和时长](docs/MEDIA.md)
+两段实拍视频记录另一台四轮底盘。点击封面可下载 MP4。[文件来源、尺寸和时长](docs/MEDIA.md)
 
 ## 载入模型并复评
 

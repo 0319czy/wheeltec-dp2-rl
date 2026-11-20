@@ -1,0 +1,20 @@
+{
+  "model": "models/first-order/bench-baseline.zip",
+  "norm": "models/first-order/vecnormalize.pkl",
+  "out": "runs/mujoco_direct_pwm_robust_20261120/r1",
+  "steps": 32768,
+  "envs": 8,
+  "seed": 40333,
+  "episodes": 20,
+  "seconds": 20,
+  "drift": 170,
+  "slew": 0.6,
+  "noise": 0.7,
+  "push": 0.25,
+  "lr": 0.00008,
+  "scenario": [
+    "nominal",
+    "push",
+    "stress"
+  ]
+}

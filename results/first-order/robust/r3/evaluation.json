@@ -1,0 +1,53 @@
+[
+  {
+    "scenario": "nominal",
+    "episodes": 20,
+    "seconds": 20,
+    "full": 20,
+    "faults": {
+      "full": 20
+    },
+    "mean_seconds": 20,
+    "worst_seconds": 20,
+    "p95_peak_travel_m": 0.02589548919956436,
+    "max_travel_m": 0.025924445738881582,
+    "pitch_rms_deg": 0.15463087623543256,
+    "pwm_rms": 274.20795365427887,
+    "pwm_change_rms": 110.5516414348535,
+    "pwm_saturated_pct": 0.04875
+  },
+  {
+    "scenario": "push",
+    "episodes": 20,
+    "seconds": 20,
+    "full": 20,
+    "faults": {
+      "full": 20
+    },
+    "mean_seconds": 20,
+    "worst_seconds": 20,
+    "p95_peak_travel_m": 0.06336119844367868,
+    "max_travel_m": 0.06336478797586885,
+    "pitch_rms_deg": 0.216217167794499,
+    "pwm_rms": 300.9525970665082,
+    "pwm_change_rms": 119.2251042635159,
+    "pwm_saturated_pct": 0.0425
+  },
+  {
+    "scenario": "stress",
+    "episodes": 20,
+    "seconds": 20,
+    "full": 20,
+    "faults": {
+      "full": 20
+    },
+    "mean_seconds": 20,
+    "worst_seconds": 20,
+    "p95_peak_travel_m": 0.0955294013264041,
+    "max_travel_m": 0.09921081666106094,
+    "pitch_rms_deg": 0.31420627899330567,
+    "pwm_rms": 300.8469852833449,
+    "pwm_change_rms": 114.19080505417375,
+    "pwm_saturated_pct": 0.0475
+  }
+]

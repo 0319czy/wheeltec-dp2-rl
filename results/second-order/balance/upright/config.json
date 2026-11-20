@@ -1,0 +1,16 @@
+{
+  "out": "runs/mujoco_second_order_pwm_20261120/upright",
+  "model": null,
+  "level": 0,
+  "steps": 368640,
+  "chunk": 61440,
+  "envs": 12,
+  "seed": 27121,
+  "lr": 0.0003,
+  "exploration": -2.7,
+  "seconds": 8,
+  "episodes": 12,
+  "pwm_limit": 4500,
+  "travel_limit": 0.25,
+  "push": null
+}

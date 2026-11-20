@@ -1,0 +1,119 @@
+[
+  {
+    "seed": 85231,
+    "episodes": 12,
+    "seconds": 12,
+    "level": 0,
+    "push_N": 0.08,
+    "pwm_limit": 4500,
+    "travel_limit_m": 0.25,
+    "full": 3,
+    "reasons": {
+      "body_tilt": 9,
+      "full": 3
+    },
+    "mean_seconds": 8.085,
+    "min_seconds": 2.29,
+    "travel_peak_p95_m": 0.07178767072593407,
+    "body_pitch_rms_deg": 0.9965062286544936,
+    "pole_pitch_rms_deg": 0.26321590827767516,
+    "pwm_rms": 470.23626708984375,
+    "pwm_jump_rms": 61.86000127670136,
+    "checkpoint": 1,
+    "total_steps": 430080
+  },
+  {
+    "seed": 85231,
+    "episodes": 12,
+    "seconds": 12,
+    "level": 0,
+    "push_N": 0.08,
+    "pwm_limit": 4500,
+    "travel_limit_m": 0.25,
+    "full": 2,
+    "reasons": {
+      "body_tilt": 9,
+      "pole_tilt": 1,
+      "full": 2
+    },
+    "mean_seconds": 7.877499999999999,
+    "min_seconds": 2.46,
+    "travel_peak_p95_m": 0.07786963244579254,
+    "body_pitch_rms_deg": 1.0451410802885026,
+    "pole_pitch_rms_deg": 0.3725349533673229,
+    "pwm_rms": 510.0711669921875,
+    "pwm_jump_rms": 66.86938037592061,
+    "checkpoint": 2,
+    "total_steps": 491520
+  },
+  {
+    "seed": 85231,
+    "episodes": 12,
+    "seconds": 12,
+    "level": 0,
+    "push_N": 0.08,
+    "pwm_limit": 4500,
+    "travel_limit_m": 0.25,
+    "full": 2,
+    "reasons": {
+      "body_tilt": 9,
+      "wheel_speed": 1,
+      "full": 2
+    },
+    "mean_seconds": 7.358333333333333,
+    "min_seconds": 2.2800000000000002,
+    "travel_peak_p95_m": 0.11825301873952103,
+    "body_pitch_rms_deg": 1.0071508158533498,
+    "pole_pitch_rms_deg": 0.3210640716822985,
+    "pwm_rms": 565.1146850585938,
+    "pwm_jump_rms": 82.02633670156145,
+    "checkpoint": 3,
+    "total_steps": 552960
+  },
+  {
+    "seed": 85231,
+    "episodes": 12,
+    "seconds": 12,
+    "level": 0,
+    "push_N": 0.08,
+    "pwm_limit": 4500,
+    "travel_limit_m": 0.25,
+    "full": 7,
+    "reasons": {
+      "body_tilt": 5,
+      "full": 7
+    },
+    "mean_seconds": 9.781666666666666,
+    "min_seconds": 2.47,
+    "travel_peak_p95_m": 0.12665048906004672,
+    "body_pitch_rms_deg": 0.8875967058765863,
+    "pole_pitch_rms_deg": 0.2961063662737583,
+    "pwm_rms": 492.6302185058594,
+    "pwm_jump_rms": 67.80923120938532,
+    "checkpoint": 4,
+    "total_steps": 614400
+  },
+  {
+    "seed": 85231,
+    "episodes": 12,
+    "seconds": 12,
+    "level": 0,
+    "push_N": 0.08,
+    "pwm_limit": 4500,
+    "travel_limit_m": 0.25,
+    "full": 9,
+    "reasons": {
+      "body_tilt": 3,
+      "full": 9
+    },
+    "mean_seconds": 11.401666666666666,
+    "min_seconds": 7.5,
+    "travel_peak_p95_m": 0.14073891901501215,
+    "body_pitch_rms_deg": 0.942048770718622,
+    "pole_pitch_rms_deg": 0.3697609304880468,
+    "pwm_rms": 551.9002075195312,
+    "pwm_jump_rms": 54.04168733882595,
+    "checkpoint": 5,
+    "total_steps": 675840
+  }
+]

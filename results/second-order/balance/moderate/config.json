@@ -1,0 +1,18 @@
+{
+  "out": "runs/mujoco_second_order_pwm_20261120/moderate",
+  "model": "runs/mujoco_second_order_pwm_20261120/upright/policy_6.zip",
+  "level": 1,
+  "steps": 184320,
+  "chunk": 61440,
+  "envs": 12,
+  "seed": 41931,
+  "lr": 0.00008,
+  "exploration": -3.1,
+  "seconds": 12,
+  "episodes": 16,
+  "pwm_limit": 4500,
+  "travel_limit": 0.25,
+  "push": 0.12,
+  "travel_cost": 4.5,
+  "mix": true
+}

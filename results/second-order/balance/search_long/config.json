@@ -1,0 +1,12 @@
+{
+  "model": "runs/mujoco_second_order_pwm_20261120/search_second/policy_11.zip",
+  "out": "runs/mujoco_second_order_pwm_20261120/search_long",
+  "rounds": 9,
+  "seed": 26819,
+  "level": 1,
+  "trials": 10,
+  "seconds": 12,
+  "seed_banks": 5,
+  "initial_scale": 0.02,
+  "push": 0.12
+}

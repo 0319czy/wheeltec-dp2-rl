@@ -1,0 +1,94 @@
+[
+  {
+    "seed": 97131,
+    "episodes": 12,
+    "seconds": 12,
+    "level": 1,
+    "push_N": 0.12,
+    "pwm_limit": 4500,
+    "travel_limit_m": 0.25,
+    "full": 1,
+    "reasons": {
+      "body_tilt": 11,
+      "full": 1
+    },
+    "mean_seconds": 3.9775000000000005,
+    "min_seconds": 0.14,
+    "travel_peak_p95_m": 0.050897713019449224,
+    "body_pitch_rms_deg": 1.2737975277645441,
+    "pole_pitch_rms_deg": 0.37000107679229227,
+    "pwm_rms": 642.1884765625,
+    "pwm_jump_rms": 119.035483533388,
+    "checkpoint": 1,
+    "total_steps": 614400
+  },
+  {
+    "seed": 97131,
+    "episodes": 12,
+    "seconds": 12,
+    "level": 1,
+    "push_N": 0.12,
+    "pwm_limit": 4500,
+    "travel_limit_m": 0.25,
+    "full": 1,
+    "reasons": {
+      "body_tilt": 11,
+      "full": 1
+    },
+    "mean_seconds": 4.174166666666666,
+    "min_seconds": 0.14,
+    "travel_peak_p95_m": 0.09239896991850302,
+    "body_pitch_rms_deg": 1.2091895235314,
+    "pole_pitch_rms_deg": 0.33719350564481565,
+    "pwm_rms": 572.8001708984375,
+    "pwm_jump_rms": 126.8648598348181,
+    "checkpoint": 2,
+    "total_steps": 675840
+  },
+  {
+    "seed": 97131,
+    "episodes": 12,
+    "seconds": 12,
+    "level": 1,
+    "push_N": 0.12,
+    "pwm_limit": 4500,
+    "travel_limit_m": 0.25,
+    "full": 1,
+    "reasons": {
+      "body_tilt": 11,
+      "full": 1
+    },
+    "mean_seconds": 4.3625,
+    "min_seconds": 0.15,
+    "travel_peak_p95_m": 0.0707178076777203,
+    "body_pitch_rms_deg": 1.236722402680813,
+    "pole_pitch_rms_deg": 0.3368760217793981,
+    "pwm_rms": 592.3526611328125,
+    "pwm_jump_rms": 126.1466610097982,
+    "checkpoint": 3,
+    "total_steps": 737280
+  },
+  {
+    "seed": 97131,
+    "episodes": 12,
+    "seconds": 12,
+    "level": 1,
+    "push_N": 0.12,
+    "pwm_limit": 4500,
+    "travel_limit_m": 0.25,
+    "full": 1,
+    "reasons": {
+      "body_tilt": 11,
+      "full": 1
+    },
+    "mean_seconds": 5.338333333333332,
+    "min_seconds": 0.15,
+    "travel_peak_p95_m": 0.1472235722130514,
+    "body_pitch_rms_deg": 1.2484894695681643,
+    "pole_pitch_rms_deg": 0.36206620225952935,
+    "pwm_rms": 681.4092407226562,
+    "pwm_jump_rms": 118.81343069183266,
+    "checkpoint": 4,
+    "total_steps": 798720
+  }
+]

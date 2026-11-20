@@ -1,0 +1,8 @@
+{
+  "method": "parameter interpolation",
+  "files": [
+    "models/first-order/bench-baseline.zip",
+    "runs/mujoco_direct_pwm_bench_fresh/policy_5.zip"
+  ],
+  "weight_on_policy5": 0.6
+}

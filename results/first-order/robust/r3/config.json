@@ -1,0 +1,22 @@
+{
+  "model": "runs/mujoco_direct_pwm_bench_fresh/policy_5.zip",
+  "norm": "models/first-order/vecnormalize.pkl",
+  "out": "runs/mujoco_direct_pwm_robust_20261120/r3",
+  "steps": 24576,
+  "envs": 8,
+  "seed": 40333,
+  "episodes": 20,
+  "seconds": 20,
+  "drift": 200,
+  "slew": 1.2,
+  "noise": 1,
+  "push": 0.36,
+  "limit_cost": 4,
+  "exploration": -2.9,
+  "lr": 0.00002,
+  "scenario": [
+    "nominal",
+    "push",
+    "stress"
+  ]
+}

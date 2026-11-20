@@ -1,0 +1,19 @@
+{
+  "out": "runs/mujoco_second_order_pwm_20261120/recovery2",
+  "model": "runs/mujoco_second_order_pwm_20261120/recovery/policy_5.zip",
+  "level": 0,
+  "steps": 184320,
+  "chunk": 61440,
+  "envs": 12,
+  "seed": 79231,
+  "lr": 0.0001,
+  "exploration": -2.9,
+  "seconds": 12,
+  "episodes": 16,
+  "pwm_limit": 4500,
+  "travel_limit": 0.25,
+  "push": 0.11,
+  "travel_cost": 3.6,
+  "early_push": true,
+  "mix": true
+}

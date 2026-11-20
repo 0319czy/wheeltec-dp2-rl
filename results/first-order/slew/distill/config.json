@@ -1,0 +1,17 @@
+{
+  "teacher": "models/first-order/pre-smoothing.zip",
+  "normalization": "models/first-order/vecnormalize.pkl",
+  "seed": 89361,
+  "observations": 50400,
+  "epochs": 10,
+  "variants": {
+    "moderate": [
+      0.24,
+      0.15
+    ],
+    "strong": [
+      0.52,
+      0.38
+    ]
+  }
+}

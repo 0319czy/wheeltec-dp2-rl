@@ -1,0 +1,74 @@
+[
+  {
+    "generation": 1,
+    "seed": 27748,
+    "baseline": 0.7689642056832813,
+    "best": 0.7930249296299247,
+    "proposals": 22,
+    "episodes_each": 10
+  },
+  {
+    "generation": 2,
+    "seed": 27777,
+    "baseline": 0.49793406009330965,
+    "best": 0.5433844207244141,
+    "proposals": 22,
+    "episodes_each": 10
+  },
+  {
+    "generation": 3,
+    "seed": 27806,
+    "baseline": 0.7077755102202996,
+    "best": 0.8193610599918726,
+    "proposals": 22,
+    "episodes_each": 10
+  },
+  {
+    "generation": 4,
+    "seed": 27835,
+    "baseline": 0.9267677553718248,
+    "best": 0.9954552240429502,
+    "proposals": 22,
+    "episodes_each": 10
+  },
+  {
+    "generation": 5,
+    "seed": 27719,
+    "baseline": 0.8897595039227515,
+    "best": 1.1289162680654568,
+    "proposals": 22,
+    "episodes_each": 10
+  },
+  {
+    "generation": 6,
+    "seed": 27748,
+    "baseline": 0.7116493003638771,
+    "best": 0.7919528286339725,
+    "proposals": 22,
+    "episodes_each": 10
+  },
+  {
+    "generation": 7,
+    "seed": 27777,
+    "baseline": 0.48003035921513726,
+    "best": 0.5854945179901379,
+    "proposals": 22,
+    "episodes_each": 10
+  },
+  {
+    "generation": 8,
+    "seed": 27806,
+    "baseline": 0.7083086309469903,
+    "best": 0.8206322907505952,
+    "proposals": 22,
+    "episodes_each": 10
+  },
+  {
+    "generation": 9,
+    "seed": 27835,
+    "baseline": 1.0154456762056296,
+    "best": 1.0688343799817321,
+    "proposals": 22,
+    "episodes_each": 10
+  }
+]

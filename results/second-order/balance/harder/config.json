@@ -1,0 +1,19 @@
+{
+  "out": "runs/mujoco_second_order_pwm_20261120/harder",
+  "model": "runs/mujoco_second_order_pwm_20261120/moderate/policy_3.zip",
+  "level": 1,
+  "steps": 245760,
+  "chunk": 61440,
+  "envs": 12,
+  "seed": 67131,
+  "lr": 0.00018,
+  "exploration": -2.7,
+  "seconds": 12,
+  "episodes": 12,
+  "pwm_limit": 4500,
+  "travel_limit": 0.25,
+  "push": 0.12,
+  "travel_cost": 3.6,
+  "early_push": true,
+  "mix": true
+}

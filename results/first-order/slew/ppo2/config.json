@@ -1,0 +1,23 @@
+{
+  "model": "runs/mujoco_direct_pwm_robust_20261120_slew/ppo/policy.zip",
+  "norm": "runs/mujoco_direct_pwm_robust_20261120_slew/ppo/vecnormalize.pkl",
+  "out": "runs/mujoco_direct_pwm_robust_20261120_slew/ppo2",
+  "steps": 24576,
+  "envs": 8,
+  "seed": 78331,
+  "episodes": 24,
+  "seconds": 24,
+  "drift": 250,
+  "slew": 40,
+  "noise": 1,
+  "push": 0.36,
+  "pwm_cost": 0.8,
+  "limit_cost": 4,
+  "exploration": -3.4,
+  "lr": 0.000012,
+  "scenario": [
+    "nominal",
+    "push",
+    "stress"
+  ]
+}

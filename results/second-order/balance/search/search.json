@@ -1,0 +1,58 @@
+[
+  {
+    "generation": 1,
+    "seed": 14080,
+    "baseline": 0.8614212620855612,
+    "best": 0.9547624795147106,
+    "proposals": 22,
+    "episodes_each": 6
+  },
+  {
+    "generation": 2,
+    "seed": 14109,
+    "baseline": 0.6567519245603051,
+    "best": 0.7136749317950569,
+    "proposals": 22,
+    "episodes_each": 6
+  },
+  {
+    "generation": 3,
+    "seed": 14051,
+    "baseline": 0.9602791210369306,
+    "best": 0.9669707028145872,
+    "proposals": 22,
+    "episodes_each": 6
+  },
+  {
+    "generation": 4,
+    "seed": 14080,
+    "baseline": 1.1256957513877104,
+    "best": 1.1294525713613985,
+    "proposals": 22,
+    "episodes_each": 6
+  },
+  {
+    "generation": 5,
+    "seed": 14109,
+    "baseline": 0.708853689231423,
+    "best": 0.9903281964097305,
+    "proposals": 22,
+    "episodes_each": 6
+  },
+  {
+    "generation": 6,
+    "seed": 14051,
+    "baseline": 0.9322222251975457,
+    "best": 0.9638833123769243,
+    "proposals": 22,
+    "episodes_each": 6
+  },
+  {
+    "generation": 7,
+    "seed": 14080,
+    "baseline": 1.1193976230158993,
+    "best": 1.132972436705214,
+    "proposals": 22,
+    "episodes_each": 6
+  }
+]

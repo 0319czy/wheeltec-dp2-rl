@@ -1,6 +1,7 @@
 .venv/
 __pycache__/
-*.py[cod]
-/runs/
-.env
+*.pyc
 *.log
+.DS_Store
+runs/
+*.bin

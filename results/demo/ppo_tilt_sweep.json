@@ -1,0 +1,41 @@
+{
+  "xml": "/home/czy/wheeltec-dp2-rl-github/mujoco/dp2_nopole.xml",
+  "seconds": 10.0,
+  "rows": [
+    {
+      "deg": 0,
+      "mean_s": 10.0,
+      "min_s": 10.0
+    },
+    {
+      "deg": 1,
+      "mean_s": 10.0,
+      "min_s": 10.0
+    },
+    {
+      "deg": 2,
+      "mean_s": 10.0,
+      "min_s": 10.0
+    },
+    {
+      "deg": 3,
+      "mean_s": 8.8,
+      "min_s": 0.39
+    },
+    {
+      "deg": 4,
+      "mean_s": 2.66,
+      "min_s": 0.07
+    },
+    {
+      "deg": 6,
+      "mean_s": 0.01,
+      "min_s": 0.01
+    },
+    {
+      "deg": 8,
+      "mean_s": 0.01,
+      "min_s": 0.01
+    }
+  ]
+}

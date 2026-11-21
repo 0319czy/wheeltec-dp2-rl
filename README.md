@@ -74,7 +74,22 @@ IMU(DMP) 俯仰角/角加速度 ─┐
 
 ---
 
-## 四、快速复现
+## 四、可运行 demo
+
+| demo | 命令 | 产物 |
+| --- | --- | --- |
+| PPO × 初始倾角扫描 | `python demos/demo_ppo_tilt_sweep.py` | `media/demo_tilt_sweep.png` |
+| LQR 阶跃恢复 + 极点 | `python demos/demo_lqr_step.py` | `media/demo_lqr_step.png` |
+| 2D 雷达扫描几何 | `python demos/demo_lidar_scan.py` | `media/demo_lidar_scan.png` |
+| 单元测试 | `python -m pytest -q tests` | 4 passed |
+
+![倾角扫描](media/demo_tilt_sweep.png)
+![LQR 阶跃](media/demo_lqr_step.png)
+![雷达扫描几何](media/demo_lidar_scan.png)
+
+说明见 [demo 文档](docs/DEMOS.md)。
+
+## 五、快速复现
 
 ```bash
 python3.10 -m venv .venv && source .venv/bin/activate
@@ -100,7 +115,7 @@ LQR 增益复算：`python lqr/lqr_design.py`（脚本内直接与厂商 MATLAB 
 
 ---
 
-## 五、仓库结构
+## 六、仓库结构
 
 | 路径 | 内容 |
 | --- | --- |
@@ -110,10 +125,12 @@ LQR 增益复算：`python lqr/lqr_design.py`（脚本内直接与厂商 MATLAB 
 | [`firmware/src/`](firmware/src/) | 板载控制源码：RL 控制与保护、自研 RTOS 内核与任务、C 推理 |
 | [`lqr/`](lqr/) | LQR 建模脚本、四联图、调参说明 |
 | [`lidar/`](lidar/) | N10 雷达串口解析、整圈点云导出、RViz2 桥接 |
+| [`demos/`](demos/) | 三个可直接运行的演示脚本（策略扫描 / LQR / 雷达几何） |
+| [`tests/`](tests/) | pytest 用例 + GitHub Actions CI |
 | [`docs/`](docs/) | 训练日志、调试日志、实机记录、复现说明、原始缓存 |
 | [`media/`](media/) | 结果图 |
 
-## 六、已知限制（写在这里，避免误读）
+## 七、已知限制（写在这里，避免误读）
 
 1. 所有通过率均为 MuJoCo 仿真，**不能外推为实车能力**；
 2. 实机未通过验收：10 Hz 振荡与单向漂移的机理仍在定位，控制时延随机化训练未奏效；

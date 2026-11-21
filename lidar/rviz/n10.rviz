@@ -1,0 +1,74 @@
+Panels:
+  - Class: rviz_common/Displays
+    Name: Displays
+Visualization Manager:
+  Class: ""
+  Displays:
+    - Class: rviz_default_plugins/Grid
+      Enabled: true
+      Name: Meter grid
+      Plane Cell Count: 24
+      Cell Size: 1
+      Alpha: 0.35
+      Color: 91; 111; 136
+    - Class: rviz_default_plugins/PointCloud2
+      Enabled: true
+      Name: N10 live scan
+      Topic:
+        Value: /n10/points
+        Reliability Policy: Best Effort
+        History Policy: Keep Last
+        Durability Policy: Volatile
+        Depth: 1
+      Style: Points
+      Size (Pixels): 4
+      Position Transformer: XYZ
+      Color Transformer: FlatColor
+      Color: 76; 217; 244
+      Decay Time: 0
+    - Class: rviz_default_plugins/Path
+      Enabled: true
+      Name: Estimated trajectory
+      Topic:
+        Value: /n10/path
+        Reliability Policy: Reliable
+        History Policy: Keep Last
+        Durability Policy: Volatile
+        Depth: 1
+      Color: 254; 190; 86
+      Line Style: Billboards
+      Line Width: 0.035
+      Buffer Length: 1
+    - Class: rviz_default_plugins/Axes
+      Enabled: true
+      Name: N10 sensor axes
+      Reference Frame: n10_laser
+      Length: 0.25
+      Radius: 0.015
+  Enabled: true
+  Global Options:
+    Background Color: 18; 26; 40
+    Fixed Frame: n10_odom
+    Frame Rate: 30
+  Tools:
+    - Class: rviz_default_plugins/MoveCamera
+    - Class: rviz_default_plugins/Select
+    - Class: rviz_default_plugins/Measure
+  Transformation:
+    Current:
+      Class: rviz_default_plugins/TF
+  Views:
+    Current:
+      Class: rviz_default_plugins/TopDownOrtho
+      Name: Top-down view
+      Angle: 0
+      Scale: 110
+      X: 0
+      Y: 0
+      Target Frame: n10_odom
+    Saved: ~
+Window Geometry:
+  Width: 1280
+  Height: 820
+  X: 32
+  Y: 40

@@ -21,7 +21,9 @@
 | LQR：8 状态离散化 + Riccati 求增益，并与厂商 MATLAB 结果比对 | [`lqr/`](lqr/) | ✅ 脚本 + 图 + 误差 |
 | 实机数据采集与故障定位（100 Hz 控制缓存、频谱分析） | [`docs/REAL_ROBOT.md`](docs/REAL_ROBOT.md) · [`docs/real-trace-100hz.csv`](docs/real-trace-100hz.csv) | ✅ 原始数据在仓库 |
 | 实车闭环站立验收 | — | ❌ **未通过**（见下） |
-| PCB / CAN 电机 / Linux 字符设备驱动 / SLAM / YOLO / VLA | 不在本仓库 | ➖ 属其他项目：[0319czy/robomaster-cboard-omni](https://github.com/0319czy/robomaster-cboard-omni) |
+| 2D 雷达（N10）串口解析 + RViz2 点云可视化 | [`lidar/`](lidar/) | ✅ 可复现 |
+| PCB / CAN 电机 / Linux 字符设备驱动 | 不在本仓库 | ➖ 属其他项目：[0319czy/robomaster-cboard-omni](https://github.com/0319czy/robomaster-cboard-omni) |
+| SLAM 建图 / YOLO 检测 / VLA 指令执行 | 不在本仓库 | ❌ 未实现（简历若提及需改为“计划中”） |
 
 ---
 
@@ -107,6 +109,7 @@ LQR 增益复算：`python lqr/lqr_design.py`（脚本内直接与厂商 MATLAB 
 | [`results/`](results/) | 完整评估 JSON、分支配置 |
 | [`firmware/src/`](firmware/src/) | 板载控制源码：RL 控制与保护、自研 RTOS 内核与任务、C 推理 |
 | [`lqr/`](lqr/) | LQR 建模脚本、四联图、调参说明 |
+| [`lidar/`](lidar/) | N10 雷达串口解析、整圈点云导出、RViz2 桥接 |
 | [`docs/`](docs/) | 训练日志、调试日志、实机记录、复现说明、原始缓存 |
 | [`media/`](media/) | 结果图 |
 

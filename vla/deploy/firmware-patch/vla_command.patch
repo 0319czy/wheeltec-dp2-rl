@@ -1,0 +1,200 @@
+diff -ruN a/firmware/DP2_RTOS/HAREWARE/Inc/vla_cmd.h b/firmware/DP2_RTOS/HAREWARE/Inc/vla_cmd.h
+--- a/firmware/DP2_RTOS/HAREWARE/Inc/vla_cmd.h	1970-01-01 08:00:00.000000000 +0800
++++ b/firmware/DP2_RTOS/HAREWARE/Inc/vla_cmd.h	2026-11-22 14:53:48.632695967 +0800
+@@ -0,0 +1,99 @@
++/* vla_cmd.h - continuous (v, omega) ASCII command helpers for DP2 RTOS firmware.
++ *
++ * Added by deploy/firmware-patch/vla_command.patch; not part of the upstream
++ * WHEELTEC source tree.  Pure functions only: no STM32 HAL dependency, so the
++ * same header is compiled by test_parse_vw.c on a PC with gcc.
++ *
++ * Wire format (host -> car, 10 Hz):
++ *     #V<v_mm_s>,<w_mrad_s>;
++ *     v_mm_s   signed int, forward positive,  mm/s,   clamped to +/-350
++ *     w_mrad_s signed int, left/CCW positive, mrad/s, clamped to +/-1000
++ *
++ * Calibration: WHEEL_B_M / WHEEL_R_M are the HALF track width and wheel radius.
++ * Current values come from assets/lowlevel/dp2_nopole3d.xml (b=0.095, r=0.0335);
++ * replace them with measured values before real runs (marked TODO calibrate).
++ */
++#ifndef DP2_VLA_CMD_H
++#define DP2_VLA_CMD_H
++
++#include <stdint.h>
++
++#define VLA_WHEEL_B_M   0.095f   /* TODO calibrate: half track width, m */
++#define VLA_WHEEL_R_M   0.0335f  /* TODO calibrate: wheel radius, m */
++#define VLA_CTRL_DT_S   0.01f    /* Normal() is called every 10 ms */
++#define VLA_TIMEOUT_MS  300u     /* same dead-man timeout as the char remote */
++#define VLA_VMAX_MM_S   350      /* spec section 2: |v| <= 0.35 m/s */
++#define VLA_WMAX_MRAD_S 1000     /* spec section 2: |w| <= 1.0 rad/s */
++
++/* Parse the body of a #...; frame, i.e. "V<v>,<w>" (no '#', no ';').
++ * Returns 1 on success, 0 on any malformed input.  Values are clamped. */
++static inline int vla_parse_vw(const char *body, int16_t *v_mm_s, int16_t *w_mrad_s)
++{
++    int i = 1;
++    int sign = 1;
++    int digits = 0;
++    long v = 0;
++    long w = 0;
++
++    if (body == 0 || v_mm_s == 0 || w_mrad_s == 0) return 0;
++    if (body[0] != 'V') return 0;
++
++    if (body[i] == '-') { sign = -1; i++; }
++    while (body[i] >= '0' && body[i] <= '9') {
++        v = v * 10 + (long)(body[i] - '0');
++        i++;
++        digits++;
++        if (digits > 6) return 0;
++    }
++    if (digits == 0) return 0;
++    if (body[i] != ',') return 0;
++    v *= sign;
++    i++;
++
++    sign = 1;
++    digits = 0;
++    if (body[i] == '-') { sign = -1; i++; }
++    while (body[i] >= '0' && body[i] <= '9') {
++        w = w * 10 + (long)(body[i] - '0');
++        i++;
++        digits++;
++        if (digits > 6) return 0;
++    }
++    if (digits == 0) return 0;
++    if (body[i] != '\0') return 0;
++    w *= sign;
++
++    if (v > VLA_VMAX_MM_S) v = VLA_VMAX_MM_S;
++    if (v < -VLA_VMAX_MM_S) v = -VLA_VMAX_MM_S;
++    if (w > VLA_WMAX_MRAD_S) w = VLA_WMAX_MRAD_S;
++    if (w < -VLA_WMAX_MRAD_S) w = -VLA_WMAX_MRAD_S;
++
++    *v_mm_s = (int16_t)v;
++    *w_mrad_s = (int16_t)w;
++    return 1;
++}
++
++/* Differential wheel-angle target increment for one 10 ms Normal() tick:
++ *     dtheta_l = (v - w * b) * dt / r
++ *     dtheta_r = (v + w * b) * dt / r
++ * with v in m/s, w in rad/s.  Added to Target_theta_L / Target_theta_R. */
++static inline void vla_delta_theta(int16_t v_mm_s, int16_t w_mrad_s,
++                            float *dtheta_l, float *dtheta_r)
++{
++    float v = (float)v_mm_s / 1000.0f;
++    float w = (float)w_mrad_s / 1000.0f;
++    if (dtheta_l != 0) {
++        *dtheta_l = (v - w * VLA_WHEEL_B_M) * VLA_CTRL_DT_S / VLA_WHEEL_R_M;
++    }
++    if (dtheta_r != 0) {
++        *dtheta_r = (v + w * VLA_WHEEL_B_M) * VLA_CTRL_DT_S / VLA_WHEEL_R_M;
++    }
++}
++
++/* 300 ms dead-man: a frame is fresh when now - last <= 300 ms (wrap-safe). */
++static inline int vla_fresh(uint32_t now_ms, uint32_t last_ms)
++{
++    return (uint32_t)(now_ms - last_ms) <= VLA_TIMEOUT_MS;
++}
++
++#endif /* DP2_VLA_CMD_H */
+diff -ruN a/firmware/DP2_RTOS/HAREWARE/usart3.c b/firmware/DP2_RTOS/HAREWARE/usart3.c
+--- a/firmware/DP2_RTOS/HAREWARE/usart3.c	2026-11-17 15:33:27.084569517 +0800
++++ b/firmware/DP2_RTOS/HAREWARE/usart3.c	2026-11-22 14:55:29.703669077 +0800
+@@ -20,6 +20,9 @@
+ #include "usart3.h"
+ extern u8 Usart1_Receive_buf[1];   /* 2026-11-08 USB 遥控接收缓冲（定义在 usart.c） */
+ #include "Lidar.h"
++/* ===== VLA continuous (v, omega) command (deploy/firmware-patch) ===== */
++#include "vla_cmd.h"
++
+ /**************************************************************************
+ Function: Receive interrupt function
+ Input   : none
+@@ -32,6 +35,12 @@
+ u8 Usart3_Receive;                 //从串口3读取的数据
+ u8 temp_data;											//串口5接收中断数据存放的缓冲区
+ volatile uint32_t Remote_Last_Cmd_Tick=0;   /* 2026-11-08 组合运动补丁：最后一次有效遥控指令时刻(ms) */
++/* VLA state: last valid #V<v_mm_s>,<w_mrad_s>; frame (consumed in control.c) */
++volatile int16_t VLA_V_mm_s = 0;
++volatile int16_t VLA_W_mrad_s = 0;
++volatile uint32_t VLA_Last_Tick = 0;
++volatile uint8_t VLA_Active = 0;
++
+ 
+ /* 2026-11-08 USB 遥控通道：遥控字符解析抽成独立函数，
+    USART3（蓝牙）与 USART1（USB Type-C/CH9102）都可调用，网页既能走 USB 也能走蓝牙。 */
+@@ -97,6 +106,20 @@
+ {
+ 	if (ch == '#') { DP2_Param_Active = 1; DP2_Param_Len = 0; return; }
+ 	if (!DP2_Param_Active) return;
++	/* VLA frame: #V<v_mm_s>,<w_mrad_s>;  (new branch; #name=value; path unchanged) */
++	if (ch == ';' && DP2_Param_Buf[0] == 'V') {
++		int16_t v_mm_s = 0;
++		int16_t w_mrad_s = 0;
++		DP2_Param_Active = 0;
++		DP2_Param_Buf[DP2_Param_Len] = 0;
++		if (vla_parse_vw(DP2_Param_Buf, &v_mm_s, &w_mrad_s)) {
++			VLA_V_mm_s = v_mm_s;
++			VLA_W_mrad_s = w_mrad_s;
++			VLA_Last_Tick = HAL_GetTick();
++			VLA_Active = 1;
++		}
++		return;
++	}
+ 	if (ch == ';') { DP2_Param_Active = 0; DP2_Param_Buf[DP2_Param_Len]=0; DP2_ApplyParam(DP2_Param_Buf); return; }
+ 	if (DP2_Param_Len < sizeof(DP2_Param_Buf)-1) DP2_Param_Buf[DP2_Param_Len++] = (char)ch;
+ }
+diff -ruN a/firmware/DP2_RTOS/MiniBalance/control.c b/firmware/DP2_RTOS/MiniBalance/control.c
+--- a/firmware/DP2_RTOS/MiniBalance/control.c	2026-11-17 18:31:22.991406307 +0800
++++ b/firmware/DP2_RTOS/MiniBalance/control.c	2026-11-22 14:55:29.703963856 +0800
+@@ -19,6 +19,13 @@
+ #include "stm32f1xx_hal.h"
+ #include "control.h"
+ #include "usart3.h"
++#include "vla_cmd.h"
++extern volatile int16_t VLA_V_mm_s;
++extern volatile int16_t VLA_W_mrad_s;
++extern volatile uint32_t VLA_Last_Tick;
++extern volatile uint8_t VLA_Active;
++static uint8_t vla_was_active = 0;
++
+ short Accel_Y,Accel_Z,Accel_X,Accel_Angle_x,Accel_Angle_y,Gyro_X,Gyro_Z,Gyro_Y;
+ //LQR状态反馈系数
+ /* ===== MuJoCo RL 平衡模式（2026-11-10） =====
+@@ -397,6 +404,32 @@
+ 			&&(R_Bias-Bias_interval<=theta_R-Target_theta_R&&theta_R-Target_theta_R<=R_Bias+Bias_interval))
+ 		{
+ 			int Avoid_status=Lidar_Avoid();
++			/* ===== VLA continuous (v, omega) command (deploy/firmware-patch) =====
++			   A fresh #V...; frame wins for 300 ms; otherwise the char remote path
++			   below is unchanged.  Targets are reset on entry/exit to avoid a jump
++			   when switching control source. */
++			if (VLA_Active && vla_fresh(HAL_GetTick(), VLA_Last_Tick)) {
++				float dth_l = 0.0f;
++				float dth_r = 0.0f;
++				if (!vla_was_active) {
++					Flag_front = 0;
++					Flag_back = 0;
++					Flag_Left = 0;
++					Flag_Right = 0;
++					Target_theta_L = theta_L;
++					Target_theta_R = theta_R;
++					Steady_Flag = 0;
++					vla_was_active = 1;
++				}
++				vla_delta_theta(VLA_V_mm_s, VLA_W_mrad_s, &dth_l, &dth_r);
++				Target_theta_L += dth_l;
++				Target_theta_R += dth_r;
++			} else if (vla_was_active) {
++				Target_theta_L = theta_L;
++				Target_theta_R = theta_R;
++				vla_was_active = 0;
++			}
++
+ 			/* 2026-11-08 组合运动补丁：超过 300ms 无有效遥控指令就清空方向，防止蓝牙断链后小车继续跑 */
+ 			if((HAL_GetTick()-Remote_Last_Cmd_Tick)>300)
+ 			{

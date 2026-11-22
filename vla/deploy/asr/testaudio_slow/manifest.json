@@ -1,0 +1,50 @@
+[
+  {
+    "file": "s01_xiangqianzou.wav",
+    "spoken": "向前走",
+    "expected_id": 1,
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "rate": "-25%",
+    "audio_s": 2.02
+  },
+  {
+    "file": "s02_xiangzuozhuan.wav",
+    "spoken": "向左转",
+    "expected_id": 3,
+    "voice": "zh-CN-YunyangNeural",
+    "rate": "-25%",
+    "audio_s": 1.97
+  },
+  {
+    "file": "s03_yuandizhuanquan.wav",
+    "spoken": "原地转圈",
+    "expected_id": 5,
+    "voice": "zh-CN-XiaoyiNeural",
+    "rate": "-25%",
+    "audio_s": 2.47
+  },
+  {
+    "file": "s04_kaojinlantong.wav",
+    "spoken": "靠近蓝桶",
+    "expected_id": 9,
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "rate": "-25%",
+    "audio_s": 2.21
+  },
+  {
+    "file": "s05_raokaihongqu_lan.wav",
+    "spoken": "绕开红桶前往蓝桶",
+    "expected_id": 11,
+    "voice": "zh-CN-YunxiNeural",
+    "rate": "-25%",
+    "audio_s": 3.55
+  },
+  {
+    "file": "s06_baochizhanli.wav",
+    "spoken": "保持站立",
+    "expected_id": 0,
+    "voice": "zh-CN-YunyangNeural",
+    "rate": "-25%",
+    "audio_s": 2.02
+  }
+]

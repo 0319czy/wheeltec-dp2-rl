@@ -1,0 +1,685 @@
+{
+  "ckpt": "/home/czy/倒立摆/wheeltec_vla/runs/bc_v1/best.pt",
+  "env_module": "sim.env_vla",
+  "episodes_per_instr": 50,
+  "instrs": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+  ],
+  "seed_base": 100002,
+  "batch_episodes": 8,
+  "action_ema": 0.0,
+  "image": {
+    "size": 256,
+    "seq_len": 16
+  },
+  "device": "cuda",
+  "batch_episodes_effective": 8,
+  "started_at": "2026-11-22 16:49:55",
+  "scenarios": {
+    "base": {
+      "scenario": "base",
+      "per_instr": {
+        "0": {
+          "instruction": "保持站立",
+          "episodes": 50,
+          "success": 43,
+          "rate": 0.86
+        },
+        "1": {
+          "instruction": "向前走",
+          "episodes": 50,
+          "success": 37,
+          "rate": 0.74
+        },
+        "2": {
+          "instruction": "向后退",
+          "episodes": 50,
+          "success": 50,
+          "rate": 1.0
+        },
+        "3": {
+          "instruction": "向左转",
+          "episodes": 50,
+          "success": 49,
+          "rate": 0.98
+        },
+        "4": {
+          "instruction": "向右转",
+          "episodes": 50,
+          "success": 46,
+          "rate": 0.92
+        },
+        "5": {
+          "instruction": "原地左旋",
+          "episodes": 50,
+          "success": 50,
+          "rate": 1.0
+        },
+        "6": {
+          "instruction": "原地右旋",
+          "episodes": 50,
+          "success": 50,
+          "rate": 1.0
+        },
+        "7": {
+          "instruction": "面向红桶",
+          "episodes": 50,
+          "success": 29,
+          "rate": 0.58
+        },
+        "8": {
+          "instruction": "靠近红桶",
+          "episodes": 50,
+          "success": 23,
+          "rate": 0.46
+        },
+        "9": {
+          "instruction": "靠近蓝桶",
+          "episodes": 50,
+          "success": 20,
+          "rate": 0.4
+        },
+        "10": {
+          "instruction": "靠近绿桶",
+          "episodes": 50,
+          "success": 19,
+          "rate": 0.38
+        },
+        "11": {
+          "instruction": "绕开红桶前往蓝桶",
+          "episodes": 50,
+          "success": 10,
+          "rate": 0.2
+        }
+      },
+      "overall": {
+        "success": 426,
+        "episodes": 600,
+        "rate": 0.71
+      },
+      "elapsed_s": 507.6,
+      "latency": {
+        "calls": 4200,
+        "samples": 29570,
+        "per_sample_ms_p50": 10.708596999847941,
+        "per_sample_ms_p95": 27.842531324722582,
+        "per_call_ms_p50": 82.96299149969855,
+        "per_call_ms_p95": 93.91197149889194
+      }
+    },
+    "bright_low": {
+      "scenario": "bright_low",
+      "per_instr": {
+        "0": {
+          "instruction": "保持站立",
+          "episodes": 12,
+          "success": 11,
+          "rate": 0.9166666666666666
+        },
+        "1": {
+          "instruction": "向前走",
+          "episodes": 12,
+          "success": 10,
+          "rate": 0.8333333333333334
+        },
+        "2": {
+          "instruction": "向后退",
+          "episodes": 12,
+          "success": 12,
+          "rate": 1.0
+        },
+        "3": {
+          "instruction": "向左转",
+          "episodes": 12,
+          "success": 12,
+          "rate": 1.0
+        },
+        "4": {
+          "instruction": "向右转",
+          "episodes": 12,
+          "success": 10,
+          "rate": 0.8333333333333334
+        },
+        "5": {
+          "instruction": "原地左旋",
+          "episodes": 12,
+          "success": 12,
+          "rate": 1.0
+        },
+        "6": {
+          "instruction": "原地右旋",
+          "episodes": 12,
+          "success": 12,
+          "rate": 1.0
+        },
+        "7": {
+          "instruction": "面向红桶",
+          "episodes": 12,
+          "success": 8,
+          "rate": 0.6666666666666666
+        },
+        "8": {
+          "instruction": "靠近红桶",
+          "episodes": 12,
+          "success": 5,
+          "rate": 0.4166666666666667
+        },
+        "9": {
+          "instruction": "靠近蓝桶",
+          "episodes": 12,
+          "success": 7,
+          "rate": 0.5833333333333334
+        },
+        "10": {
+          "instruction": "靠近绿桶",
+          "episodes": 12,
+          "success": 4,
+          "rate": 0.3333333333333333
+        },
+        "11": {
+          "instruction": "绕开红桶前往蓝桶",
+          "episodes": 12,
+          "success": 5,
+          "rate": 0.4166666666666667
+        }
+      },
+      "overall": {
+        "success": 108,
+        "episodes": 144,
+        "rate": 0.75
+      },
+      "elapsed_s": 128.9,
+      "latency": {
+        "calls": 1200,
+        "samples": 7084,
+        "per_sample_ms_p50": 14.580545249827992,
+        "per_sample_ms_p95": 17.888003574277413,
+        "per_call_ms_p50": 74.45647550048307,
+        "per_call_ms_p95": 90.90195305016096
+      }
+    },
+    "bright_high": {
+      "scenario": "bright_high",
+      "per_instr": {
+        "0": {
+          "instruction": "保持站立",
+          "episodes": 12,
+          "success": 11,
+          "rate": 0.9166666666666666
+        },
+        "1": {
+          "instruction": "向前走",
+          "episodes": 12,
+          "success": 10,
+          "rate": 0.8333333333333334
+        },
+        "2": {
+          "instruction": "向后退",
+          "episodes": 12,
+          "success": 12,
+          "rate": 1.0
+        },
+        "3": {
+          "instruction": "向左转",
+          "episodes": 12,
+          "success": 12,
+          "rate": 1.0
+        },
+        "4": {
+          "instruction": "向右转",
+          "episodes": 12,
+          "success": 9,
+          "rate": 0.75
+        },
+        "5": {
+          "instruction": "原地左旋",
+          "episodes": 12,
+          "success": 12,
+          "rate": 1.0
+        },
+        "6": {
+          "instruction": "原地右旋",
+          "episodes": 12,
+          "success": 12,
+          "rate": 1.0
+        },
+        "7": {
+          "instruction": "面向红桶",
+          "episodes": 12,
+          "success": 8,
+          "rate": 0.6666666666666666
+        },
+        "8": {
+          "instruction": "靠近红桶",
+          "episodes": 12,
+          "success": 5,
+          "rate": 0.4166666666666667
+        },
+        "9": {
+          "instruction": "靠近蓝桶",
+          "episodes": 12,
+          "success": 7,
+          "rate": 0.5833333333333334
+        },
+        "10": {
+          "instruction": "靠近绿桶",
+          "episodes": 12,
+          "success": 4,
+          "rate": 0.3333333333333333
+        },
+        "11": {
+          "instruction": "绕开红桶前往蓝桶",
+          "episodes": 12,
+          "success": 4,
+          "rate": 0.3333333333333333
+        }
+      },
+      "overall": {
+        "success": 106,
+        "episodes": 144,
+        "rate": 0.7361111111111112
+      },
+      "elapsed_s": 138.6,
+      "latency": {
+        "calls": 1200,
+        "samples": 7087,
+        "per_sample_ms_p50": 14.779311625034097,
+        "per_sample_ms_p95": 19.73445837447798,
+        "per_call_ms_p50": 79.91554649925092,
+        "per_call_ms_p95": 98.941790948993
+      }
+    },
+    "occlusion": {
+      "scenario": "occlusion",
+      "per_instr": {
+        "0": {
+          "instruction": "保持站立",
+          "episodes": 12,
+          "success": 11,
+          "rate": 0.9166666666666666
+        },
+        "1": {
+          "instruction": "向前走",
+          "episodes": 12,
+          "success": 9,
+          "rate": 0.75
+        },
+        "2": {
+          "instruction": "向后退",
+          "episodes": 12,
+          "success": 12,
+          "rate": 1.0
+        },
+        "3": {
+          "instruction": "向左转",
+          "episodes": 12,
+          "success": 12,
+          "rate": 1.0
+        },
+        "4": {
+          "instruction": "向右转",
+          "episodes": 12,
+          "success": 10,
+          "rate": 0.8333333333333334
+        },
+        "5": {
+          "instruction": "原地左旋",
+          "episodes": 12,
+          "success": 12,
+          "rate": 1.0
+        },
+        "6": {
+          "instruction": "原地右旋",
+          "episodes": 12,
+          "success": 12,
+          "rate": 1.0
+        },
+        "7": {
+          "instruction": "面向红桶",
+          "episodes": 12,
+          "success": 8,
+          "rate": 0.6666666666666666
+        },
+        "8": {
+          "instruction": "靠近红桶",
+          "episodes": 12,
+          "success": 5,
+          "rate": 0.4166666666666667
+        },
+        "9": {
+          "instruction": "靠近蓝桶",
+          "episodes": 12,
+          "success": 7,
+          "rate": 0.5833333333333334
+        },
+        "10": {
+          "instruction": "靠近绿桶",
+          "episodes": 12,
+          "success": 4,
+          "rate": 0.3333333333333333
+        },
+        "11": {
+          "instruction": "绕开红桶前往蓝桶",
+          "episodes": 12,
+          "success": 4,
+          "rate": 0.3333333333333333
+        }
+      },
+      "overall": {
+        "success": 106,
+        "episodes": 144,
+        "rate": 0.7361111111111112
+      },
+      "elapsed_s": 128.9,
+      "latency": {
+        "calls": 1200,
+        "samples": 7113,
+        "per_sample_ms_p50": 14.502021999760473,
+        "per_sample_ms_p95": 17.12484398685774,
+        "per_call_ms_p50": 72.25986400044349,
+        "per_call_ms_p95": 90.68147579873767
+      }
+    },
+    "gray": {
+      "scenario": "gray",
+      "per_instr": {
+        "0": {
+          "instruction": "保持站立",
+          "episodes": 12,
+          "success": 11,
+          "rate": 0.9166666666666666
+        },
+        "1": {
+          "instruction": "向前走",
+          "episodes": 12,
+          "success": 10,
+          "rate": 0.8333333333333334
+        },
+        "2": {
+          "instruction": "向后退",
+          "episodes": 12,
+          "success": 12,
+          "rate": 1.0
+        },
+        "3": {
+          "instruction": "向左转",
+          "episodes": 12,
+          "success": 12,
+          "rate": 1.0
+        },
+        "4": {
+          "instruction": "向右转",
+          "episodes": 12,
+          "success": 10,
+          "rate": 0.8333333333333334
+        },
+        "5": {
+          "instruction": "原地左旋",
+          "episodes": 12,
+          "success": 12,
+          "rate": 1.0
+        },
+        "6": {
+          "instruction": "原地右旋",
+          "episodes": 12,
+          "success": 12,
+          "rate": 1.0
+        },
+        "7": {
+          "instruction": "面向红桶",
+          "episodes": 12,
+          "success": 8,
+          "rate": 0.6666666666666666
+        },
+        "8": {
+          "instruction": "靠近红桶",
+          "episodes": 12,
+          "success": 0,
+          "rate": 0.0
+        },
+        "9": {
+          "instruction": "靠近蓝桶",
+          "episodes": 12,
+          "success": 0,
+          "rate": 0.0
+        },
+        "10": {
+          "instruction": "靠近绿桶",
+          "episodes": 12,
+          "success": 0,
+          "rate": 0.0
+        },
+        "11": {
+          "instruction": "绕开红桶前往蓝桶",
+          "episodes": 12,
+          "success": 3,
+          "rate": 0.25
+        }
+      },
+      "overall": {
+        "success": 90,
+        "episodes": 144,
+        "rate": 0.625
+      },
+      "elapsed_s": 128.2,
+      "latency": {
+        "calls": 1200,
+        "samples": 7156,
+        "per_sample_ms_p50": 14.10097737561955,
+        "per_sample_ms_p95": 17.29302421263128,
+        "per_call_ms_p50": 76.8137619998015,
+        "per_call_ms_p95": 90.94712074747802
+      }
+    }
+  },
+  "baselines": {
+    "random": {
+      "scenario": "base",
+      "per_instr": {
+        "0": {
+          "instruction": "保持站立",
+          "episodes": 10,
+          "success": 1,
+          "rate": 0.1
+        },
+        "1": {
+          "instruction": "向前走",
+          "episodes": 10,
+          "success": 0,
+          "rate": 0.0
+        },
+        "2": {
+          "instruction": "向后退",
+          "episodes": 10,
+          "success": 0,
+          "rate": 0.0
+        },
+        "3": {
+          "instruction": "向左转",
+          "episodes": 10,
+          "success": 0,
+          "rate": 0.0
+        },
+        "4": {
+          "instruction": "向右转",
+          "episodes": 10,
+          "success": 0,
+          "rate": 0.0
+        },
+        "5": {
+          "instruction": "原地左旋",
+          "episodes": 10,
+          "success": 0,
+          "rate": 0.0
+        },
+        "6": {
+          "instruction": "原地右旋",
+          "episodes": 10,
+          "success": 0,
+          "rate": 0.0
+        },
+        "7": {
+          "instruction": "面向红桶",
+          "episodes": 10,
+          "success": 6,
+          "rate": 0.6
+        },
+        "8": {
+          "instruction": "靠近红桶",
+          "episodes": 10,
+          "success": 0,
+          "rate": 0.0
+        },
+        "9": {
+          "instruction": "靠近蓝桶",
+          "episodes": 10,
+          "success": 0,
+          "rate": 0.0
+        },
+        "10": {
+          "instruction": "靠近绿桶",
+          "episodes": 10,
+          "success": 0,
+          "rate": 0.0
+        },
+        "11": {
+          "instruction": "绕开红桶前往蓝桶",
+          "episodes": 10,
+          "success": 0,
+          "rate": 0.0
+        }
+      },
+      "overall": {
+        "success": 7,
+        "episodes": 120,
+        "rate": 0.058333333333333334
+      },
+      "elapsed_s": null
+    },
+    "constant": {
+      "scenario": "base",
+      "per_instr": {
+        "0": {
+          "instruction": "保持站立",
+          "episodes": 10,
+          "success": 10,
+          "rate": 1.0
+        },
+        "1": {
+          "instruction": "向前走",
+          "episodes": 10,
+          "success": 0,
+          "rate": 0.0
+        },
+        "2": {
+          "instruction": "向后退",
+          "episodes": 10,
+          "success": 0,
+          "rate": 0.0
+        },
+        "3": {
+          "instruction": "向左转",
+          "episodes": 10,
+          "success": 0,
+          "rate": 0.0
+        },
+        "4": {
+          "instruction": "向右转",
+          "episodes": 10,
+          "success": 0,
+          "rate": 0.0
+        },
+        "5": {
+          "instruction": "原地左旋",
+          "episodes": 10,
+          "success": 0,
+          "rate": 0.0
+        },
+        "6": {
+          "instruction": "原地右旋",
+          "episodes": 10,
+          "success": 0,
+          "rate": 0.0
+        },
+        "7": {
+          "instruction": "面向红桶",
+          "episodes": 10,
+          "success": 4,
+          "rate": 0.4
+        },
+        "8": {
+          "instruction": "靠近红桶",
+          "episodes": 10,
+          "success": 0,
+          "rate": 0.0
+        },
+        "9": {
+          "instruction": "靠近蓝桶",
+          "episodes": 10,
+          "success": 0,
+          "rate": 0.0
+        },
+        "10": {
+          "instruction": "靠近绿桶",
+          "episodes": 10,
+          "success": 0,
+          "rate": 0.0
+        },
+        "11": {
+          "instruction": "绕开红桶前往蓝桶",
+          "episodes": 10,
+          "success": 0,
+          "rate": 0.0
+        }
+      },
+      "overall": {
+        "success": 14,
+        "episodes": 120,
+        "rate": 0.11666666666666667
+      },
+      "elapsed_s": null
+    }
+  },
+  "latency": {},
+  "summary": {
+    "base": {
+      "overall_rate": 0.71,
+      "delta_pp_vs_base": 0.0
+    },
+    "bright_low": {
+      "overall_rate": 0.75,
+      "delta_pp_vs_base": 4.0000000000000036
+    },
+    "bright_high": {
+      "overall_rate": 0.7361111111111112,
+      "delta_pp_vs_base": 2.6111111111111196
+    },
+    "occlusion": {
+      "overall_rate": 0.7361111111111112,
+      "delta_pp_vs_base": 2.6111111111111196
+    },
+    "gray": {
+      "overall_rate": 0.625,
+      "delta_pp_vs_base": -8.499999999999996
+    },
+    "baseline_random": {
+      "overall_rate": 0.058333333333333334
+    },
+    "baseline_constant": {
+      "overall_rate": 0.11666666666666667
+    }
+  },
+  "vision_ablation_delta_pp": -8.499999999999996,
+  "finished_at": "2026-11-22 17:08:17"
+}

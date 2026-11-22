@@ -1,0 +1,197 @@
+{
+  "ckpt": "/home/czy/倒立摆/wheeltec_vla/runs/bench_loader/best.pt",
+  "env_module": "mock",
+  "episodes_per_instr": 2,
+  "instrs": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "seed_base": 2026,
+  "batch_episodes": 4,
+  "image": {
+    "size": 256,
+    "seq_len": 16
+  },
+  "started_at": "2026-11-22 14:04:20",
+  "scenarios": {
+    "base": {
+      "scenario": "base",
+      "per_instr": {
+        "0": {
+          "instruction": "保持站立",
+          "episodes": 2,
+          "success": 0,
+          "rate": 0.0
+        },
+        "1": {
+          "instruction": "向前走",
+          "episodes": 2,
+          "success": 2,
+          "rate": 1.0
+        },
+        "2": {
+          "instruction": "向后退",
+          "episodes": 2,
+          "success": 2,
+          "rate": 1.0
+        },
+        "3": {
+          "instruction": "向左转",
+          "episodes": 2,
+          "success": 2,
+          "rate": 1.0
+        },
+        "4": {
+          "instruction": "向右转",
+          "episodes": 2,
+          "success": 2,
+          "rate": 1.0
+        },
+        "5": {
+          "instruction": "原地左旋",
+          "episodes": 2,
+          "success": 2,
+          "rate": 1.0
+        }
+      },
+      "overall": {
+        "success": 10,
+        "episodes": 12,
+        "rate": 0.8333333333333334
+      },
+      "elapsed_s": 19.9,
+      "latency": {
+        "calls": 300,
+        "samples": 600,
+        "per_sample_ms_p50": 31.063888249946103,
+        "per_sample_ms_p95": 35.541298749990354,
+        "per_call_ms_p50": 62.12777649989221,
+        "per_call_ms_p95": 71.08259749998071
+      }
+    }
+  },
+  "baselines": {
+    "random": {
+      "scenario": "base",
+      "per_instr": {
+        "0": {
+          "instruction": "保持站立",
+          "episodes": 2,
+          "success": 0,
+          "rate": 0.0
+        },
+        "1": {
+          "instruction": "向前走",
+          "episodes": 2,
+          "success": 0,
+          "rate": 0.0
+        },
+        "2": {
+          "instruction": "向后退",
+          "episodes": 2,
+          "success": 0,
+          "rate": 0.0
+        },
+        "3": {
+          "instruction": "向左转",
+          "episodes": 2,
+          "success": 0,
+          "rate": 0.0
+        },
+        "4": {
+          "instruction": "向右转",
+          "episodes": 2,
+          "success": 0,
+          "rate": 0.0
+        },
+        "5": {
+          "instruction": "原地左旋",
+          "episodes": 2,
+          "success": 0,
+          "rate": 0.0
+        }
+      },
+      "overall": {
+        "success": 0,
+        "episodes": 12,
+        "rate": 0.0
+      },
+      "elapsed_s": null
+    },
+    "constant": {
+      "scenario": "base",
+      "per_instr": {
+        "0": {
+          "instruction": "保持站立",
+          "episodes": 2,
+          "success": 2,
+          "rate": 1.0
+        },
+        "1": {
+          "instruction": "向前走",
+          "episodes": 2,
+          "success": 0,
+          "rate": 0.0
+        },
+        "2": {
+          "instruction": "向后退",
+          "episodes": 2,
+          "success": 0,
+          "rate": 0.0
+        },
+        "3": {
+          "instruction": "向左转",
+          "episodes": 2,
+          "success": 0,
+          "rate": 0.0
+        },
+        "4": {
+          "instruction": "向右转",
+          "episodes": 2,
+          "success": 0,
+          "rate": 0.0
+        },
+        "5": {
+          "instruction": "原地左旋",
+          "episodes": 2,
+          "success": 0,
+          "rate": 0.0
+        }
+      },
+      "overall": {
+        "success": 2,
+        "episodes": 12,
+        "rate": 0.16666666666666666
+      },
+      "elapsed_s": null
+    }
+  },
+  "latency": {
+    "bs1": {
+      "n": 100,
+      "p50_ms": 53.248106999944866,
+      "p95_ms": 61.793193499715926,
+      "mean_ms": 54.6635695099576,
+      "min_ms": 46.15412600014679,
+      "max_ms": 92.30334299991227,
+      "bs": 1
+    }
+  },
+  "summary": {
+    "base": {
+      "overall_rate": 0.8333333333333334,
+      "delta_pp_vs_base": 0.0
+    },
+    "baseline_random": {
+      "overall_rate": 0.0
+    },
+    "baseline_constant": {
+      "overall_rate": 0.16666666666666666
+    }
+  },
+  "finished_at": "2026-11-22 14:04:49"
+}

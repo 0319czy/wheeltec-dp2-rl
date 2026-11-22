@@ -1,0 +1,146 @@
+{
+  "ckpt": "/home/czy/倒立摆/wheeltec_vla/runs/bc_v1/best.pt",
+  "env_module": "sim.env_vla",
+  "episodes_per_instr": 2,
+  "instrs": [
+    0,
+    1,
+    7,
+    8
+  ],
+  "seed_base": 2026,
+  "batch_episodes": 2,
+  "action_ema": 0.0,
+  "image": {
+    "size": 256,
+    "seq_len": 16
+  },
+  "device": "cuda",
+  "batch_episodes_effective": 2,
+  "started_at": "2026-11-22 20:08:41",
+  "scenarios": {
+    "base": {
+      "scenario": "base",
+      "per_instr": {
+        "0": {
+          "instruction": "保持站立",
+          "episodes": 2,
+          "success": 2,
+          "rate": 1.0,
+          "fail_reasons": {},
+          "episodes_detail": [
+            {
+              "seed": 2026,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 2043,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            }
+          ]
+        },
+        "1": {
+          "instruction": "向前走",
+          "episodes": 2,
+          "success": 2,
+          "rate": 1.0,
+          "fail_reasons": {},
+          "episodes_detail": [
+            {
+              "seed": 102029,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 102046,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            }
+          ]
+        },
+        "7": {
+          "instruction": "面向红桶",
+          "episodes": 2,
+          "success": 1,
+          "rate": 0.5,
+          "fail_reasons": {
+            "heading_too_large": 1
+          },
+          "episodes_detail": [
+            {
+              "seed": 702047,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "heading_too_large"
+            },
+            {
+              "seed": 702064,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            }
+          ]
+        },
+        "8": {
+          "instruction": "靠近红桶",
+          "episodes": 2,
+          "success": 2,
+          "rate": 1.0,
+          "fail_reasons": {},
+          "episodes_detail": [
+            {
+              "seed": 802050,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 802067,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            }
+          ]
+        }
+      },
+      "overall": {
+        "success": 7,
+        "episodes": 8,
+        "rate": 0.875
+      },
+      "elapsed_s": 19.2,
+      "latency": {
+        "calls": 200,
+        "samples": 400,
+        "per_sample_ms_p50": 33.920589250044486,
+        "per_sample_ms_p95": 51.96894182503795,
+        "per_call_ms_p50": 67.84117850008897,
+        "per_call_ms_p95": 103.9378836500759
+      }
+    }
+  },
+  "baselines": {},
+  "latency": {},
+  "summary": {
+    "base": {
+      "overall_rate": 0.875,
+      "episodes": 8,
+      "delta_pp_vs_base": 0.0
+    }
+  },
+  "finished_at": "2026-11-22 20:09:00"
+}

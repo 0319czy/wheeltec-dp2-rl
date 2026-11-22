@@ -1,0 +1,86 @@
+{
+  "small_gpu_fp16": {
+    "tag": "small GPU float16",
+    "load_s": 1.32,
+    "device": "cuda",
+    "compute": "float16",
+    "prompt": true,
+    "ngram": 0,
+    "gpu_free_before": 3.7645263671875,
+    "gpu_free_after": 3.2020263671875,
+    "1.0x": {
+      "n": 18,
+      "correct": 18,
+      "acc": 1.0,
+      "p50_ms": 116.9,
+      "min_ms": 89.5,
+      "max_ms": 153.0,
+      "miss": []
+    },
+    "0.75x": {
+      "n": 6,
+      "correct": 6,
+      "acc": 1.0,
+      "p50_ms": 127.6,
+      "min_ms": 104.2,
+      "max_ms": 164.3,
+      "miss": []
+    }
+  },
+  "small_cpu_int8": {
+    "tag": "small CPU int8",
+    "load_s": 0.77,
+    "device": "cpu",
+    "compute": "int8",
+    "prompt": true,
+    "ngram": 0,
+    "gpu_free_before": null,
+    "gpu_free_after": null,
+    "1.0x": {
+      "n": 18,
+      "correct": 18,
+      "acc": 1.0,
+      "p50_ms": 2187.6,
+      "min_ms": 1988.7,
+      "max_ms": 2614.8,
+      "miss": []
+    },
+    "0.75x": {
+      "n": 6,
+      "correct": 6,
+      "acc": 1.0,
+      "p50_ms": 2566.6,
+      "min_ms": 2328.8,
+      "max_ms": 3008.6,
+      "miss": []
+    }
+  },
+  "base_cpu_int8": {
+    "tag": "base CPU int8",
+    "load_s": 0.55,
+    "device": "cpu",
+    "compute": "int8",
+    "prompt": false,
+    "ngram": 4,
+    "gpu_free_before": null,
+    "gpu_free_after": null,
+    "1.0x": {
+      "n": 18,
+      "correct": 18,
+      "acc": 1.0,
+      "p50_ms": 779.4,
+      "min_ms": 662.8,
+      "max_ms": 984.1,
+      "miss": []
+    },
+    "0.75x": {
+      "n": 6,
+      "correct": 6,
+      "acc": 1.0,
+      "p50_ms": 786.7,
+      "min_ms": 706.7,
+      "max_ms": 817.0,
+      "miss": []
+    }
+  }
+}

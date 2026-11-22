@@ -1,0 +1,128 @@
+[
+  {
+    "file": "01_xiangqianzou.wav",
+    "spoken": "向前走",
+    "expected_id": 1,
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "rate": "+0%"
+  },
+  {
+    "file": "02_wangqianzou_yidian.wav",
+    "spoken": "往前走一点",
+    "expected_id": 1,
+    "voice": "zh-CN-YunxiNeural",
+    "rate": "+0%"
+  },
+  {
+    "file": "03_xianghoutui.wav",
+    "spoken": "向后退",
+    "expected_id": 2,
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "rate": "+0%"
+  },
+  {
+    "file": "04_tuiyixia.wav",
+    "spoken": "退一下",
+    "expected_id": 2,
+    "voice": "zh-CN-YunxiNeural",
+    "rate": "+0%"
+  },
+  {
+    "file": "05_xiangzuozhuan.wav",
+    "spoken": "向左转",
+    "expected_id": 3,
+    "voice": "zh-CN-YunyangNeural",
+    "rate": "+0%"
+  },
+  {
+    "file": "06_xiangyouzhuan.wav",
+    "spoken": "向右转",
+    "expected_id": 4,
+    "voice": "zh-CN-XiaoyiNeural",
+    "rate": "+0%"
+  },
+  {
+    "file": "07_yuandizuozhuan.wav",
+    "spoken": "原地左转",
+    "expected_id": 5,
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "rate": "+0%"
+  },
+  {
+    "file": "08_yuandiyouzhuan.wav",
+    "spoken": "原地右转",
+    "expected_id": 6,
+    "voice": "zh-CN-YunxiNeural",
+    "rate": "+0%"
+  },
+  {
+    "file": "09_yuandizhuanquan.wav",
+    "spoken": "原地转圈",
+    "expected_id": 5,
+    "voice": "zh-CN-XiaoyiNeural",
+    "rate": "+0%"
+  },
+  {
+    "file": "10_baochizhanli.wav",
+    "spoken": "保持站立",
+    "expected_id": 0,
+    "voice": "zh-CN-YunyangNeural",
+    "rate": "+0%"
+  },
+  {
+    "file": "11_mianxianghongtong.wav",
+    "spoken": "面向红桶",
+    "expected_id": 7,
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "rate": "+0%"
+  },
+  {
+    "file": "12_quzhaohongtong.wav",
+    "spoken": "去找红桶",
+    "expected_id": 8,
+    "voice": "zh-CN-YunxiNeural",
+    "rate": "+0%"
+  },
+  {
+    "file": "13_kaojinlantong.wav",
+    "spoken": "靠近蓝桶",
+    "expected_id": 9,
+    "voice": "zh-CN-XiaoyiNeural",
+    "rate": "+0%"
+  },
+  {
+    "file": "14_quzhaolvtong.wav",
+    "spoken": "去找绿桶",
+    "expected_id": 10,
+    "voice": "zh-CN-YunyangNeural",
+    "rate": "+0%"
+  },
+  {
+    "file": "15_raokaihongqu_lan.wav",
+    "spoken": "绕开红桶前往蓝桶",
+    "expected_id": 11,
+    "voice": "zh-CN-XiaoxiaoNeural",
+    "rate": "+0%"
+  },
+  {
+    "file": "16_qingbangwo_kaojin.wav",
+    "spoken": "请帮我靠近红桶",
+    "expected_id": 8,
+    "voice": "zh-CN-YunxiNeural",
+    "rate": "+0%"
+  },
+  {
+    "file": "17_zuozhuan_yiquan.wav",
+    "spoken": "向左转一圈",
+    "expected_id": 5,
+    "voice": "zh-CN-XiaoyiNeural",
+    "rate": "+0%"
+  },
+  {
+    "file": "18_xiangqianzou_fast.wav",
+    "spoken": "向前走",
+    "expected_id": 1,
+    "voice": "zh-CN-YunyangNeural",
+    "rate": "+25%"
+  }
+]

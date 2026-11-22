@@ -1,0 +1,58 @@
+{
+  "ckpt": "/home/czy/倒立摆/wheeltec_vla/runs/ab_256/best.pt",
+  "env_module": "sim.env_vla",
+  "episodes_per_instr": 2,
+  "instrs": [
+    0,
+    1
+  ],
+  "seed_base": 2026,
+  "batch_episodes": 4,
+  "image": {
+    "size": 256,
+    "seq_len": 16
+  },
+  "started_at": "2026-11-22 14:52:25",
+  "scenarios": {
+    "base": {
+      "scenario": "base",
+      "per_instr": {
+        "0": {
+          "instruction": "保持站立",
+          "episodes": 2,
+          "success": 2,
+          "rate": 1.0
+        },
+        "1": {
+          "instruction": "向前走",
+          "episodes": 2,
+          "success": 1,
+          "rate": 0.5
+        }
+      },
+      "overall": {
+        "success": 3,
+        "episodes": 4,
+        "rate": 0.75
+      },
+      "elapsed_s": 8.0,
+      "latency": {
+        "calls": 100,
+        "samples": 195,
+        "per_sample_ms_p50": 30.445460999544594,
+        "per_sample_ms_p95": 53.78116862470961,
+        "per_call_ms_p50": 60.46473900005367,
+        "per_call_ms_p95": 69.1465174510995
+      }
+    }
+  },
+  "baselines": {},
+  "latency": {},
+  "summary": {
+    "base": {
+      "overall_rate": 0.75,
+      "delta_pp_vs_base": 0.0
+    }
+  },
+  "finished_at": "2026-11-22 14:52:34"
+}

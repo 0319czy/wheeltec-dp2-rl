@@ -1,0 +1,261 @@
+{
+  "ckpt": "/home/czy/倒立摆/wheeltec_vla/runs/ab_128/best.pt",
+  "env_module": "sim.env_vla",
+  "episodes_per_instr": 2,
+  "instrs": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "seed_base": 2026,
+  "batch_episodes": 2,
+  "image": {
+    "size": 128,
+    "seq_len": 4
+  },
+  "started_at": "2026-11-22 14:47:47",
+  "scenarios": {
+    "base": {
+      "scenario": "base",
+      "per_instr": {
+        "0": {
+          "instruction": "保持站立",
+          "episodes": 2,
+          "success": 2,
+          "rate": 1.0
+        },
+        "1": {
+          "instruction": "向前走",
+          "episodes": 2,
+          "success": 1,
+          "rate": 0.5
+        },
+        "2": {
+          "instruction": "向后退",
+          "episodes": 2,
+          "success": 2,
+          "rate": 1.0
+        },
+        "3": {
+          "instruction": "向左转",
+          "episodes": 2,
+          "success": 2,
+          "rate": 1.0
+        }
+      },
+      "overall": {
+        "success": 7,
+        "episodes": 8,
+        "rate": 0.875
+      },
+      "elapsed_s": 48.5,
+      "latency": {
+        "calls": 200,
+        "samples": 397,
+        "per_sample_ms_p50": 98.80108650031616,
+        "per_sample_ms_p95": 150.3892219752742,
+        "per_call_ms_p50": 196.94040800004586,
+        "per_call_ms_p95": 290.0246944993341
+      }
+    },
+    "bright_low": {
+      "scenario": "bright_low",
+      "per_instr": {
+        "0": {
+          "instruction": "保持站立",
+          "episodes": 2,
+          "success": 2,
+          "rate": 1.0
+        },
+        "1": {
+          "instruction": "向前走",
+          "episodes": 2,
+          "success": 1,
+          "rate": 0.5
+        },
+        "2": {
+          "instruction": "向后退",
+          "episodes": 2,
+          "success": 2,
+          "rate": 1.0
+        },
+        "3": {
+          "instruction": "向左转",
+          "episodes": 2,
+          "success": 2,
+          "rate": 1.0
+        }
+      },
+      "overall": {
+        "success": 7,
+        "episodes": 8,
+        "rate": 0.875
+      },
+      "elapsed_s": 35.8,
+      "latency": {
+        "calls": 200,
+        "samples": 397,
+        "per_sample_ms_p50": 80.48713225025494,
+        "per_sample_ms_p95": 124.99489547449228,
+        "per_call_ms_p50": 160.9742645005099,
+        "per_call_ms_p95": 246.1547295005402
+      }
+    },
+    "bright_high": {
+      "scenario": "bright_high",
+      "per_instr": {
+        "0": {
+          "instruction": "保持站立",
+          "episodes": 2,
+          "success": 2,
+          "rate": 1.0
+        },
+        "1": {
+          "instruction": "向前走",
+          "episodes": 2,
+          "success": 1,
+          "rate": 0.5
+        },
+        "2": {
+          "instruction": "向后退",
+          "episodes": 2,
+          "success": 2,
+          "rate": 1.0
+        },
+        "3": {
+          "instruction": "向左转",
+          "episodes": 2,
+          "success": 2,
+          "rate": 1.0
+        }
+      },
+      "overall": {
+        "success": 7,
+        "episodes": 8,
+        "rate": 0.875
+      },
+      "elapsed_s": 16.0,
+      "latency": {
+        "calls": 200,
+        "samples": 397,
+        "per_sample_ms_p50": 33.1471834997501,
+        "per_sample_ms_p95": 44.08589939998819,
+        "per_call_ms_p50": 66.2943669995002,
+        "per_call_ms_p95": 85.78439695047564
+      }
+    },
+    "occlusion": {
+      "scenario": "occlusion",
+      "per_instr": {
+        "0": {
+          "instruction": "保持站立",
+          "episodes": 2,
+          "success": 2,
+          "rate": 1.0
+        },
+        "1": {
+          "instruction": "向前走",
+          "episodes": 2,
+          "success": 1,
+          "rate": 0.5
+        },
+        "2": {
+          "instruction": "向后退",
+          "episodes": 2,
+          "success": 2,
+          "rate": 1.0
+        },
+        "3": {
+          "instruction": "向左转",
+          "episodes": 2,
+          "success": 2,
+          "rate": 1.0
+        }
+      },
+      "overall": {
+        "success": 7,
+        "episodes": 8,
+        "rate": 0.875
+      },
+      "elapsed_s": 13.5,
+      "latency": {
+        "calls": 200,
+        "samples": 397,
+        "per_sample_ms_p50": 27.27369500007626,
+        "per_sample_ms_p95": 32.48947697525181,
+        "per_call_ms_p50": 54.45203549970756,
+        "per_call_ms_p95": 64.25212195053972
+      }
+    },
+    "gray": {
+      "scenario": "gray",
+      "per_instr": {
+        "0": {
+          "instruction": "保持站立",
+          "episodes": 2,
+          "success": 0,
+          "rate": 0.0
+        },
+        "1": {
+          "instruction": "向前走",
+          "episodes": 2,
+          "success": 1,
+          "rate": 0.5
+        },
+        "2": {
+          "instruction": "向后退",
+          "episodes": 2,
+          "success": 2,
+          "rate": 1.0
+        },
+        "3": {
+          "instruction": "向左转",
+          "episodes": 2,
+          "success": 2,
+          "rate": 1.0
+        }
+      },
+      "overall": {
+        "success": 5,
+        "episodes": 8,
+        "rate": 0.625
+      },
+      "elapsed_s": 13.5,
+      "latency": {
+        "calls": 200,
+        "samples": 398,
+        "per_sample_ms_p50": 27.70459075054532,
+        "per_sample_ms_p95": 34.793612475505114,
+        "per_call_ms_p50": 55.31553799937683,
+        "per_call_ms_p95": 68.94297160042697
+      }
+    }
+  },
+  "baselines": {},
+  "latency": {},
+  "summary": {
+    "base": {
+      "overall_rate": 0.875,
+      "delta_pp_vs_base": 0.0
+    },
+    "bright_low": {
+      "overall_rate": 0.875,
+      "delta_pp_vs_base": 0.0
+    },
+    "bright_high": {
+      "overall_rate": 0.875,
+      "delta_pp_vs_base": 0.0
+    },
+    "occlusion": {
+      "overall_rate": 0.875,
+      "delta_pp_vs_base": 0.0
+    },
+    "gray": {
+      "overall_rate": 0.625,
+      "delta_pp_vs_base": -25.0
+    }
+  },
+  "vision_ablation_delta_pp": -25.0,
+  "finished_at": "2026-11-22 14:49:54"
+}

@@ -1,0 +1,132 @@
+{
+  "ckpt": "/home/czy/倒立摆/wheeltec_vla/runs/bc_v2/best.pt",
+  "env_module": "sim.env_vla",
+  "episodes_per_instr": 10,
+  "instrs": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+  ],
+  "seed_base": 100002,
+  "batch_episodes": 8,
+  "action_ema": 0.0,
+  "image": {
+    "size": 256,
+    "seq_len": 16
+  },
+  "device": "cuda",
+  "batch_episodes_effective": 8,
+  "started_at": "2026-11-22 19:57:28",
+  "scenarios": {
+    "base": {
+      "scenario": "base",
+      "per_instr": {
+        "0": {
+          "instruction": "保持站立",
+          "episodes": 10,
+          "success": 10,
+          "rate": 1.0
+        },
+        "1": {
+          "instruction": "向前走",
+          "episodes": 10,
+          "success": 8,
+          "rate": 0.8
+        },
+        "2": {
+          "instruction": "向后退",
+          "episodes": 10,
+          "success": 10,
+          "rate": 1.0
+        },
+        "3": {
+          "instruction": "向左转",
+          "episodes": 10,
+          "success": 9,
+          "rate": 0.9
+        },
+        "4": {
+          "instruction": "向右转",
+          "episodes": 10,
+          "success": 7,
+          "rate": 0.7
+        },
+        "5": {
+          "instruction": "原地左旋",
+          "episodes": 10,
+          "success": 10,
+          "rate": 1.0
+        },
+        "6": {
+          "instruction": "原地右旋",
+          "episodes": 10,
+          "success": 10,
+          "rate": 1.0
+        },
+        "7": {
+          "instruction": "面向红桶",
+          "episodes": 10,
+          "success": 7,
+          "rate": 0.7
+        },
+        "8": {
+          "instruction": "靠近红桶",
+          "episodes": 10,
+          "success": 6,
+          "rate": 0.6
+        },
+        "9": {
+          "instruction": "靠近蓝桶",
+          "episodes": 10,
+          "success": 4,
+          "rate": 0.4
+        },
+        "10": {
+          "instruction": "靠近绿桶",
+          "episodes": 10,
+          "success": 3,
+          "rate": 0.3
+        },
+        "11": {
+          "instruction": "绕开红桶前往蓝桶",
+          "episodes": 10,
+          "success": 2,
+          "rate": 0.2
+        }
+      },
+      "overall": {
+        "success": 86,
+        "episodes": 120,
+        "rate": 0.7166666666666667
+      },
+      "elapsed_s": 98.5,
+      "latency": {
+        "calls": 1200,
+        "samples": 5906,
+        "per_sample_ms_p50": 21.049068499991108,
+        "per_sample_ms_p95": 24.09159984997018,
+        "per_call_ms_p50": 60.844150999969315,
+        "per_call_ms_p95": 74.98928345003151
+      }
+    }
+  },
+  "baselines": {},
+  "latency": {},
+  "summary": {
+    "base": {
+      "overall_rate": 0.7166666666666667,
+      "episodes": 120,
+      "delta_pp_vs_base": 0.0
+    }
+  },
+  "finished_at": "2026-11-22 19:59:07"
+}

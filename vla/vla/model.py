@@ -90,6 +90,7 @@ class VLAConfig:
     lora_targets: Tuple[str, ...] = DEFAULT_LORA_TARGETS
     prompt_text: str = PROMPT_TEXT
     use_chat_template: bool = True
+    frames: int = 1               # 每个样本输入的历史帧数(1=单帧;2=(t-1,t) 两帧)
     aux_dim: int = 0              # >0 时启用辅助回归头(桶相对位置 [dx,dy]x3,单位 m)
     aux_scale: float = 3.0        # 辅助标签归一化系数(标签 / aux_scale)
 
@@ -152,19 +153,18 @@ def to_pil(image) -> "object":
     return PILImage.fromarray(arr).convert("RGB")
 
 
-def build_text(processor, instruction: str) -> str:
+def build_text(processor, instruction: str, n_images: int = 1) -> str:
     """按 Idefics3/SmolVLM chat template 生成 prompt 文本。
 
-    产出形如: '<|im_start|>User:<image>指令：向前走<end_of_utterance>\nAssistant:'
-    与 spec 第 4 节模板一致(不含 image 展开,展开由 processor 完成)。
+    n_images=1 产出形如:
+      '<|im_start|>User:<image>指令：向前走<end_of_utterance>\nAssistant:'
+    n_images=2(历史帧) 则连续两个 <image>:
+      '<|im_start|>User:<image><image>指令：向前走<end_of_utterance>\nAssistant:'
+    image token 的实际展开(每图 image_seq_len 个)由 processor 完成。
     """
-    messages = [{
-        "role": "user",
-        "content": [
-            {"type": "image"},
-            {"type": "text", "text": PROMPT_TEXT.format(instruction=instruction)},
-        ],
-    }]
+    content = [{"type": "image"} for _ in range(max(1, int(n_images)))]
+    content.append({"type": "text", "text": PROMPT_TEXT.format(instruction=instruction)})
+    messages = [{"role": "user", "content": content}]
     return processor.apply_chat_template(messages, add_generation_prompt=True)
 
 
@@ -172,14 +172,21 @@ def prepare_inputs(processor, images: Sequence, instructions: Sequence[str],
                    device: str | torch.device | None = "cuda") -> Dict[str, torch.Tensor]:
     """把一批 (图像, 指令) 变成模型输入张量。
 
-    images: 长度 = len(instructions) 的 np.uint8 [H,W,3] / PIL 列表。
+    images: 长度 = len(instructions);每项可以是单张图(np.uint8 [H,W,3] / PIL),
+            也可以是"多帧列表" [prev, cur](历史帧模型,spec 变体)。
     device=None 时留在 CPU(DataLoader worker 里用),否则搬到 device。
     返回 input_ids/attention_mask/pixel_values/pixel_attention_mask。
     """
     assert len(images) == len(instructions), "images 与 instructions 数量必须一致"
-    texts = [build_text(processor, ins) for ins in instructions]
-    pils = [to_pil(im) for im in images]
-    enc = processor(text=texts, images=[[p] for p in pils],
+    samples = []
+    for im in images:
+        if isinstance(im, (list, tuple)):
+            samples.append([to_pil(x) for x in im])
+        else:
+            samples.append([to_pil(im)])
+    texts = [build_text(processor, ins, n_images=len(smp))
+             for ins, smp in zip(instructions, samples)]
+    enc = processor(text=texts, images=samples,
                     return_tensors="pt", padding=True)
     keep = ("input_ids", "attention_mask", "pixel_values", "pixel_attention_mask")
     out = {k: enc[k] for k in keep if k in enc}

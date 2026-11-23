@@ -171,8 +171,11 @@ SCENARIO_ALIASES = {
 class ModelPolicy:
     def __init__(self, policy):
         self.policy = policy
+        self.frames = int(getattr(policy, "frames", 1))
 
-    def act(self, images, instructions):
+    def act(self, images, instructions, prev_images=None):
+        if prev_images is not None and self.frames > 1:
+            return self.policy.act_batch(images, instructions, prev_images=prev_images)
         return self.policy.act_batch(images, instructions)
 
 
@@ -181,7 +184,7 @@ class RandomPolicy:
         self.v_max, self.w_max = v_max, w_max
         self.rng = np.random.default_rng(seed)
 
-    def act(self, images, instructions):
+    def act(self, images, instructions, prev_images=None):
         n = len(images)
         out = np.zeros((n, 2), dtype=np.float32)
         out[:, 0] = self.rng.uniform(-self.v_max, self.v_max, size=n)
@@ -193,7 +196,7 @@ class ConstantPolicy:
     def __init__(self, v=0.0, w=0.0):
         self.v, self.w = v, w
 
-    def act(self, images, instructions):
+    def act(self, images, instructions, prev_images=None):
         n = len(images)
         out = np.zeros((n, 2), dtype=np.float32)
         out[:, 0] = self.v
@@ -272,7 +275,8 @@ def _run_group_with_success(env_cls, success_func, policy, instr_id, instruction
     for i, s in enumerate(seeds):
         env = env_pool[i] if env_pool is not None else make_env(env_cls, max_steps)
         img = as_uint8_image(reset_env(env, instr_id, int(s)))
-        envs.append({"env": env, "img": img, "done": False, "history": [], "info": {},
+        envs.append({"env": env, "img": img, "prev": img, "cur": img, "done": False,
+                     "history": [], "info": {},
                      "ema": np.zeros(2, dtype=np.float32), "seed": int(s)})
     rng = np.random.default_rng(rng_seed)
     steps = 0
@@ -280,9 +284,17 @@ def _run_group_with_success(env_cls, success_func, policy, instr_id, instruction
         active = [e for e in envs if not e["done"]]
         if not active:
             break
-        imgs = [apply_perturbation(e["img"], scenario_name, rng) for e in active]
+        frames = int(getattr(policy, "frames", 1))
+        imgs = [apply_perturbation(e["cur"], scenario_name, rng) for e in active]
+        prevs = None
+        if frames > 1:
+            # 扰动需同时作用于两帧(灰图消融才有效);帧队列在本回合内维护
+            prevs = [apply_perturbation(e["prev"], scenario_name, rng) for e in active]
         t0 = time.perf_counter()
-        actions = policy.act(imgs, [instruction] * len(active))
+        if prevs is not None:
+            actions = policy.act(imgs, [instruction] * len(active), prev_images=prevs)
+        else:
+            actions = policy.act(imgs, [instruction] * len(active))
         dt = (time.perf_counter() - t0) * 1000.0
         lat_records.append((dt, len(active)))
         actions = np.asarray(actions, dtype=np.float32).reshape(len(active), 2)
@@ -293,7 +305,10 @@ def _run_group_with_success(env_cls, success_func, policy, instr_id, instruction
                 act[:] = e["ema"]
         for e, act in zip(active, actions):
             img, done, info = e["env"].step(act)
-            e["img"] = as_uint8_image(img)
+            new_img = as_uint8_image(img)
+            e["prev"] = e["cur"]
+            e["cur"] = new_img
+            e["img"] = new_img
             e["info"] = info if isinstance(info, dict) else {}
             e["history"].append(e["info"])
             e["done"] = bool(done)
@@ -475,6 +490,9 @@ def main():
                     help="不复用环境池(调试用;每回合重载 env,很慢)")
     ap.add_argument("--action-ema", type=float, default=0.0,
                     help="动作一阶低通系数(0=关闭;0.5=对 (v,w) 做 a_t=ema*a_{t-1}+(1-ema)*a_new)")
+    ap.add_argument("--frames", type=int, default=1, choices=[1, 2],
+                    help="每步输入的帧数:1=单帧(默认);2=(t-1,t) 历史帧。"
+                         "ckpt 自带 cfg.frames 时以 ckpt 为准(单帧模型显式传 2 仅用于消融)")
     ap.add_argument("--device", default="auto", choices=["auto", "cuda", "cpu"],
                     help="推理设备:auto=有 CUDA 用 cuda 否则 cpu(无 GPU 机器也能评测)")
     args = ap.parse_args()
@@ -493,7 +511,26 @@ def main():
     if device.type == "cpu" and args.batch_episodes > 1:
         print(f"[env] CPU 推理:--batch-episodes {args.batch_episodes} -> 1(CPU 批量推理太慢)")
         args.batch_episodes = 1
-    policy = VLAPolicy.load(args.ckpt, device=device, image_size=args.image_size, verbose=True)
+    # 预检 ckpt 的 frames(不改文件,只读 config)
+    try:
+        import torch as _torch
+        _payload = _torch.load(args.ckpt, map_location="cpu", weights_only=False)
+        ckpt_frames = max(1, int(_payload.get("config", {}).get("frames", 1)))
+        del _payload
+    except Exception:
+        ckpt_frames = 1
+    eff_frames = max(1, int(args.frames))
+    if ckpt_frames > 1 and eff_frames == 1:
+        eff_frames = ckpt_frames
+        print(f"[frames] ckpt 是 {ckpt_frames} 帧模型,自动启用 {eff_frames} 帧输入")
+    elif eff_frames != ckpt_frames:
+        print(f"[frames] 警告:显式 --frames {eff_frames} 与 ckpt frames={ckpt_frames} 不一致"
+              f"(仅用于消融,输入分布会与训练不符)")
+    # 2 帧与单帧都走 VLAPolicy 的默认路径(merge_lora/fast_proc/cuda_graph 由环境变量控制,
+    # 默认全开);fast_infer 已支持多帧,若快速路径不可用会自动回退 HF processor + 原始 forward。
+    policy = VLAPolicy.load(args.ckpt, device=device, image_size=args.image_size,
+                            verbose=True, frames=eff_frames)
+    _pinfo = policy.info() if hasattr(policy, "info") else {}
     load_s = time.time() - t0
     print(f"[policy] 加载 {args.ckpt} 用时 {load_s:.1f}s; 图像 {policy.cfg.image_size}px "
           f"seq={policy.cfg.image_seq_len} device={policy.device}")
@@ -511,6 +548,18 @@ def main():
         "batch_episodes": args.batch_episodes,
         "action_ema": float(args.action_ema),
         "image": {"size": policy.cfg.image_size, "seq_len": policy.cfg.image_seq_len},
+        "frames": eff_frames,
+        "frames_ckpt": ckpt_frames,
+        "inference": {
+            "frames": int(_pinfo.get("frames", eff_frames)),
+            "merge_lora": bool(_pinfo.get("merge_lora", False)),
+            "fast_proc": bool(_pinfo.get("fast_proc", False)),
+            "cuda_graph": bool(_pinfo.get("cuda_graph", False)),
+            "fast_error": _pinfo.get("fast_error"),
+            "graph_error": _pinfo.get("graph_error"),
+            "graph_max_diff": _pinfo.get("graph_max_diff"),
+        },
+        "policy_info": _pinfo,
         "device": str(policy.device),
         "batch_episodes_effective": args.batch_episodes,
         "started_at": time.strftime("%Y-%m-%d %H:%M:%S"),

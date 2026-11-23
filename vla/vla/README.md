@@ -377,6 +377,39 @@ random 5.8%、constant 11.7%。亮度/遮挡掉点 ≤1.1pp。
 3-10 倍。这解释了 8/9/10 的 `not_reached` 与 1 的 fall,也说明 DAgger(在策略访问状态上用专家动作
 做标签)能补到关键监督。
 
+### 6.9b v5 / v5b 续训结论(训练侧)
+
+| 版本 | 配置 | base10 总体 | 对象类(7-11) | instr0 | instr7 | val mse |
+|---|---|---|---|---|---|---|
+| bc_aux512(官方) | 512px,aux,dagger 混采 26.7%,1 epoch,lr 3e-4(从 v2 起) | **72.5%** | 44.0% | 100% | 70% | 0.03014(120 batch) |
+| v5 ep1 | 同上数据+lr 3e-4 **从 aux512 续训** | 62.5% | 32.0% | **0%** | 10% | 0.05910(600 batch,不可直接比) |
+| v5b | lr **5e-5**、去 dagger、1 epoch | 71.7% | 44.0% | 100% | 60% | 0.03184(120 batch) |
+
+- **v5(lr 3e-4 续训)是回归**:常量类校准被打坏(instr0 全 `yaw_drift`、instr7 全 `heading_too_large`);
+  已用 fast / legacy 两条推理路径各评测一次,都是 62.5% → 回归来自模型本身,不是推理路径。
+- **v5b(lr 5e-5)持平**:总量与对象类都没超过 aux512,但校准保住了。
+- 结论:**BC 已在这套数据上收敛,多训无效**;提升要靠改观测(两帧历史 v6)/辅助监督/多轮 DAgger。
+
+### 6.9c v6 两帧历史输入(loader `--frames 2`)
+
+- `--frames 2`:数据集返回 [t-1, t](同 episode 上一帧,否则复制当前帧);prompt 变两个 `<image>`,
+  256px 下 32 image token;`VLAConfig.frames` 会写进 ckpt,推理侧可按 ckpt 自动决定帧数。
+- 训练:从 `runs/bc_v2/best.pt` 热启动,256px、**bs8×grad_accum2(两帧下 bs16 会 OOM)**、
+  30k 加权帧、lr 3e-4、aux 0.1、1 epoch → **13.1 min、39.5 样本/s(16 图/步)、峰值 2414 MiB**。
+- 结果:base10 **74.2%**(89/120,对象类 46.0%)、base50 **72.5%**(435/600,对象类 43.2%;
+  vs aux512 71.8%/+0.7pp,不显著);instr7 70%(aux512 62%)、instr10 42%(38%)、
+  但 instr8/9 下降(46%/36% vs 54%/46%)。
+- 推理延迟(eager、2 帧、bs1):**p50 66.6 ms / p95 80.4 ms**(预处理 10.7 + forward 56.0),仍 <100ms。
+- 结论:历史帧对"转向类"有帮助,但"接近类"估距/停车时机未解决。
+- **v6b**(v6 上再低 lr 续训 1 epoch,lr 5e-5):base10 **75.8%**、base50 **73.7%**(442/600,对象类 46.0%),
+  略高于 v6(74.2% / 72.5%)→ **v6b 定为官方模型**;快速路径复核 base10 = 75.0%(差 1 局,与 parity 一致)。
+- v6b 鲁棒性(官方 `--frames 2`,12 局/指令配对):base12 76.4%、亮度×0.7 76.4%、×1.3 76.4%、
+  遮挡 77.8%、**灰图 72.2%(-4.2pp)**;灰图 24 局/指令重测 69.8%。
+  (此前 v6 的 gray==base 是"扰动只加 cur 帧"的 bug,已修。)
+- 官方评测支持:`eval/closed_loop.py --frames {1,2}`(2 帧维护 prev/cur 队列、扰动同时作用于两帧、
+  JSON 记录 frames);`VLAPolicy.act()` 支持 `prev_images`/内部帧队列;`make_demo.py --frames`。
+  官方命令复现 v6 base50 = 72.5%,与自研评测一致。
+
 ### 6.10 DAgger 微调结果(消融,非最终模型)
 
 DAgger 数据:`data/dataset_dagger/` 240 回合 / 11,846 帧 / 5 shard(12 指令 × 20 局,策略执行 +
@@ -409,7 +442,8 @@ DAgger 作为消融写入报告。原因推断:单向 BC 的 under-steering 已�
 
 > 负责人:latency-opt;代码:`vla/fast_infer.py`(新)、`vla/infer.py`(开关)、
 > `scripts/bench_infer.py`(新,基准+parity)。复现命令见 §7.6。
-> 验收目标:512px 单步 p50 < 20 ms、256px p50 < 15 ms(10 Hz 控制环,单步预算 100 ms)。
+> 验收目标:512px 单步 p50 < 20 ms、256px p50 < 15 ms、两帧(frames=2)256px p50 < 15 ms
+> (10 Hz 控制环,单步预算 100 ms)。
 
 ### 7.1 结论(before / after)
 
@@ -442,6 +476,29 @@ before/after 在同一背景下测得,与 Lead profiling 时的 51.7 ms 基线�
 无法逐位一致(实测 512px 有 0.5% 像素差 ±1 LSB),会破坏"pixel_values 逐位一致"的验收,
 故未采用;需要时可另开 GPU 预处理模式并接受像素级 ±1 LSB。
 
+#### 两帧历史(frames=2,v6 @256px)
+
+`runs/bc_v6_hist2/best.pt` 的 `cfg.frames=2`:每样本输入 (t-1, t) 两帧,prompt 为两个 `<image>`
+(256px 下 32 image token);`act(img)` 内部维护帧队列(首帧重复),批量接口用
+`act_batch(..., prev_images=...)` 显式给历史。快速路径的 input_ids 缓存以 **(frames, 指令)** 为键,
+不会误用单帧缓存;pixel_values 形状 `[B,2,3,H,W]` 与 HF processor **逐位一致(max|diff|=0)**。
+CUDA graph 按 (frames=2, T, H) 重新捕获(6 个序列长度,共享 pool)。
+
+测量:`scripts/bench_infer.py --mode bench --tag hist2 --ckpts runs/bc_v6_hist2/best.pt:256 --frames 2`
+(n=100/warmup=20,bs=1;干净窗口 GPU 3700 MiB / 6%):
+
+| 配置(256px × 2 帧) | p50 ms | p95 ms | 相对基线 |
+|---|---|---|---|
+| ① legacy:processor + LoRA(未合并) | 44.1 | 47.2 | 1.00× |
+| ② merge LoRA | 23.7 | 24.7 | 1.86× |
+| ③ merge + 快速预处理 | 20.7 | 22.6 | 2.13× |
+| ④ **merge + fast + CUDA graph(推荐)** | **11.3** | **12.4** | **3.90×** |
+
+分段:预处理 5.47 → 2.22 ms;forward 38.40 → 18.05(merge)→ 9.15 ms(graph)。
+**目标达成**:256px × 2 帧 p50 **11.3 ms** < 15 ms(余量 25%),p95 12.4 ms。
+(vla-model 官方 eager 口径 `runs/bc_v6_hist2/latency_eager.json` 为 p50 66.6/p95 80.4 ms,
+是在其训练并行时测得;本表 44.1 ms 是干净窗口的同口径复测。)
+
 分段(512px、bs=1,`bench_infer.py` 的 breakdown 字段):processor 预处理 8.75 ms →
 快速预处理 3.16 ms(含 H2D);forward(LoRA 未合并)41.99 ms → merge 后 23.15 ms →
 CUDA graph 17.8 ms。
@@ -466,6 +523,10 @@ CUDA graph 17.8 ms。
 | fast(eager)vs slow 的 `act()` | 100 组随机图×指令 + 60 帧真实数据 | **max\|diff\| = 0.0(逐位相同)** |
 | merge 前后 `act()` | 100 图 × 12 指令,fp32 | 在分布数据帧 **max 7.2e-5**(p99 1.3e-5);随机白噪声 max 4.65e-2(p99 1.1e-2,p50 7e-6) |
 | fast+graph vs slow `act()` | 同上 | 在分布数据帧 **max 7.1e-3**(p99 1.9e-3,p50 5.5e-5);随机白噪声 max 2.9e-2 |
+| 2 帧(`frames=2`)fast 预处理 | 3 类图 × 12 指令,对 HF processor | `pixel_values` **max\|diff\| = 0.0**、`input_ids` **完全一致** |
+| 2 帧 fast(eager)vs slow `act()` | 100 组随机 + 60 帧真实 | **max\|diff\| = 0.0(逐位相同)** |
+| 2 帧 fast+graph vs slow `act()` | 同上 | 在分布数据帧 **max 6.8e-4**(<1e-3);随机白噪声 max 1.1e-2 |
+| 2 帧 merge 前后(fp32) | 100 图×12 指令 + 60 帧真实 | 真实帧 **max 2.0e-5**;随机白噪声 max 3.3e-3 |
 
 关于两个"看起来超差"的口径(重要,不是实现错误):
 - **随机白噪声图是 OOD**:网络在 OOD 输入上对 1e-7 级浮点重排误差呈混沌放大(实测 fp32 下
@@ -496,6 +557,25 @@ CUDA graph 17.8 ms。
 三组总成功率都是 38/60 = 63.3%,逐指令互有 ±1 局(如 instr1 60%→80%、instr8 60%→40%,
 是 merge 数值重排导致个别回合翻转),**没有掉点**。bs=1 的 graph 由 §7.2 的 parity 覆盖。
 
+**两帧(v6,frames=2)闭环 parity**(12 指令 × N 局,seed_base=2026,JSON 在 `runs/closed_loop_opt/`):
+
+| 配置 | 5 局/指令 | 10 局/指令 | JSON |
+|---|---|---|---|
+| fast(merge+fast+graph) | 42/60 = **70.0%** | 84/120 = **70.0%** | `hist2_parity_fast.json` / `hist2_parity_fast_e10.json` |
+| merge-only(隔离 graph) | 42/60 = 70.0% | — | `hist2_parity_mergeonly.json` |
+| slow(legacy:processor+未合并 LoRA) | 43/60 = **71.7%** | 85/120 = **70.8%** | `hist2_parity_slow.json` / `hist2_parity_slow_e10.json` |
+| 官方 `runs/bc_v6_hist2/eval_hist2.py`(同 seed) | 43/60 = 71.7% | — | `hist2_parity_official_slow.json` |
+| `eval/closed_loop.py --frames 2`(当前强制 eager) | 43/60 = 71.7% | — | `hist2_parity_closedloop.json` |
+
+- **fast 与 merge-only 逐局完全一致**(bs>1 时 graph 不参与,fast 预处理与 processor 逐位相同);
+- fast vs slow:120 局里只有 **3 局**不同(instr1 两局互换、instr8 一局),10/12 指令成功率完全相同,
+  总成功率 70.0% vs 70.8%(**-0.8pp = 1/120 局**),属 merge 数值重排在弱指令上的抖动,无系统性掉点;
+- 官方 `eval_hist2.py` 与 `eval/closed_loop.py --frames 2` 的慢路径结果与本文档 slow **完全一致**(43/60),
+  harness 口径已交叉验证。
+- ⚠️ `eval/closed_loop.py` 的 2 帧分支目前硬编码 `merge_lora=False, fast_proc=False, cuda_graph=False`
+  (`if eff_frames > 1:` 那段),所以该命令目前跑的是**慢路径**;要跑 fast 路径需把那段改成走默认/
+  环境变量(fast 已支持 frames=2,见 §7.1b)。
+
 ### 7.4 10 Hz 控制环预算
 
 | 项目 | 512px p50 | 512px p95 | 256px p50 | 256px p95 |
@@ -519,6 +599,12 @@ v, w = policy.act(img_uint8_128x128x3, "靠近红桶")
 
 # 需要继续训练/续训:必须不合并 LoRA(合并后不可训练)
 policy = VLAPolicy.load(ckpt, merge_lora=False, fast_proc=False, cuda_graph=False)
+
+# 两帧历史 ckpt(如 runs/bc_v6_hist2/best.pt):frames 从 ckpt 自动读出(2)
+policy = VLAPolicy.load("runs/bc_v6_hist2/best.pt")
+v, w = policy.act(img_uint8_128x128x3, "靠近红桶")   # 首帧重复,之后自动 (t-1, t)
+acts = policy.act_batch(cur_imgs, [ins] * n, prev_images=prev_imgs)  # 批量/闭环显式历史
+policy.reset_history()                               # 新回合时清空帧队列
 ```
 
 环境变量覆盖(无需改调用方,便于实机降级):
@@ -552,10 +638,24 @@ cd /home/czy/倒立摆/wheeltec_vla
 .venv/bin/python scripts/bench_infer.py --mode parity --tag rtx5060_clean
 # 单配置快速验证
 .venv/bin/python vla/infer.py --ckpt runs/bc_aux512/best.pt --bench --n 100
+
+# 两帧历史(v6):延迟矩阵 / 数值 parity
+.venv/bin/python scripts/bench_infer.py --mode bench --tag hist2 \
+    --ckpts runs/bc_v6_hist2/best.pt:256 --frames 2
+.venv/bin/python scripts/bench_infer.py --mode parity --tag hist2 \
+    --ckpts runs/bc_v6_hist2/best.pt:256 --frames 2
+# 两帧闭环 parity(fast vs 慢路径,同 seed)
+.venv/bin/python runs/bench_infer_hist2_parity.py --ckpt runs/bc_v6_hist2/best.pt \
+    --image-size 256 --frames 2 --episodes 10 --name hist2_fast_e10
+.venv/bin/python runs/bench_infer_hist2_parity.py --ckpt runs/bc_v6_hist2/best.pt \
+    --image-size 256 --frames 2 --episodes 10 --name hist2_slow_e10 \
+    --no-merge-lora --no-fast-proc --no-cuda-graph
 ```
 
 已知限制:
 - 快速路径只接受 128×128×3 的 uint8/PIL 图像(spec §3 的源图尺寸);其它尺寸自动回退 processor;
 - CUDA graph 只在 CUDA + bs=1 下启用;闭环评测的 bs>1 走 eager 快速前向(仍是 0.0 误差);
-- `merge_lora=True` 的模型**不能再训练/续训**(只能推理/评测),训练脚本不经过 `VLAPolicy`。
+- `merge_lora=True` 的模型**不能再训练/续训**(只能推理/评测),训练脚本不经过 `VLAPolicy`;
+- frames 支持 1/2(训练侧 `--frames` 目前也只到 2);2 帧每步预处理 2 张图、视觉计算 ×2,
+  显存/延迟约为单帧的 1.6–2×(256px × 2 帧的推荐配置实测 11.3 ms,仍远低于 100 ms 预算)。
 

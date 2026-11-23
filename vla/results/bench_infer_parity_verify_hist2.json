@@ -1,0 +1,163 @@
+{
+  "tag": "verify_hist2",
+  "env": {
+    "timestamp": "2026-11-23 18:25:37",
+    "python": "3.12.3",
+    "torch": "2.9.1+cu128",
+    "cuda": "12.8",
+    "transformers": "5.24.0",
+    "peft": "0.22.0",
+    "gpu_name": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "gpu_capability": [
+      12,
+      0
+    ],
+    "gpu_status_start": {
+      "name": "NVIDIA GeForce RTX 5060 Laptop GPU",
+      "mem_used_MiB": 4681,
+      "mem_total_MiB": 8151,
+      "util_pct": 59,
+      "compute_apps": [
+        {
+          "pid": "2779",
+          "name": "llama-server",
+          "mem_MiB": "3600"
+        },
+        {
+          "pid": "183530",
+          "name": "python",
+          "mem_MiB": "967"
+        }
+      ],
+      "load_avg": [
+        4.95556640625,
+        4.5615234375,
+        4.6435546875
+      ]
+    },
+    "gpu_status_end": {
+      "name": "NVIDIA GeForce RTX 5060 Laptop GPU",
+      "mem_used_MiB": 5104,
+      "mem_total_MiB": 8151,
+      "util_pct": 85,
+      "compute_apps": [
+        {
+          "pid": "2779",
+          "name": "llama-server",
+          "mem_MiB": "3600"
+        },
+        {
+          "pid": "183530",
+          "name": "python",
+          "mem_MiB": "967"
+        },
+        {
+          "pid": "190882",
+          "name": "python",
+          "mem_MiB": "418"
+        }
+      ],
+      "load_avg": [
+        5.34765625,
+        4.70458984375,
+        4.68798828125
+      ]
+    }
+  },
+  "checks": {
+    "bc_v6_hist2@256": {
+      "merge_random_ood": {
+        "max": 0.0033116862177848816,
+        "p50": 4.852656275033951e-06,
+        "p99": 0.0006922481115907431,
+        "pass_lt_1e_3": false,
+        "pairs": 100,
+        "dtype": "float32",
+        "max_abs_diff_v": 0.00029665231704711914,
+        "max_abs_diff_w": 0.0033116862177848816,
+        "note": "随机白噪声图属 OOD,1e-7 级重排误差会被网络放大;看到 values 不代表 merge 有 bug"
+      },
+      "merge_in_distribution": {
+        "max": 1.9669532775878906e-05,
+        "p50": 1.4901161193847656e-08,
+        "p99": 4.961927515978459e-06,
+        "pass_lt_1e_3": true,
+        "pairs": 60,
+        "dtype": "float32",
+        "max_abs_diff_v": 6.884336471557617e-06,
+        "max_abs_diff_w": 5.751848220825195e-06,
+        "note": "在分布数据帧:merge 前后数值应几乎完全一致"
+      },
+      "fast_preproc": {
+        "images": 3,
+        "instructions": 12,
+        "pixel_values_max_abs_diff": 0.0,
+        "input_ids_exact_match": true,
+        "pass": true
+      },
+      "act": {
+        "slow_path": {
+          "merge_lora": true,
+          "fast_proc": false,
+          "cuda_graph": false,
+          "graph_error": null,
+          "fast_error": null,
+          "image_size": 256,
+          "image_seq_len": 16,
+          "frames": 2,
+          "instr_max_len": null,
+          "graph_count": 0,
+          "graph_max_diff": null,
+          "pad_len": null,
+          "device": "cuda",
+          "dtype": "torch.bfloat16"
+        },
+        "fast_path": {
+          "merge_lora": true,
+          "fast_proc": true,
+          "cuda_graph": true,
+          "graph_error": null,
+          "fast_error": null,
+          "image_size": 256,
+          "image_seq_len": 16,
+          "frames": 2,
+          "instr_max_len": 69,
+          "graph_count": 6,
+          "graph_max_diff": 0.0016486644744873047,
+          "pad_len": 72,
+          "device": "cuda",
+          "dtype": "torch.bfloat16"
+        },
+        "fast_eager_vs_slow": {
+          "random_ood": {
+            "max": 0.0,
+            "p50": 0.0,
+            "p99": 0.0,
+            "pass_lt_1e_3": true
+          },
+          "in_distribution": {
+            "max": 0.0,
+            "p50": 0.0,
+            "p99": 0.0,
+            "pass_lt_1e_3": true
+          }
+        },
+        "fast_graph_vs_slow": {
+          "random_ood": {
+            "max": 0.011089883744716644,
+            "p50": 0.0001942613162100315,
+            "p99": 0.0050795311108231544,
+            "pass_lt_1e_3": false
+          },
+          "in_distribution": {
+            "max": 0.0006780922412872314,
+            "p50": 6.902404129505157e-05,
+            "p99": 0.000512728001922369,
+            "pass_lt_1e_3": true
+          }
+        },
+        "note": "fast_eager 应与 slow 逐位一致(0.0);graph 有 ~1e-4 级 kernel 数值差,在 OOD 噪声图上会被放大,在分布数据帧上 <1e-3"
+      }
+    }
+  }
+}

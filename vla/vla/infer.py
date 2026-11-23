@@ -71,7 +71,8 @@ class VLAPolicy:
     def __init__(self, model, processor, cfg: VLAConfig, extra: dict | None = None,
                  device: str | torch.device | None = "auto",
                  merge_lora: bool = False, fast_proc: bool = False,
-                 cuda_graph: bool = False, verbose: bool = False):
+                 cuda_graph: bool = False, verbose: bool = False,
+                 frames: int | None = None):
         self.model = model
         self.processor = processor
         self.cfg = cfg
@@ -80,6 +81,10 @@ class VLAPolicy:
         self.model.eval()
         self.merge_lora = bool(merge_lora)
         self.verbose = bool(verbose)
+        # frames: 每样本历史帧数(ckpt 里带;1=单帧,2=(t-1,t))。act() 自动维护帧队列。
+        self.frames = max(1, int(frames if frames is not None
+                                 else getattr(cfg, "frames", 1)))
+        self._hist: list = []
         # -- 快速路径(失败自动回退 HF processor + 原始 forward)------------------
         self.fast = None
         self.runner = None
@@ -93,7 +98,8 @@ class VLAPolicy:
                 self._fast_pix_dtype = next(model.parameters()).dtype
                 self.fast, self.runner = make_fast_backend(
                     model, processor, cfg, device=self.device,
-                    enable_graph=bool(cuda_graph), verbose=verbose)
+                    enable_graph=bool(cuda_graph), verbose=verbose,
+                    frames=self.frames)
                 if cuda_graph and self.device.type == "cuda":
                     self.graph_check = self.runner.self_check(self.fast)
                     if verbose:
@@ -113,13 +119,14 @@ class VLAPolicy:
     def load(cls, ckpt_path: str, device: str | torch.device | None = "auto",
              image_size: int | None = None, verbose: bool = False,
              merge_lora: bool | None = None, fast_proc: bool | None = None,
-             cuda_graph: bool | None = None) -> "VLAPolicy":
+             cuda_graph: bool | None = None, frames: int | None = None) -> "VLAPolicy":
         """加载 checkpoint。
 
         merge_lora : None=读环境变量 VLA_MERGE_LORA(默认 True);True=合并 LoRA(仅推理);
                      False=保留 LoRA(需要继续训练/续训时用)。
         fast_proc  : None=读 VLA_FAST_PROC(默认 True);快速预处理 + 快速前向。
         cuda_graph : None=读 VLA_CUDA_GRAPH(默认 True);固定形状 CUDA graph(需 fast_proc)。
+        frames     : None=按 checkpoint 的 cfg.frames(1=单帧 / 2=两帧);显式改仅用于消融。
         """
         merge_lora = _env_flag("VLA_MERGE_LORA", True) if merge_lora is None else bool(merge_lora)
         fast_proc = _env_flag("VLA_FAST_PROC", True) if fast_proc is None else bool(fast_proc)
@@ -140,9 +147,15 @@ class VLAPolicy:
             if verbose:
                 print(f"[VLAPolicy] LoRA 已合并进基座(merge_and_unload,{time.time() - t0:.2f}s);"
                       f"该模型只能推理,不能继续训练")
+        ckpt_frames = max(1, int(getattr(cfg, "frames", 1)))
+        frames = ckpt_frames if frames is None else max(1, int(frames))
+        if frames != ckpt_frames and verbose:
+            print(f"[VLAPolicy] 警告:显式 frames={frames} != ckpt frames={ckpt_frames}"
+                  f"(该模型按 {ckpt_frames} 帧训练,仅消融用)")
         proc = build_processor(cfg.base_model, cfg.image_size, cfg.image_seq_len)
         return cls(model, proc, cfg, extra, device=device, merge_lora=merge_lora,
-                   fast_proc=fast_proc, cuda_graph=cuda_graph, verbose=verbose)
+                   fast_proc=fast_proc, cuda_graph=cuda_graph, verbose=verbose,
+                   frames=frames)
 
     # -- 编码 / 前向(自动选择快速路径)----------------------------------------
     def _encode(self, images, instructions):
@@ -168,25 +181,67 @@ class VLAPolicy:
         return self.model(enc)
 
     # -- 推理 ---------------------------------------------------------------
+    def _history_with(self, image) -> list:
+        """把当前帧接到历史尾部,返回长度 frames 的帧列表,并更新内部队列(首帧重复)。"""
+        n = self.frames - 1
+        if n <= 0:
+            return [image]
+        if not self._hist:
+            self._hist = [image] * n
+        frames = list(self._hist) + [image]
+        self._hist = frames[-n:]
+        return frames
+
+    def reset_history(self) -> None:
+        """清空帧队列(新回合/新场景时调用;act() 首帧会自动重复当前帧)。"""
+        self._hist = []
+
+    def _samples(self, images, prev_images=None) -> list:
+        """按 frames 组装"每样本帧列表";frames=1 时原样返回。"""
+        images = list(images)
+        if self.frames <= 1:
+            return images
+        if prev_images is not None:
+            if len(prev_images) != len(images):
+                raise ValueError("prev_images 与 images 长度必须一致")
+            return [[p, c] for p, c in zip(prev_images, images)]
+        if all(isinstance(im, (list, tuple)) for im in images):
+            return images  # 调用方已显式给出每样本帧列表
+        if len(images) == 1:
+            return [self._history_with(images[0])]  # 单样本:用内部帧队列
+        raise ValueError(
+            f"frames={self.frames} 的批量推理需传 prev_images 或每项帧列表;"
+            f"不要用单帧历史冒充 {self.frames} 帧(会静默改变输入分布)")
+
     @torch.inference_mode()
-    def act_batch(self, images, instructions) -> np.ndarray:
-        """批量推理:返回物理动作 np.float32 [N,2] (v m/s, w rad/s)。"""
+    def act_batch(self, images, instructions, prev_images=None) -> np.ndarray:
+        """批量推理:返回物理动作 np.float32 [N,2] (v m/s, w rad/s)。
+
+        frames>1 时:推荐 images=[[prev, cur], ...] 或 prev_images=[prev,...];
+        bs=1 且只给单张图时用内部帧队列(act() 走这条,首帧重复)。
+        """
         if isinstance(instructions, str):
             instructions = [instructions] * len(images)
-        enc = self._encode(list(images), list(instructions))
+        samples = self._samples(images, prev_images)
+        enc = self._encode(samples, list(instructions))
         pred_norm, _ = self._forward(enc)
         phys = denormalize(pred_norm.float().cpu(), self.cfg.v_max, self.cfg.w_max)
         return phys.numpy().astype(np.float32)
 
     def act(self, image, instruction: str):
-        """单张图 + 单条指令 -> (v, w)。"""
-        out = self.act_batch([image], [instruction])[0]
+        """单张图 + 单条指令 -> (v, w)。frames>1 时自动保留上一帧(首帧重复)。"""
+        if self.frames > 1:
+            samples = [self._history_with(image)]
+        else:
+            samples = [image]
+        out = self.act_batch(samples, [instruction])[0]
         return float(out[0]), float(out[1])
 
-    def act_norm_batch(self, images, instructions) -> np.ndarray:
+    def act_norm_batch(self, images, instructions, prev_images=None) -> np.ndarray:
         if isinstance(instructions, str):
             instructions = [instructions] * len(images)
-        enc = self._encode(list(images), list(instructions))
+        samples = self._samples(images, prev_images)
+        enc = self._encode(samples, list(instructions))
         with torch.inference_mode():
             pred_norm, _ = self._forward(enc)
         return pred_norm.float().cpu().numpy()
@@ -204,6 +259,7 @@ class VLAPolicy:
             "fast_error": self.fast_error,
             "image_size": int(self.cfg.image_size),
             "image_seq_len": int(self.cfg.image_seq_len),
+            "frames": int(self.frames),
             "instr_max_len": int(self.fast.max_len) if self.fast is not None else None,
             "graph_count": int(self.runner.graph_count) if self.runner is not None else 0,
             "graph_max_diff": (float(self.runner.graph_max_diff)
@@ -280,12 +336,15 @@ def main():
                     help="使用快速预处理/快速前向(默认 True)")
     ap.add_argument("--cuda-graph", action=argparse.BooleanOptionalAction, default=None,
                     help="使用固定形状 CUDA graph(默认 True,需 --fast-proc)")
+    ap.add_argument("--frames", type=int, default=None,
+                    help="历史帧数(默认按 ckpt 的 cfg.frames;单帧 ckpt 传 2 仅消融用)")
     args = ap.parse_args()
 
     t0 = time.time()
     policy = VLAPolicy.load(args.ckpt, device=args.device, image_size=args.image_size,
                             verbose=True, merge_lora=args.merge_lora,
-                            fast_proc=args.fast_proc, cuda_graph=args.cuda_graph)
+                            fast_proc=args.fast_proc, cuda_graph=args.cuda_graph,
+                            frames=args.frames)
     load_s = time.time() - t0
     cfg = policy.cfg
     rng = np.random.default_rng(0)
@@ -293,18 +352,24 @@ def main():
     if args.random_image:
         pass
     print(f"[load] {args.ckpt}  ckpt 前向配置: image={cfg.image_size}px "
-          f"seq={cfg.image_seq_len} lora_r={cfg.lora_r}  device={policy.device}")
+          f"seq/图={cfg.image_seq_len} frames={policy.frames} lora_r={cfg.lora_r}  "
+          f"device={policy.device}")
     print(f"[load] 加载耗时 {load_s:.1f}s, GPU 已分配 {torch.cuda.memory_allocated() / 2**20:.0f}MiB")
     print(f"[load] 推理路径: {policy.info()}")
 
-    # 12 条指令各跑一次,确认指令 -> 动作通路有输出差异
-    outs = policy.act_batch([img] * len(INSTRUCTIONS), INSTRUCTIONS)
+    # 12 条指令各跑一次,确认指令 -> 动作通路有输出差异(frames>1 给每样本帧列表)
+    if policy.frames > 1:
+        sanity_samples = [[img] * policy.frames for _ in INSTRUCTIONS]
+    else:
+        sanity_samples = [img] * len(INSTRUCTIONS)
+    outs = policy.act_batch(sanity_samples, INSTRUCTIONS)
     print("[sanity] 同一张随机图、12 条指令的动作输出(v, w):")
     for i, ins in enumerate(INSTRUCTIONS):
         print(f"   {i:2d} {ins:<10s} v={outs[i, 0]:+.3f} w={outs[i, 1]:+.3f}")
 
     result = {"ckpt": os.path.abspath(args.ckpt), "load_s": load_s,
               "image_size": cfg.image_size, "image_seq_len": cfg.image_seq_len,
+              "frames": policy.frames,
               "infer_path": policy.info(),
               "sanity_actions": {INSTRUCTIONS[i]: [float(outs[i, 0]), float(outs[i, 1])]
                                  for i in range(len(INSTRUCTIONS))}}

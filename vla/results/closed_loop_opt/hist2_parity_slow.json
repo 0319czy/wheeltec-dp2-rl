@@ -1,0 +1,611 @@
+{
+  "ckpt": "/home/czy/倒立摆/wheeltec_vla/runs/bc_v6_hist2/best.pt",
+  "env_module": "sim.env_vla",
+  "episodes_per_instr": 5,
+  "instrs": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+  ],
+  "seed_base": 2026,
+  "batch_episodes": 8,
+  "image": {
+    "size": 256,
+    "seq_len": 16
+  },
+  "frames": 2,
+  "inference": {
+    "merge_lora": false,
+    "fast_proc": false,
+    "cuda_graph": false,
+    "graph_error": null,
+    "fast_error": null,
+    "image_size": 256,
+    "image_seq_len": 16,
+    "frames": 2,
+    "instr_max_len": null,
+    "graph_count": 0,
+    "graph_max_diff": null,
+    "pad_len": null,
+    "device": "cuda",
+    "dtype": "torch.bfloat16"
+  },
+  "load_s": 2.9,
+  "device": "cuda",
+  "scenarios": {
+    "base": {
+      "scenario": "base",
+      "per_instr": {
+        "0": {
+          "instruction": "保持站立",
+          "episodes": 5,
+          "success": 4,
+          "rate": 0.8,
+          "fail_reasons": {
+            "displaced": 1
+          },
+          "episodes_detail": [
+            {
+              "seed": 2026,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 2043,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 2060,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 2077,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 2094,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "displaced"
+            }
+          ]
+        },
+        "1": {
+          "instruction": "向前走",
+          "episodes": 5,
+          "success": 4,
+          "rate": 0.8,
+          "fail_reasons": {
+            "fall": 1
+          },
+          "episodes_detail": [
+            {
+              "seed": 102029,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 102046,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 102063,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 102080,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 102097,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            }
+          ]
+        },
+        "2": {
+          "instruction": "向后退",
+          "episodes": 5,
+          "success": 5,
+          "rate": 1.0,
+          "fail_reasons": {},
+          "episodes_detail": [
+            {
+              "seed": 202032,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 202049,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 202066,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 202083,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 202100,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            }
+          ]
+        },
+        "3": {
+          "instruction": "向左转",
+          "episodes": 5,
+          "success": 5,
+          "rate": 1.0,
+          "fail_reasons": {},
+          "episodes_detail": [
+            {
+              "seed": 302035,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 302052,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 302069,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 302086,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 302103,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            }
+          ]
+        },
+        "4": {
+          "instruction": "向右转",
+          "episodes": 5,
+          "success": 4,
+          "rate": 0.8,
+          "fail_reasons": {
+            "fall": 1
+          },
+          "episodes_detail": [
+            {
+              "seed": 402038,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 402055,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 402072,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 402089,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 402106,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            }
+          ]
+        },
+        "5": {
+          "instruction": "原地左旋",
+          "episodes": 5,
+          "success": 5,
+          "rate": 1.0,
+          "fail_reasons": {},
+          "episodes_detail": [
+            {
+              "seed": 502041,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 502058,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 502075,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 502092,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 502109,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            }
+          ]
+        },
+        "6": {
+          "instruction": "原地右旋",
+          "episodes": 5,
+          "success": 5,
+          "rate": 1.0,
+          "fail_reasons": {},
+          "episodes_detail": [
+            {
+              "seed": 602044,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 602061,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 602078,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 602095,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 602112,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            }
+          ]
+        },
+        "7": {
+          "instruction": "面向红桶",
+          "episodes": 5,
+          "success": 1,
+          "rate": 0.2,
+          "fail_reasons": {
+            "heading_too_large": 4
+          },
+          "episodes_detail": [
+            {
+              "seed": 702047,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "heading_too_large"
+            },
+            {
+              "seed": 702064,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "heading_too_large"
+            },
+            {
+              "seed": 702081,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 702098,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "heading_too_large"
+            },
+            {
+              "seed": 702115,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "heading_too_large"
+            }
+          ]
+        },
+        "8": {
+          "instruction": "靠近红桶",
+          "episodes": 5,
+          "success": 4,
+          "rate": 0.8,
+          "fail_reasons": {
+            "red_not_reached": 1
+          },
+          "episodes_detail": [
+            {
+              "seed": 802050,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 802067,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 802084,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 802101,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 802118,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "red_not_reached"
+            }
+          ]
+        },
+        "9": {
+          "instruction": "靠近蓝桶",
+          "episodes": 5,
+          "success": 2,
+          "rate": 0.4,
+          "fail_reasons": {
+            "blue_not_reached": 3
+          },
+          "episodes_detail": [
+            {
+              "seed": 902053,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 902070,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 902087,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 902104,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 902121,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            }
+          ]
+        },
+        "10": {
+          "instruction": "靠近绿桶",
+          "episodes": 5,
+          "success": 1,
+          "rate": 0.2,
+          "fail_reasons": {
+            "green_not_reached": 4
+          },
+          "episodes_detail": [
+            {
+              "seed": 1002056,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "green_not_reached"
+            },
+            {
+              "seed": 1002073,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "green_not_reached"
+            },
+            {
+              "seed": 1002090,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "green_not_reached"
+            },
+            {
+              "seed": 1002107,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "green_not_reached"
+            },
+            {
+              "seed": 1002124,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            }
+          ]
+        },
+        "11": {
+          "instruction": "绕开红桶前往蓝桶",
+          "episodes": 5,
+          "success": 3,
+          "rate": 0.6,
+          "fail_reasons": {
+            "blue_not_reached": 2
+          },
+          "episodes_detail": [
+            {
+              "seed": 1102059,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1102076,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1102093,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1102110,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 1102127,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            }
+          ]
+        }
+      },
+      "overall": {
+        "success": 43,
+        "episodes": 60,
+        "rate": 0.7166666666666667
+      },
+      "elapsed_s": 62.2,
+      "latency": {
+        "calls": 600,
+        "samples": 2986,
+        "per_sample_ms_p50": 16.20453430005,
+        "per_sample_ms_p95": 17.392768529880414,
+        "per_call_ms_p50": 80.93614100016566,
+        "per_call_ms_p95": 86.33293160100948
+      }
+    }
+  },
+  "started_at": "2026-11-23 17:55:28",
+  "finished_at": "2026-11-23 17:56:30"
+}

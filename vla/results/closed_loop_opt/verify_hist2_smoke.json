@@ -1,0 +1,89 @@
+{
+  "ckpt": "/home/czy/倒立摆/wheeltec_vla/runs/bc_v6_hist2/best.pt",
+  "env_module": "sim.env_vla",
+  "episodes_per_instr": 1,
+  "instrs": [
+    0,
+    1
+  ],
+  "seed_base": 2026,
+  "batch_episodes": 8,
+  "image": {
+    "size": 256,
+    "seq_len": 16
+  },
+  "frames": 2,
+  "inference": {
+    "merge_lora": true,
+    "fast_proc": true,
+    "cuda_graph": true,
+    "graph_error": null,
+    "fast_error": null,
+    "image_size": 256,
+    "image_seq_len": 16,
+    "frames": 2,
+    "instr_max_len": 69,
+    "graph_count": 6,
+    "graph_max_diff": 0.0016486644744873047,
+    "pad_len": 72,
+    "device": "cuda",
+    "dtype": "torch.bfloat16"
+  },
+  "load_s": 4.9,
+  "device": "cuda",
+  "scenarios": {
+    "base": {
+      "scenario": "base",
+      "per_instr": {
+        "0": {
+          "instruction": "保持站立",
+          "episodes": 1,
+          "success": 1,
+          "rate": 1.0,
+          "fail_reasons": {},
+          "episodes_detail": [
+            {
+              "seed": 2026,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            }
+          ]
+        },
+        "1": {
+          "instruction": "向前走",
+          "episodes": 1,
+          "success": 1,
+          "rate": 1.0,
+          "fail_reasons": {},
+          "episodes_detail": [
+            {
+              "seed": 102029,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            }
+          ]
+        }
+      },
+      "overall": {
+        "success": 2,
+        "episodes": 2,
+        "rate": 1.0
+      },
+      "elapsed_s": 1.6,
+      "latency": {
+        "calls": 100,
+        "samples": 100,
+        "per_sample_ms_p50": 10.855620997972437,
+        "per_sample_ms_p95": 11.548998647594999,
+        "per_call_ms_p50": 10.855620997972437,
+        "per_call_ms_p95": 11.548998647594999
+      }
+    }
+  },
+  "started_at": "2026-11-23 18:27:18",
+  "finished_at": "2026-11-23 18:27:20"
+}

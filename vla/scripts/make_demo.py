@@ -81,6 +81,8 @@ def main():
     ap.add_argument('--cols', type=int, default=3)
     ap.add_argument('--device', default='cuda')
     ap.add_argument('--image-size', type=int, default=None)
+    ap.add_argument('--frames', type=int, default=None, choices=[1, 2],
+                    help='每步输入帧数:None=按 ckpt 的 cfg.frames(单帧/两帧自动);2=(t-1,t)')
     ap.add_argument('--max-episodes', type=int, default=6)
     args = ap.parse_args()
 
@@ -88,7 +90,16 @@ def main():
     from sim.env_vla import VLAEnv
     from vla.infer import VLAPolicy
 
-    policy = VLAPolicy.load(args.ckpt, device=args.device, image_size=args.image_size, verbose=True)
+    _load_kwargs = {}
+    if args.frames is not None:
+        _load_kwargs['frames'] = args.frames
+        if args.frames > 1:
+            # 两帧先走 eager,避免单图快速路径误用
+            _load_kwargs.update(merge_lora=False, fast_proc=False, cuda_graph=False)
+    policy = VLAPolicy.load(args.ckpt, device=args.device, image_size=args.image_size,
+                            verbose=True, **_load_kwargs)
+    if hasattr(policy, 'frames'):
+        print('[demo] frames=%d' % int(policy.frames))
     env = VLAEnv()
     instrs = parse_range(args.instrs)
     texts = getattr(env, 'INSTRUCTIONS', None)
@@ -107,6 +118,8 @@ def main():
                 if hasattr(env, 'set_instruction'):
                     env.set_instruction(iid)
                 img = env.capture() if hasattr(env, 'capture') else env.image
+            if hasattr(policy, 'reset_history'):
+                policy.reset_history()   # 新回合:清空历史帧队列
             frames, goal, done, info = [], [], False, {}
             t0 = time.time()
             for step in range(50):

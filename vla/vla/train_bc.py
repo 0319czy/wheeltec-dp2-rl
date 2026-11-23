@@ -78,19 +78,25 @@ def _collate_impl(items, augment):
         if rng is None:
             rng = np.random.default_rng(int(time.time() * 1000) % 100000)
             _WORKER_CTX["aug_rng"] = rng
-        items = [dict(it, image=_augment_image(it["image"], rng)) for it in items]
-        if _WORKER_CTX.get("augment_flip"):
-            # 水平镜像增强:图像左右翻转时,依赖场景方位动作的指令(1 的避障项、7-11 的
-            # 目标方位)ω 要取反、v 不变;而 3/4/5/6 的 ω 是机体坐标系常量(向左转就是向左转,
-            # 与图像左右无关),0/2 的 ω 恒为 0,这些指令的 label 保持不变。
-            for it in items:
-                if rng.random() < 0.5:
-                    it["image"] = np.ascontiguousarray(it["image"][:, ::-1, :])
-                    if int(it["instr_id"]) in (1, 7, 8, 9, 10, 11):
-                        a = np.asarray(it["action"]).copy()
-                        a[1] = -a[1]
-                        it["action"] = a
-    images = [it["image"] for it in items]
+        aug_items = []
+        flip_enabled = bool(_WORKER_CTX.get("augment_flip"))
+        for it in items:
+            # 同一回合的多帧必须"同一次翻转/同一种颜色扰动决策"保持一致;亮度/遮挡逐帧独立
+            flip = bool(flip_enabled and rng.random() < 0.5)
+            frames = []
+            for fr in it.get("images", [it["image"]]):
+                fr2 = _augment_image(fr, rng)
+                if flip:
+                    fr2 = np.ascontiguousarray(fr2[:, ::-1, :])
+                frames.append(fr2)
+            new_it = dict(it, images=frames, image=frames[-1])
+            if flip and int(it["instr_id"]) in (1, 7, 8, 9, 10, 11):
+                a = np.asarray(it["action"]).copy()
+                a[1] = -a[1]
+                new_it["action"] = a
+            aug_items.append(new_it)
+        items = aug_items
+    images = [it.get("images", [it["image"]]) for it in items]
     instr_texts = [INSTRUCTIONS[int(it["instr_id"])] for it in items]
     enc = prepare_inputs(proc, images, instr_texts, device=None)
     actions = torch.from_numpy(np.stack([it["action"] for it in items]).astype(np.float32))
@@ -132,10 +138,11 @@ class ShardDataset(Dataset):
     (每个 shard 约 120 MB,只缓存最近 1-3 个)。
     """
 
-    def __init__(self, shard_paths, indices, cache_size=3):
+    def __init__(self, shard_paths, indices, cache_size=3, frames=1):
         self.shard_paths = list(shard_paths)
         self.indices = indices            # [N,2] int64:(shard 下标, 行号)
         self.cache_size = int(cache_size)
+        self.frames = max(1, int(frames))
         self._cache = OrderedDict()
 
     def __len__(self):
@@ -166,8 +173,20 @@ class ShardDataset(Dataset):
     def __getitem__(self, i):
         shard_id, row = int(self.indices[i, 0]), int(self.indices[i, 1])
         d = self._npz(shard_id)
+        cur_img = d["images"][row]
+        frames = [cur_img]
+        if self.frames > 1:
+            # 历史帧:同一 shard 内 row-1 就是上一帧;跨 episode / step 0 时复制当前帧
+            prev = None
+            if row > 0 and int(d["step_idx"][row]) > 0:
+                if int(d["episode_ids"][row - 1]) == int(d["episode_ids"][row]):
+                    prev = d["images"][row - 1]
+            frames = [cur_img if prev is None else prev] + [cur_img]
+            if self.frames > 2:  # 目前最多支持 2 帧(需要更长历史可再扩)
+                frames = frames[-self.frames:]
         item = {
-            "image": d["images"][row],
+            "images": frames,
+            "image": cur_img,
             "action": np.asarray(d["actions"][row], dtype=np.float32),
             "instr_id": int(d["instr_ids"][row]),
             "episode_id": int(d["episode_ids"][row]),
@@ -445,6 +464,8 @@ def main():
     ap.add_argument("--lr", type=float, default=1e-3)
     ap.add_argument("--weight-decay", type=float, default=0.0)
     ap.add_argument("--image-size", type=int, default=256, choices=[128, 192, 256, 320, 384, 448, 512])
+    ap.add_argument("--frames", type=int, default=1, choices=[1, 2],
+                    help="每个样本输入的历史帧数(1=单帧;2=(t-1,t) 两帧,prompt 里两个 <image>)")
     ap.add_argument("--lora-r", type=int, default=16)
     ap.add_argument("--lora-alpha", type=int, default=32)
     ap.add_argument("--lora-dropout", type=float, default=0.0)
@@ -518,8 +539,10 @@ def main():
               f"各目录训练帧数: "
               f"{ {dirs_abs[d]: int((train_source == d).sum()) for d in range(len(dirs_abs))} }")
     val_idx = indices[val_mask]
-    train_ds = ShardDataset(shard_paths, train_idx, cache_size=args.cache_shards)
-    val_ds = ShardDataset(shard_paths, val_idx, cache_size=args.cache_shards)
+    train_ds = ShardDataset(shard_paths, train_idx, cache_size=args.cache_shards,
+                            frames=args.frames)
+    val_ds = ShardDataset(shard_paths, val_idx, cache_size=args.cache_shards,
+                          frames=args.frames)
     _WORKER_CTX.update({
         "model_path": VLAConfig().base_model,
         "image_size": args.image_size,
@@ -545,6 +568,7 @@ def main():
 
     # ---------------- 模型 ----------------
     cfg = VLAConfig.for_image_size(args.image_size)
+    cfg.frames = int(args.frames)
     if args.aux_loss_weight and args.aux_loss_weight > 0:
         cfg.aux_dim = 6
         cfg.aux_scale = 3.0
@@ -598,7 +622,7 @@ def main():
               f"global_step={global_step}, best_mse={best_mse:.5f}")
     model.to(device)
     print(f"[init] 模型加载 {time.time() - t_load:.1f}s, device={device}, "
-          f"image={cfg.image_size}px seq={cfg.image_seq_len}")
+          f"image={cfg.image_size}px seq={cfg.image_seq_len} frames={cfg.frames}")
     params = model.trainable_parameters()
     opt = torch.optim.AdamW(params, lr=args.lr, betas=(0.9, 0.95),
                             weight_decay=args.weight_decay)

@@ -34,6 +34,25 @@ import numpy as np
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, PROJECT_ROOT)
 
+# 距离 prompt(可选,与 vla/train_bc.py 的 --dist-prompt 配套):目标距离拼到指令后
+DIST_PROMPT = False
+TARGET_COLOR = {7: 0, 8: 0, 9: 1, 10: 2, 11: 1}   # 指令 -> 目标颜色(0 红 / 1 蓝 / 2 绿)
+
+
+def instruction_with_distance(text, instr_id, info):
+    k = TARGET_COLOR.get(int(instr_id))
+    if k is None or not isinstance(info, dict):
+        return text
+    dist = info.get("dist")
+    if dist is None:
+        return text
+    try:
+        d = float(dist[k])
+    except (TypeError, IndexError, KeyError):
+        return text
+    return "%s｜目标距离%.2fm" % (text, d)
+
+
 INSTRUCTIONS_DEFAULT = [
     "保持站立", "向前走", "向后退", "向左转", "向右转", "原地左旋", "原地右旋",
     "面向红桶", "靠近红桶", "靠近蓝桶", "靠近绿桶", "绕开红桶前往蓝桶",
@@ -280,8 +299,15 @@ def _run_group_with_success(env_cls, success_func, policy, instr_id, instruction
     for i, s in enumerate(seeds):
         env = env_pool[i] if env_pool is not None else make_env(env_cls, max_steps)
         img = as_uint8_image(reset_env(env, instr_id, int(s)))
+        init_info = {}
+        _mk = getattr(env, "_make_info", None)
+        if callable(_mk):
+            try:
+                init_info = _mk(0)
+            except Exception:
+                init_info = {}
         envs.append({"env": env, "img": img, "buf": deque([img] * need, maxlen=need),
-                     "done": False, "history": [], "info": {},
+                     "done": False, "history": [], "info": init_info,
                      "ema": np.zeros(2, dtype=np.float32), "seed": int(s)})
     rng = np.random.default_rng(rng_seed)
     steps = 0
@@ -292,16 +318,21 @@ def _run_group_with_success(env_cls, success_func, policy, instr_id, instruction
         frames = int(getattr(policy, "frames", 1))
         stride = int(getattr(policy, "frame_stride", 1))
         need = (frames - 1) * stride + 1 if frames > 1 else 1
+        if DIST_PROMPT:
+            instr_active = [instruction_with_distance(instruction, instr_id, e["info"])
+                            for e in active]
+        else:
+            instr_active = [instruction] * len(active)
         if frames > 1:
             # 从每回合的帧缓冲里按步距抽取(末帧=当前帧),扰动需同时作用于所有帧
             samples = [[apply_perturbation(f, scenario_name, rng) for f in list(e["buf"])[-need::stride]]
                        for e in active]
             t0 = time.perf_counter()
-            actions = policy.act(samples, [instruction] * len(active))
+            actions = policy.act(samples, instr_active)
         else:
             imgs = [apply_perturbation(list(e["buf"])[-1], scenario_name, rng) for e in active]
             t0 = time.perf_counter()
-            actions = policy.act(imgs, [instruction] * len(active))
+            actions = policy.act(imgs, instr_active)
         dt = (time.perf_counter() - t0) * 1000.0
         lat_records.append((dt, len(active)))
         actions = np.asarray(actions, dtype=np.float32).reshape(len(active), 2)
@@ -496,6 +527,8 @@ def main():
                     help="不复用环境池(调试用;每回合重载 env,很慢)")
     ap.add_argument("--action-ema", type=float, default=0.0,
                     help="动作一阶低通系数(0=关闭;0.5=对 (v,w) 做 a_t=ema*a_{t-1}+(1-ema)*a_new)")
+    ap.add_argument("--dist-prompt", choices=["auto", "on", "off"], default="auto",
+                    help="指令后附目标距离(与训练 --dist-prompt 配套;auto=按 ckpt 配置)")
     ap.add_argument("--frames", type=int, default=1, choices=[1, 2, 4],
                     help="每步输入的帧数:1=单帧;2=(t-1,t);4=稀疏历史窗。"
                          "ckpt 自带 cfg.frames 时以 ckpt 为准")
@@ -557,6 +590,15 @@ def main():
     load_s = time.time() - t0
     print(f"[policy] 加载 {args.ckpt} 用时 {load_s:.1f}s; 图像 {policy.cfg.image_size}px "
           f"seq={policy.cfg.image_seq_len} device={policy.device}")
+    global DIST_PROMPT
+    if args.dist_prompt == "on":
+        DIST_PROMPT = True
+    elif args.dist_prompt == "off":
+        DIST_PROMPT = False
+    else:
+        DIST_PROMPT = bool(getattr(getattr(policy, "cfg", None), "dist_prompt", False))
+    if DIST_PROMPT:
+        print("[dist-prompt] 已启用: 指令后附目标距离(来自环境 info[dist])")
     model_policy = ModelPolicy(policy)
 
     scenarios = [SCENARIO_ALIASES.get(s.strip(), s.strip())
@@ -573,6 +615,7 @@ def main():
         "image": {"size": policy.cfg.image_size, "seq_len": policy.cfg.image_seq_len},
         "frames": eff_frames,
         "frame_stride": eff_stride,
+        "dist_prompt": bool(DIST_PROMPT),
         "frames_ckpt": ckpt_frames,
         "frame_stride_ckpt": ckpt_stride,
         "inference": {

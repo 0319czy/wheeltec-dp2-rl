@@ -367,3 +367,15 @@ export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
 - v7 的工程实现保留在仓库：`VLAConfig.aux_condition_action`、`ActionHead(extra_dim=...)`、`load_action_head_partial()`（旧 ckpt 热启动自动补零列）、`train_bc.py --aux-condition`。
 - 注意：`vla/fast_infer.py` 不支持 aux 条件化动作头（会退化 extra=0），已在 `vla/infer.py` 加载时自动关闭快速路径并提示；v7 评测以慢路径为准。
 - 结论：**动作侧的信息利用不是瓶颈**，把位置预测显式喂给动作头也救不回 approach 类；瓶颈在单目 RGB 的距离/方位可观测性本身。下一步应换观测（深度/双目/标记物）或做真实数据微调，而不是继续在动作头/训练时长上打转。
+
+## 附 3：距离提示实验（v8，oracle 距离，2026-11-23 深夜）
+
+- 动机：失败以 `not_reached` 为主，怀疑是"不知道还有多远、不会停车"。
+- 做法：把目标距离（来自 aux 真值 / 环境 info[dist]，**oracle**）拼进指令：
+  `"靠近红桶｜目标距离1.24m"`（训练用 shard 里的 aux 算 hypot(dx,dy)，评测用 env 的 info["dist"]）；
+  代码：`train_bc.py --dist-prompt`、`eval/closed_loop.py --dist-prompt {auto,on,off}`、`VLAConfig.dist_prompt`。
+- 结果（从 v6b 热启动、1 epoch 30k 帧、lr 5e-5、2 帧 256px）：**base10 70.8%（85/120），对象 42.0%**；
+  逐指令 7/8/9/10/11 = 40/60/40/10/60% —— 与 v6b（75.0%/50.0%）相比无增益。
+- 结论：**即使把准确距离直接告诉模型，approach 类也不变好** → 失败主因是"朝向/方位控制"（DAgger 诊断的转向不足），
+  而不是距离估计；下一步要提升空间分辨率/视觉主干或用能输出方位的传感器（激光方位），而不是测距。
+- 备注：dist-prompt 代码保留但默认关闭（需要 aux 数据与评测侧距离），作为消融与后续对照实验的入口。

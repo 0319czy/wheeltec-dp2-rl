@@ -95,6 +95,7 @@ class VLAConfig:
     aux_dim: int = 0              # >0 时启用辅助回归头(桶相对位置 [dx,dy]x3,单位 m)
     aux_scale: float = 3.0        # 辅助标签归一化系数(标签 / aux_scale)
     aux_condition_action: bool = False  # True: 动作头额外吃 aux 预测(两阶段:先定位再决策)
+    dist_prompt: bool = False     # True: 指令后附目标距离(需要数据/环境提供距离;测距传感器实验)
 
     def to_dict(self) -> dict:
         d = dict(self.__dict__)

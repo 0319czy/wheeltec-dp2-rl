@@ -41,6 +41,21 @@ from vla.model import (  # noqa: E402
     save_checkpoint,
 )
 
+# 距离 prompt(可选):把"目标距离"拼到指令后面,用于验证"给了测距后 VLA 能到什么水平"
+DIST_PROMPT = False
+TARGET_COLOR = {7: 0, 8: 0, 9: 1, 10: 2, 11: 1}   # 指令 -> 目标颜色(0 红 / 1 蓝 / 2 绿)
+
+
+def instruction_with_distance(text: str, instr_id: int, aux_row) -> str:
+    """aux_row = [dx_red,dy_red,dx_blue,dy_blue,dx_green,dy_green](m)。"""
+    k = TARGET_COLOR.get(int(instr_id))
+    if k is None or aux_row is None:
+        return text
+    dx, dy = float(aux_row[2 * k]), float(aux_row[2 * k + 1])
+    d = (dx * dx + dy * dy) ** 0.5
+    return "%s｜目标距离%.2fm" % (text, d)
+
+
 # DataLoader worker 里懒加载的 processor(父进程设置配置,fork 后子进程继承)
 _WORKER_CTX: dict = {}
 
@@ -99,6 +114,9 @@ def _collate_impl(items, augment):
         items = aug_items
     images = [it.get("images", [it["image"]]) for it in items]
     instr_texts = [INSTRUCTIONS[int(it["instr_id"])] for it in items]
+    if DIST_PROMPT:
+        instr_texts = [instruction_with_distance(t, it["instr_id"], it.get("aux"))
+                       for t, it in zip(instr_texts, items)]
     enc = prepare_inputs(proc, images, instr_texts, device=None)
     actions = torch.from_numpy(np.stack([it["action"] for it in items]).astype(np.float32))
     meta = {
@@ -512,6 +530,8 @@ def main():
     ap.add_argument("--aux-loss-weight", type=float, default=0.0,
                     help="辅助回归头(桶相对位置 [dx,dy]x3)的 loss 权重;0=关闭。"
                          "需要数据 shard 里有 aux 键(gen_dataset.py --aux)")
+    ap.add_argument("--dist-prompt", action="store_true",
+                    help="指令后附目标距离 x.xxm(需要 shard 里有 aux;测距传感器可行性实验)")
     ap.add_argument("--aux-condition", action="store_true",
                     help="两阶段:动作头额外吃 aux 预测(桶相对位置),需同时 >0 的 --aux-loss-weight")
     args = ap.parse_args()
@@ -584,6 +604,10 @@ def main():
     cfg = VLAConfig.for_image_size(args.image_size)
     cfg.frames = int(args.frames)
     cfg.frame_stride = int(args.frame_stride)
+    global DIST_PROMPT
+    DIST_PROMPT = bool(getattr(args, "dist_prompt", False))
+    if DIST_PROMPT:
+        cfg.dist_prompt = True
     if args.aux_loss_weight and args.aux_loss_weight > 0:
         cfg.aux_dim = 6
         cfg.aux_scale = 3.0

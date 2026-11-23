@@ -51,6 +51,22 @@
 - 遥测回读：`{A...}$` 帧解析速度/角度/电压，网页或终端显示；
 - 安全：串口默认拒绝真车（`--allow-real` + `DP2_ALLOW_REAL=1` 双重开关）、失联 0.3 s 停车、急停键。
 
+## 4.5 部署干跑（不碰车，先验证整条链路）
+
+`bash scripts/deploy_dryrun.sh 0 runs/bc_v6b_lowlr/best.pt 10`（2026-11-23 实测通过）：
+
+```
+[asr] ... wav 识别："去找红桶。"（297 ms，backend=small_gpu）
+[bridge] camera=video policy=vla link=mock proto=vw rate=10.0 Hz
+[bridge] 指令：id= 8 靠近红桶（归一化 score=0.95）
+[  2.60s] v=+0.009 w=+0.020 frame='#V9,20;'   A(7,11 mm/s, ...)
+[bridge] 结束：37 帧 / 4.03 s = 9.18 Hz；act_ms ≈ 16 ms
+```
+
+- 2026-11-23 修了一处：`deploy/bridge.py` 原先只在**非 mock** 时才打开真实相机，导致无车联调永远用合成图；现在 `--camera N` 一律用真实相机（打不开才回退合成图并告警）。
+- 用笔记本自带相机做干跑时，画面是真实房间（不在训练分布内），VLA 输出接近 0 —— 这属于预期，干跑只验证「相机采集 → VLA 10 Hz → ASCII 帧 → 串口层」的链路与延迟，不代表实机成功率。
+- 车端 `/dev/ttyACM0`（QinHeng USB Single Serial）已出现；**是否打开/烧写要用户确认**（打开串口可能触发 DTR 复位）。
+
 ## 5. 实机验收（建议标准）
 
 1. 静态：相机装车 → 采集 1 帧与仿真构图对比（目标桶在画面中的位置/大小相近）；

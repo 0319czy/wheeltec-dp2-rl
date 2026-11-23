@@ -20,6 +20,7 @@
 from __future__ import annotations
 
 import argparse
+from collections import deque
 import importlib
 import importlib.util
 import json
@@ -172,6 +173,7 @@ class ModelPolicy:
     def __init__(self, policy):
         self.policy = policy
         self.frames = int(getattr(policy, "frames", 1))
+        self.frame_stride = int(getattr(policy, "frame_stride", 1))
 
     def act(self, images, instructions, prev_images=None):
         if prev_images is not None and self.frames > 1:
@@ -271,12 +273,15 @@ def _close_env(env):
 def _run_group_with_success(env_cls, success_func, policy, instr_id, instruction, seeds,
                             max_steps, scenario, rng_seed, scenario_name, lat_records,
                             env_pool=None, action_ema=0.0):
+    frames = int(getattr(policy, "frames", 1))
+    stride = int(getattr(policy, "frame_stride", 1))
+    need = (frames - 1) * stride + 1 if frames > 1 else 1
     envs = []
     for i, s in enumerate(seeds):
         env = env_pool[i] if env_pool is not None else make_env(env_cls, max_steps)
         img = as_uint8_image(reset_env(env, instr_id, int(s)))
-        envs.append({"env": env, "img": img, "prev": img, "cur": img, "done": False,
-                     "history": [], "info": {},
+        envs.append({"env": env, "img": img, "buf": deque([img] * need, maxlen=need),
+                     "done": False, "history": [], "info": {},
                      "ema": np.zeros(2, dtype=np.float32), "seed": int(s)})
     rng = np.random.default_rng(rng_seed)
     steps = 0
@@ -285,15 +290,17 @@ def _run_group_with_success(env_cls, success_func, policy, instr_id, instruction
         if not active:
             break
         frames = int(getattr(policy, "frames", 1))
-        imgs = [apply_perturbation(e["cur"], scenario_name, rng) for e in active]
-        prevs = None
+        stride = int(getattr(policy, "frame_stride", 1))
+        need = (frames - 1) * stride + 1 if frames > 1 else 1
         if frames > 1:
-            # 扰动需同时作用于两帧(灰图消融才有效);帧队列在本回合内维护
-            prevs = [apply_perturbation(e["prev"], scenario_name, rng) for e in active]
-        t0 = time.perf_counter()
-        if prevs is not None:
-            actions = policy.act(imgs, [instruction] * len(active), prev_images=prevs)
+            # 从每回合的帧缓冲里按步距抽取(末帧=当前帧),扰动需同时作用于所有帧
+            samples = [[apply_perturbation(f, scenario_name, rng) for f in list(e["buf"])[-need::stride]]
+                       for e in active]
+            t0 = time.perf_counter()
+            actions = policy.act(samples, [instruction] * len(active))
         else:
+            imgs = [apply_perturbation(list(e["buf"])[-1], scenario_name, rng) for e in active]
+            t0 = time.perf_counter()
             actions = policy.act(imgs, [instruction] * len(active))
         dt = (time.perf_counter() - t0) * 1000.0
         lat_records.append((dt, len(active)))
@@ -306,8 +313,7 @@ def _run_group_with_success(env_cls, success_func, policy, instr_id, instruction
         for e, act in zip(active, actions):
             img, done, info = e["env"].step(act)
             new_img = as_uint8_image(img)
-            e["prev"] = e["cur"]
-            e["cur"] = new_img
+            e["buf"].append(new_img)
             e["img"] = new_img
             e["info"] = info if isinstance(info, dict) else {}
             e["history"].append(e["info"])
@@ -490,9 +496,11 @@ def main():
                     help="不复用环境池(调试用;每回合重载 env,很慢)")
     ap.add_argument("--action-ema", type=float, default=0.0,
                     help="动作一阶低通系数(0=关闭;0.5=对 (v,w) 做 a_t=ema*a_{t-1}+(1-ema)*a_new)")
-    ap.add_argument("--frames", type=int, default=1, choices=[1, 2],
-                    help="每步输入的帧数:1=单帧(默认);2=(t-1,t) 历史帧。"
-                         "ckpt 自带 cfg.frames 时以 ckpt 为准(单帧模型显式传 2 仅用于消融)")
+    ap.add_argument("--frames", type=int, default=1, choices=[1, 2, 4],
+                    help="每步输入的帧数:1=单帧;2=(t-1,t);4=稀疏历史窗。"
+                         "ckpt 自带 cfg.frames 时以 ckpt 为准")
+    ap.add_argument("--frame-stride", type=int, default=None,
+                    help="历史帧步距(默认按 ckpt 的 frame_stride;frames=4 未指定时用 2)")
     ap.add_argument("--device", default="auto", choices=["auto", "cuda", "cpu"],
                     help="推理设备:auto=有 CUDA 用 cuda 否则 cpu(无 GPU 机器也能评测)")
     args = ap.parse_args()
@@ -515,10 +523,12 @@ def main():
     try:
         import torch as _torch
         _payload = _torch.load(args.ckpt, map_location="cpu", weights_only=False)
-        ckpt_frames = max(1, int(_payload.get("config", {}).get("frames", 1)))
+        _cfg = _payload.get("config", {})
+        ckpt_frames = max(1, int(_cfg.get("frames", 1)))
+        ckpt_stride = max(1, int(_cfg.get("frame_stride", 1)))
         del _payload
     except Exception:
-        ckpt_frames = 1
+        ckpt_frames, ckpt_stride = 1, 1
     eff_frames = max(1, int(args.frames))
     if ckpt_frames > 1 and eff_frames == 1:
         eff_frames = ckpt_frames
@@ -526,10 +536,23 @@ def main():
     elif eff_frames != ckpt_frames:
         print(f"[frames] 警告:显式 --frames {eff_frames} 与 ckpt frames={ckpt_frames} 不一致"
               f"(仅用于消融,输入分布会与训练不符)")
-    # 2 帧与单帧都走 VLAPolicy 的默认路径(merge_lora/fast_proc/cuda_graph 由环境变量控制,
-    # 默认全开);fast_infer 已支持多帧,若快速路径不可用会自动回退 HF processor + 原始 forward。
-    policy = VLAPolicy.load(args.ckpt, device=device, image_size=args.image_size,
-                            verbose=True, frames=eff_frames)
+    if args.frame_stride is not None:
+        eff_stride = max(1, int(args.frame_stride))
+    elif eff_frames == ckpt_frames:
+        eff_stride = ckpt_stride
+    else:
+        eff_stride = 2 if eff_frames == 4 else 1
+    if eff_frames > 2:
+        # 4 帧走 eager(fast_infer 的 1/2 帧快速路径保持不动)
+        policy = VLAPolicy.load(args.ckpt, device=device, image_size=args.image_size,
+                                verbose=True, frames=eff_frames,
+                                fast_proc=False, cuda_graph=False)
+        print(f"[frames] frames={eff_frames} stride={eff_stride}(eager 路径)")
+    else:
+        # 1/2 帧走 VLAPolicy 默认路径(merge/fast/graph 由环境变量控制,默认全开)
+        policy = VLAPolicy.load(args.ckpt, device=device, image_size=args.image_size,
+                                verbose=True, frames=eff_frames)
+    policy.frame_stride = eff_stride
     _pinfo = policy.info() if hasattr(policy, "info") else {}
     load_s = time.time() - t0
     print(f"[policy] 加载 {args.ckpt} 用时 {load_s:.1f}s; 图像 {policy.cfg.image_size}px "
@@ -549,7 +572,9 @@ def main():
         "action_ema": float(args.action_ema),
         "image": {"size": policy.cfg.image_size, "seq_len": policy.cfg.image_seq_len},
         "frames": eff_frames,
+        "frame_stride": eff_stride,
         "frames_ckpt": ckpt_frames,
+        "frame_stride_ckpt": ckpt_stride,
         "inference": {
             "frames": int(_pinfo.get("frames", eff_frames)),
             "merge_lora": bool(_pinfo.get("merge_lora", False)),

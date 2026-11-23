@@ -410,6 +410,15 @@ random 5.8%、constant 11.7%。亮度/遮挡掉点 ≤1.1pp。
   JSON 记录 frames);`VLAPolicy.act()` 支持 `prev_images`/内部帧队列;`make_demo.py --frames`。
   官方命令复现 v6 base50 = 72.5%,与自研评测一致。
 
+### 6.9d v6c:4 帧稀疏历史(--frames 4 --frame-stride 2)
+
+- 取帧 `[t-6, t-4, t-2, t]`(同 episode 内,越界重复首帧);模型侧 `build_text(n_images=4)` +
+  `prepare_inputs` 多图(256px 下 64 image token);`VLAConfig.frame_stride` 随 ckpt 保存。
+- 从 `runs/bc_v6b_lowlr/best.pt` 热启动,bs4+累积4、lr 5e-5、1 epoch 30k 帧。
+- `eval/closed_loop.py --frames {1,2,4} --frame-stride`:帧缓冲 deque 按步距抽取、扰动作用于所有帧;
+  4 帧走 eager(不影响 1/2 帧快速路径)。
+- (结果待填)
+
 ### 6.10 DAgger 微调结果(消融,非最终模型)
 
 DAgger 数据:`data/dataset_dagger/` 240 回合 / 11,846 帧 / 5 shard(12 指令 × 20 局,策略执行 +

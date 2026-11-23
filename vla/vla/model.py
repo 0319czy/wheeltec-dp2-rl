@@ -90,7 +90,8 @@ class VLAConfig:
     lora_targets: Tuple[str, ...] = DEFAULT_LORA_TARGETS
     prompt_text: str = PROMPT_TEXT
     use_chat_template: bool = True
-    frames: int = 1               # 每个样本输入的历史帧数(1=单帧;2=(t-1,t) 两帧)
+    frames: int = 1               # 每个样本输入的历史帧数(1/2/4)
+    frame_stride: int = 1         # 历史帧步距(1=相邻帧;2=稀疏窗,如 frames=4,stride=2 -> [t-6,t-4,t-2,t])
     aux_dim: int = 0              # >0 时启用辅助回归头(桶相对位置 [dx,dy]x3,单位 m)
     aux_scale: float = 3.0        # 辅助标签归一化系数(标签 / aux_scale)
 

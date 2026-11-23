@@ -138,11 +138,12 @@ class ShardDataset(Dataset):
     (每个 shard 约 120 MB,只缓存最近 1-3 个)。
     """
 
-    def __init__(self, shard_paths, indices, cache_size=3, frames=1):
+    def __init__(self, shard_paths, indices, cache_size=3, frames=1, frame_stride=1):
         self.shard_paths = list(shard_paths)
         self.indices = indices            # [N,2] int64:(shard 下标, 行号)
         self.cache_size = int(cache_size)
         self.frames = max(1, int(frames))
+        self.frame_stride = max(1, int(frame_stride))
         self._cache = OrderedDict()
 
     def __len__(self):
@@ -176,14 +177,22 @@ class ShardDataset(Dataset):
         cur_img = d["images"][row]
         frames = [cur_img]
         if self.frames > 1:
-            # 历史帧:同一 shard 内 row-1 就是上一帧;跨 episode / step 0 时复制当前帧
-            prev = None
-            if row > 0 and int(d["step_idx"][row]) > 0:
-                if int(d["episode_ids"][row - 1]) == int(d["episode_ids"][row]):
-                    prev = d["images"][row - 1]
-            frames = [cur_img if prev is None else prev] + [cur_img]
-            if self.frames > 2:  # 目前最多支持 2 帧(需要更长历史可再扩)
-                frames = frames[-self.frames:]
+            # 稀疏历史窗:取 [t-(frames-1)*stride, ..., t-2*stride, t-stride, t]
+            # 只在同一 episode 内取帧(shard 内 episode 的帧连续存放);越界则重复本 episode 首帧
+            step = int(d["step_idx"][row])
+            ep = int(d["episode_ids"][row])
+            ep_first = row - step
+            if ep_first < 0 or int(d["episode_ids"][ep_first]) != ep:
+                ep_first = row       # 极端兜底:第一个可用帧就是当前帧
+            frames = []
+            for k in range(self.frames - 1, -1, -1):
+                off = k * self.frame_stride
+                idx = row - off
+                if off <= 0:
+                    idx = row
+                elif idx < 0 or int(d["episode_ids"][idx]) != ep or off > step:
+                    idx = ep_first
+                frames.append(d["images"][idx])
         item = {
             "images": frames,
             "image": cur_img,
@@ -464,8 +473,10 @@ def main():
     ap.add_argument("--lr", type=float, default=1e-3)
     ap.add_argument("--weight-decay", type=float, default=0.0)
     ap.add_argument("--image-size", type=int, default=256, choices=[128, 192, 256, 320, 384, 448, 512])
-    ap.add_argument("--frames", type=int, default=1, choices=[1, 2],
-                    help="每个样本输入的历史帧数(1=单帧;2=(t-1,t) 两帧,prompt 里两个 <image>)")
+    ap.add_argument("--frames", type=int, default=1, choices=[1, 2, 4],
+                    help="每个样本输入的历史帧数(1=单帧;2=(t-1,t);4=稀疏历史窗,prompt 里 4 个 <image>)")
+    ap.add_argument("--frame-stride", type=int, default=1,
+                    help="历史帧步距(1=相邻;2=稀疏窗,frames=4 时取 [t-6,t-4,t-2,t])")
     ap.add_argument("--lora-r", type=int, default=16)
     ap.add_argument("--lora-alpha", type=int, default=32)
     ap.add_argument("--lora-dropout", type=float, default=0.0)
@@ -540,9 +551,9 @@ def main():
               f"{ {dirs_abs[d]: int((train_source == d).sum()) for d in range(len(dirs_abs))} }")
     val_idx = indices[val_mask]
     train_ds = ShardDataset(shard_paths, train_idx, cache_size=args.cache_shards,
-                            frames=args.frames)
+                            frames=args.frames, frame_stride=args.frame_stride)
     val_ds = ShardDataset(shard_paths, val_idx, cache_size=args.cache_shards,
-                          frames=args.frames)
+                          frames=args.frames, frame_stride=args.frame_stride)
     _WORKER_CTX.update({
         "model_path": VLAConfig().base_model,
         "image_size": args.image_size,
@@ -569,6 +580,7 @@ def main():
     # ---------------- 模型 ----------------
     cfg = VLAConfig.for_image_size(args.image_size)
     cfg.frames = int(args.frames)
+    cfg.frame_stride = int(args.frame_stride)
     if args.aux_loss_weight and args.aux_loss_weight > 0:
         cfg.aux_dim = 6
         cfg.aux_scale = 3.0
@@ -597,6 +609,8 @@ def main():
         payload = torch.load(args.init_ckpt, map_location="cpu", weights_only=False)
         model.load_lora_state(payload["lora_state"])
         model.action_head.load_state_dict(payload["head_state"])
+        if payload.get("aux_state") and getattr(model, "aux_head", None) is not None:
+            model.aux_head.load_state_dict(payload["aux_state"])
         print(f"[init] 从 {args.init_ckpt} 热启动 LoRA+动作头 "
               f"({len(payload['lora_state'])} 个 LoRA 张量)")
     if args.resume:
@@ -607,6 +621,8 @@ def main():
                   f"与本次 {cfg.image_size} 不同,按 LoRA 权重直接迁移")
         model.load_lora_state(payload["lora_state"])
         model.action_head.load_state_dict(payload["head_state"])
+        if payload.get("aux_state") and getattr(model, "aux_head", None) is not None:
+            model.aux_head.load_state_dict(payload["aux_state"])
         resume_extra = payload.get("extra", {})
         start_epoch = int(resume_extra.get("epoch", 0))
         global_step = int(resume_extra.get("global_step", 0))
@@ -622,7 +638,8 @@ def main():
               f"global_step={global_step}, best_mse={best_mse:.5f}")
     model.to(device)
     print(f"[init] 模型加载 {time.time() - t_load:.1f}s, device={device}, "
-          f"image={cfg.image_size}px seq={cfg.image_seq_len} frames={cfg.frames}")
+          f"image={cfg.image_size}px seq={cfg.image_seq_len} "
+          f"frames={cfg.frames} stride={cfg.frame_stride}")
     params = model.trainable_parameters()
     opt = torch.optim.AdamW(params, lr=args.lr, betas=(0.9, 0.95),
                             weight_decay=args.weight_decay)

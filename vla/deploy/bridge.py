@@ -409,8 +409,12 @@ def encode_frame(v: float, w: float, proto: str) -> str:
 
 
 def make_camera(args, robot: MockRobot):
-    if args.camera is not None and not args.mock:
-        return VideoCamera(args.camera)
+    """--camera N 时用真实相机（即使 link 是 mock，便于无车时做端到端联调）。"""
+    if args.camera is not None:
+        try:
+            return VideoCamera(args.camera)
+        except Exception as exc:  # 相机打不开就退回合成图，避免联调被硬件卡住
+            print("[bridge] 打开相机 %s 失败（%s），回退合成图" % (args.camera, exc))
     return SyntheticCamera(robot)
 
 

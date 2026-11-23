@@ -35,6 +35,7 @@ from vla.model import (  # noqa: E402
     VLAConfig,
     VLAModel,
     build_processor,
+    load_action_head_partial,
     normalize_actions,
     prepare_inputs,
     save_checkpoint,
@@ -511,6 +512,8 @@ def main():
     ap.add_argument("--aux-loss-weight", type=float, default=0.0,
                     help="辅助回归头(桶相对位置 [dx,dy]x3)的 loss 权重;0=关闭。"
                          "需要数据 shard 里有 aux 键(gen_dataset.py --aux)")
+    ap.add_argument("--aux-condition", action="store_true",
+                    help="两阶段:动作头额外吃 aux 预测(桶相对位置),需同时 >0 的 --aux-loss-weight")
     args = ap.parse_args()
 
     set_seed(args.seed)
@@ -584,6 +587,10 @@ def main():
     if args.aux_loss_weight and args.aux_loss_weight > 0:
         cfg.aux_dim = 6
         cfg.aux_scale = 3.0
+    if getattr(args, "aux_condition", False):
+        if cfg.aux_dim <= 0:
+            raise SystemExit("--aux-condition 需要同时给 --aux-loss-weight > 0")
+        cfg.aux_condition_action = True
     if args.no_lora:
         cfg.lora_r = 0
     cfg.lora_alpha = args.lora_alpha
@@ -608,7 +615,9 @@ def main():
     if args.init_ckpt:
         payload = torch.load(args.init_ckpt, map_location="cpu", weights_only=False)
         model.load_lora_state(payload["lora_state"])
-        model.action_head.load_state_dict(payload["head_state"])
+        skipped = load_action_head_partial(model, payload["head_state"])
+        if skipped:
+            print(f"[init][warn] 动作头跳过的键: {skipped}")
         if payload.get("aux_state") and getattr(model, "aux_head", None) is not None:
             model.aux_head.load_state_dict(payload["aux_state"])
         print(f"[init] 从 {args.init_ckpt} 热启动 LoRA+动作头 "
@@ -620,7 +629,9 @@ def main():
             print(f"[resume][warn] checkpoint image_size={rcfg.get('image_size')} "
                   f"与本次 {cfg.image_size} 不同,按 LoRA 权重直接迁移")
         model.load_lora_state(payload["lora_state"])
-        model.action_head.load_state_dict(payload["head_state"])
+        _skipped_resume = load_action_head_partial(model, payload["head_state"])
+        if _skipped_resume:
+            print(f"[resume][warn] 动作头跳过的键: {_skipped_resume}")
         if payload.get("aux_state") and getattr(model, "aux_head", None) is not None:
             model.aux_head.load_state_dict(payload["aux_state"])
         resume_extra = payload.get("extra", {})

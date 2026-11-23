@@ -86,6 +86,12 @@ class VLAPolicy:
                                  else getattr(cfg, "frames", 1)))
         self._hist: list = []
         # -- 快速路径(失败自动回退 HF processor + 原始 forward)------------------
+        # aux 条件化(两阶段)模型的动作头依赖 aux 预测,快速前向复刻里没有这条路,
+        # 用快速路径会静默退化成 extra=0 —— 这类模型强制走慢路径。
+        if getattr(model.cfg, "aux_condition_action", False) and fast_proc:
+            print("[VLAPolicy] 检测到 aux 条件化动作头: 强制关闭快速预处理/CUDA graph(走 eager 慢路径)")
+            fast_proc = False
+            cuda_graph = False
         self.fast = None
         self.runner = None
         self.fast_error = None

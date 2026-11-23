@@ -94,6 +94,7 @@ class VLAConfig:
     frame_stride: int = 1         # 历史帧步距(1=相邻帧;2=稀疏窗,如 frames=4,stride=2 -> [t-6,t-4,t-2,t])
     aux_dim: int = 0              # >0 时启用辅助回归头(桶相对位置 [dx,dy]x3,单位 m)
     aux_scale: float = 3.0        # 辅助标签归一化系数(标签 / aux_scale)
+    aux_condition_action: bool = False  # True: 动作头额外吃 aux 预测(两阶段:先定位再决策)
 
     def to_dict(self) -> dict:
         d = dict(self.__dict__)
@@ -201,17 +202,28 @@ def prepare_inputs(processor, images: Sequence, instructions: Sequence[str],
 # ---------------------------------------------------------------------------
 
 class ActionHead(nn.Module):
-    """LayerNorm -> Linear -> GELU -> Linear -> tanh,输出 2 维归一化动作。"""
+    """LayerNorm -> (可选拼接 aux 预测) -> Linear -> GELU -> Linear -> tanh。
 
-    def __init__(self, hidden_size: int = 576, mid: int = 256, action_dim: int = 2):
+    extra_dim > 0 时做两阶段决策:先由 AuxHead 预测桶相对位置,再把该预测拼进动作头,
+    让策略显式拿到"目标在哪/多远"的估计(训练时梯度同时回流到 aux 头)。
+    """
+
+    def __init__(self, hidden_size: int = 576, mid: int = 256, action_dim: int = 2,
+                 extra_dim: int = 0):
         super().__init__()
         self.norm = nn.LayerNorm(hidden_size)
-        self.fc1 = nn.Linear(hidden_size, mid)
+        self.extra_dim = int(extra_dim)
+        self.fc1 = nn.Linear(hidden_size + self.extra_dim, mid)
         self.act = nn.GELU()
         self.fc2 = nn.Linear(mid, action_dim)
 
-    def forward(self, hidden: torch.Tensor) -> torch.Tensor:
-        return torch.tanh(self.fc2(self.act(self.fc1(self.norm(hidden)))))
+    def forward(self, hidden: torch.Tensor, extra: torch.Tensor | None = None) -> torch.Tensor:
+        x = self.norm(hidden)
+        if self.extra_dim > 0:
+            if extra is None:
+                extra = hidden.new_zeros((hidden.shape[0], self.extra_dim))
+            x = torch.cat([x, extra.float()], dim=-1)
+        return torch.tanh(self.fc2(self.act(self.fc1(x))))
 
 
 def load_base_model(model_path: str = DEFAULT_MODEL_PATH, dtype=torch.bfloat16):
@@ -267,6 +279,10 @@ class VLAModel(nn.Module):
         hidden_size = int(base.config.text_config.hidden_size)
         self.action_head = ActionHead(hidden_size, cfg.head_hidden, cfg.action_dim)
         self.aux_head = AuxHead(hidden_size, cfg.head_hidden, cfg.aux_dim) if cfg.aux_dim > 0 else None
+        self.extra_dim = int(cfg.aux_dim) if (cfg.aux_condition_action and cfg.aux_dim > 0) else 0
+        if self.extra_dim > 0:
+            self.action_head = ActionHead(hidden_size, cfg.head_hidden, cfg.action_dim,
+                                          extra_dim=self.extra_dim)
         self.hidden_size = hidden_size
         if verbose:
             n_train = sum(p.numel() for p in self.parameters() if p.requires_grad)
@@ -292,9 +308,13 @@ class VLAModel(nn.Module):
         # 右 padding:每条样本最后一个真实 token = attention_mask 之和 - 1
         last_idx = enc["attention_mask"].sum(dim=1) - 1
         feat = hidden[torch.arange(hidden.shape[0], device=hidden.device), last_idx]
-        actions = self.action_head(feat.float())           # 动作头用 fp32 更稳
-        if return_aux and self.aux_head is not None:
-            return actions, feat, self.aux_head(feat.float())
+        aux_pred = self.aux_head(feat.float()) if self.aux_head is not None else None
+        extra = None
+        if self.extra_dim > 0 and aux_pred is not None:
+            extra = aux_pred / float(self.cfg.aux_scale)    # 与训练标签同一归一化
+        actions = self.action_head(feat.float(), extra)     # 动作头用 fp32 更稳
+        if return_aux and aux_pred is not None:
+            return actions, feat, aux_pred
         return actions, feat
 
     def trainable_parameters(self):
@@ -346,6 +366,33 @@ def save_checkpoint(path: str, model: VLAModel, extra: dict | None = None) -> No
     torch.save(payload, path)
 
 
+def load_action_head_partial(model, state: Dict[str, torch.Tensor]) -> List[str]:
+    """把旧 ckpt 的动作头权重装进可能变宽的动作头(两阶段 aux 条件化)。
+
+    fc1.weight/fc1.bias 的 in_features 可能从 576 变成 582:重叠部分逐元素拷贝,
+    新增列置零(等价于初始时 aux 条件不起作用,热启动安全)。
+    返回类型不一致而被跳过的键列表。
+    """
+    own = model.action_head.state_dict()
+    skipped = []
+    for k, v in state.items():
+        if k not in own:
+            skipped.append(k)
+            continue
+        if tuple(own[k].shape) != tuple(v.shape):
+            if own[k].dim() == 2 and v.dim() == 2 and own[k].shape[0] == v.shape[0]:
+                new = own[k].clone()
+                cols = min(new.shape[1], v.shape[1])
+                new[:, :cols] = v[:, :cols]
+                own[k] = new
+            else:
+                skipped.append(k)
+            continue
+        own[k] = v
+    model.action_head.load_state_dict(own)
+    return skipped
+
+
 def load_model_from_checkpoint(path: str, device: str | torch.device = "cuda",
                                verbose: bool = False) -> Tuple[VLAModel, dict]:
     """返回 (eval 模式的 VLAModel, checkpoint 附加信息)。"""
@@ -353,7 +400,7 @@ def load_model_from_checkpoint(path: str, device: str | torch.device = "cuda",
     cfg = VLAConfig.from_dict(payload["config"])
     model = VLAModel(cfg, verbose=verbose)
     model.load_lora_state(payload["lora_state"])
-    model.action_head.load_state_dict(payload["head_state"])
+    load_action_head_partial(model, payload["head_state"])
     if payload.get("aux_state") and getattr(model, "aux_head", None) is not None:
         model.aux_head.load_state_dict(payload["aux_state"])
     model.to(device)

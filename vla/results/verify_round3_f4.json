@@ -1,0 +1,111 @@
+{
+  "ckpt": "/home/czy/倒立摆/wheeltec_vla/runs/bc_v6c_hist4/best.pt",
+  "env_module": "sim.env_vla",
+  "episodes_per_instr": 1,
+  "instrs": [
+    0,
+    8
+  ],
+  "seed_base": 2026,
+  "batch_episodes": 8,
+  "action_ema": 0.0,
+  "image": {
+    "size": 256,
+    "seq_len": 16
+  },
+  "frames": 4,
+  "frame_stride": 2,
+  "frames_ckpt": 4,
+  "frame_stride_ckpt": 2,
+  "inference": {
+    "frames": 4,
+    "merge_lora": false,
+    "fast_proc": false,
+    "cuda_graph": false,
+    "fast_error": null,
+    "graph_error": null,
+    "graph_max_diff": null
+  },
+  "policy_info": {
+    "merge_lora": false,
+    "fast_proc": false,
+    "cuda_graph": false,
+    "graph_error": null,
+    "fast_error": null,
+    "image_size": 256,
+    "image_seq_len": 16,
+    "frames": 4,
+    "instr_max_len": null,
+    "graph_count": 0,
+    "graph_max_diff": null,
+    "pad_len": null,
+    "device": "cuda",
+    "dtype": "torch.bfloat16"
+  },
+  "device": "cuda",
+  "batch_episodes_effective": 8,
+  "started_at": "2026-11-23 21:17:37",
+  "scenarios": {
+    "base": {
+      "scenario": "base",
+      "per_instr": {
+        "0": {
+          "instruction": "保持站立",
+          "episodes": 1,
+          "success": 1,
+          "rate": 1.0,
+          "fail_reasons": {},
+          "episodes_detail": [
+            {
+              "seed": 2026,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            }
+          ]
+        },
+        "8": {
+          "instruction": "靠近红桶",
+          "episodes": 1,
+          "success": 1,
+          "rate": 1.0,
+          "fail_reasons": {},
+          "episodes_detail": [
+            {
+              "seed": 802050,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            }
+          ]
+        }
+      },
+      "overall": {
+        "success": 2,
+        "episodes": 2,
+        "rate": 1.0
+      },
+      "elapsed_s": 8.4,
+      "latency": {
+        "calls": 100,
+        "samples": 100,
+        "per_sample_ms_p50": 67.38604900010614,
+        "per_sample_ms_p95": 82.04244589969676,
+        "per_call_ms_p50": 67.38604900010614,
+        "per_call_ms_p95": 82.04244589969676
+      }
+    }
+  },
+  "baselines": {},
+  "latency": {},
+  "summary": {
+    "base": {
+      "overall_rate": 1.0,
+      "episodes": 2,
+      "delta_pp_vs_base": 0.0
+    }
+  },
+  "finished_at": "2026-11-23 21:17:47"
+}

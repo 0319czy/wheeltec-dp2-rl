@@ -356,3 +356,14 @@ export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
 - 闭环 base10：**71.7%（86/120），对象类 44.0%**（7/8/9/10/11 = 40/70/40/10/60%）——低于 v6b 的 75.0%/50.0%，**判定无增益，已停**。
 - 说明：4 帧输入让模型更依赖历史、当前帧细节被稀释，instr10 明显退化；结论是「历史长度不是瓶颈」。
 - 工程修复：`eval/closed_loop.py` 的 frames=4 改造引入两个 bug（`frames` 在赋值前使用、缺 `from collections import deque`），已修复并回归验证 frames=2 路径正常。
+
+## 附 2：延长续训与 aux 条件化（v6d / v7，2026-11-23 夜）
+
+| 变体 | 做法 | base10 | 对象类 | 结论 |
+|---|---|---|---|---|
+| v6d | v6b 再续训 2 epoch，lr 2e-5，60k 帧 | 72.5% | 44.0% | 无增益（val mse 0.04639 ≈ v6b 0.04637） |
+| v7 | 两阶段：AuxHead 预测三色桶相对位置 → 拼进动作头（`--aux-condition`，fc1 576→582，热启动时新列置零） | 71.7%（慢路径，真实启用条件化）/ 73.3%（快速路径，实际 extra=0） | 42.0% | 无增益（v6b 75.0%/50.0%） |
+
+- v7 的工程实现保留在仓库：`VLAConfig.aux_condition_action`、`ActionHead(extra_dim=...)`、`load_action_head_partial()`（旧 ckpt 热启动自动补零列）、`train_bc.py --aux-condition`。
+- 注意：`vla/fast_infer.py` 不支持 aux 条件化动作头（会退化 extra=0），已在 `vla/infer.py` 加载时自动关闭快速路径并提示；v7 评测以慢路径为准。
+- 结论：**动作侧的信息利用不是瓶颈**，把位置预测显式喂给动作头也救不回 approach 类；瓶颈在单目 RGB 的距离/方位可观测性本身。下一步应换观测（深度/双目/标记物）或做真实数据微调，而不是继续在动作头/训练时长上打转。

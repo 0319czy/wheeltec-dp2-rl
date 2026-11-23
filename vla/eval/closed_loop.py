@@ -36,6 +36,8 @@ sys.path.insert(0, PROJECT_ROOT)
 
 # 距离 prompt(可选,与 vla/train_bc.py 的 --dist-prompt 配套):目标距离拼到指令后
 DIST_PROMPT = False
+import math
+BEARING_PROMPT = False
 TARGET_COLOR = {7: 0, 8: 0, 9: 1, 10: 2, 11: 1}   # 指令 -> 目标颜色(0 红 / 1 蓝 / 2 绿)
 
 
@@ -51,6 +53,20 @@ def instruction_with_distance(text, instr_id, info):
     except (TypeError, IndexError, KeyError):
         return text
     return "%s｜目标距离%.2fm" % (text, d)
+
+
+def instruction_with_bearing(text, instr_id, info):
+    k = TARGET_COLOR.get(int(instr_id))
+    if k is None or not isinstance(info, dict):
+        return text
+    heads = info.get("heading_err_by_color")
+    if heads is None:
+        return text
+    try:
+        deg = int(round(math.degrees(float(heads[k]))))
+    except (TypeError, IndexError, KeyError):
+        return text
+    return "%s｜方位%+d°" % (text, deg)
 
 
 INSTRUCTIONS_DEFAULT = [
@@ -318,9 +334,14 @@ def _run_group_with_success(env_cls, success_func, policy, instr_id, instruction
         frames = int(getattr(policy, "frames", 1))
         stride = int(getattr(policy, "frame_stride", 1))
         need = (frames - 1) * stride + 1 if frames > 1 else 1
-        if DIST_PROMPT:
-            instr_active = [instruction_with_distance(instruction, instr_id, e["info"])
-                            for e in active]
+        if DIST_PROMPT or BEARING_PROMPT:
+            instr_active = [instruction] * len(active)
+            if DIST_PROMPT:
+                instr_active = [instruction_with_distance(t, instr_id, e["info"])
+                                for t, e in zip(instr_active, active)]
+            if BEARING_PROMPT:
+                instr_active = [instruction_with_bearing(t, instr_id, e["info"])
+                                for t, e in zip(instr_active, active)]
         else:
             instr_active = [instruction] * len(active)
         if frames > 1:
@@ -527,6 +548,8 @@ def main():
                     help="不复用环境池(调试用;每回合重载 env,很慢)")
     ap.add_argument("--action-ema", type=float, default=0.0,
                     help="动作一阶低通系数(0=关闭;0.5=对 (v,w) 做 a_t=ema*a_{t-1}+(1-ema)*a_new)")
+    ap.add_argument("--bearing-prompt", choices=["auto", "on", "off"], default="auto",
+                    help="指令后附目标方位角(与训练 --bearing-prompt 配套;auto=按 ckpt 配置)")
     ap.add_argument("--dist-prompt", choices=["auto", "on", "off"], default="auto",
                     help="指令后附目标距离(与训练 --dist-prompt 配套;auto=按 ckpt 配置)")
     ap.add_argument("--frames", type=int, default=1, choices=[1, 2, 4],
@@ -597,6 +620,14 @@ def main():
         DIST_PROMPT = False
     else:
         DIST_PROMPT = bool(getattr(getattr(policy, "cfg", None), "dist_prompt", False))
+    if args.bearing_prompt == "on":
+        BEARING_PROMPT = True
+    elif args.bearing_prompt == "off":
+        BEARING_PROMPT = False
+    else:
+        BEARING_PROMPT = bool(getattr(getattr(policy, "cfg", None), "bearing_prompt", False))
+    if BEARING_PROMPT:
+        print("[bearing-prompt] 已启用: 指令后附目标方位角(来自环境 heading_err_by_color)")
     if DIST_PROMPT:
         print("[dist-prompt] 已启用: 指令后附目标距离(来自环境 info[dist])")
     model_policy = ModelPolicy(policy)

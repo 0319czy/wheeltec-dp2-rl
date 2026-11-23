@@ -46,6 +46,20 @@ DIST_PROMPT = False
 TARGET_COLOR = {7: 0, 8: 0, 9: 1, 10: 2, 11: 1}   # 指令 -> 目标颜色(0 红 / 1 蓝 / 2 绿)
 
 
+BEARING_PROMPT = False
+
+
+def instruction_with_bearing(text: str, instr_id: int, aux_row) -> str:
+    """aux_row 里的 dx/dy 是车体系桶位置;方位 = atan2(dy, dx)(左正)。"""
+    import math
+    k = TARGET_COLOR.get(int(instr_id))
+    if k is None or aux_row is None:
+        return text
+    dx, dy = float(aux_row[2 * k]), float(aux_row[2 * k + 1])
+    deg = int(round(math.degrees(math.atan2(dy, dx))))
+    return "%s｜方位%+d°" % (text, deg)
+
+
 def instruction_with_distance(text: str, instr_id: int, aux_row) -> str:
     """aux_row = [dx_red,dy_red,dx_blue,dy_blue,dx_green,dy_green](m)。"""
     k = TARGET_COLOR.get(int(instr_id))
@@ -116,6 +130,9 @@ def _collate_impl(items, augment):
     instr_texts = [INSTRUCTIONS[int(it["instr_id"])] for it in items]
     if DIST_PROMPT:
         instr_texts = [instruction_with_distance(t, it["instr_id"], it.get("aux"))
+                       for t, it in zip(instr_texts, items)]
+    if BEARING_PROMPT:
+        instr_texts = [instruction_with_bearing(t, it["instr_id"], it.get("aux"))
                        for t, it in zip(instr_texts, items)]
     enc = prepare_inputs(proc, images, instr_texts, device=None)
     actions = torch.from_numpy(np.stack([it["action"] for it in items]).astype(np.float32))
@@ -530,6 +547,8 @@ def main():
     ap.add_argument("--aux-loss-weight", type=float, default=0.0,
                     help="辅助回归头(桶相对位置 [dx,dy]x3)的 loss 权重;0=关闭。"
                          "需要数据 shard 里有 aux 键(gen_dataset.py --aux)")
+    ap.add_argument("--bearing-prompt", action="store_true",
+                    help="指令后附目标方位角(需要 shard 里有 aux;方位传感器可行性实验)")
     ap.add_argument("--dist-prompt", action="store_true",
                     help="指令后附目标距离 x.xxm(需要 shard 里有 aux;测距传感器可行性实验)")
     ap.add_argument("--aux-condition", action="store_true",
@@ -604,10 +623,13 @@ def main():
     cfg = VLAConfig.for_image_size(args.image_size)
     cfg.frames = int(args.frames)
     cfg.frame_stride = int(args.frame_stride)
-    global DIST_PROMPT
+    global DIST_PROMPT, BEARING_PROMPT
     DIST_PROMPT = bool(getattr(args, "dist_prompt", False))
+    BEARING_PROMPT = bool(getattr(args, "bearing_prompt", False))
     if DIST_PROMPT:
         cfg.dist_prompt = True
+    if BEARING_PROMPT:
+        cfg.bearing_prompt = True
     if args.aux_loss_weight and args.aux_loss_weight > 0:
         cfg.aux_dim = 6
         cfg.aux_scale = 3.0

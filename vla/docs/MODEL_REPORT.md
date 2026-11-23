@@ -379,3 +379,14 @@ export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
 - 结论：**即使把准确距离直接告诉模型，approach 类也不变好** → 失败主因是"朝向/方位控制"（DAgger 诊断的转向不足），
   而不是距离估计；下一步要提升空间分辨率/视觉主干或用能输出方位的传感器（激光方位），而不是测距。
 - 备注：dist-prompt 代码保留但默认关闭（需要 aux 数据与评测侧距离），作为消融与后续对照实验的入口。
+
+## 附 4：方位提示（v9）与 512×2 帧（v10）
+
+- v9：把目标**方位角**（oracle，来自 aux 的 atan2(dy,dx) / 评测侧 heading_err_by_color）拼进指令：
+  `"靠近红桶｜方位+12°"`。从 v6b 热启动、1 epoch 30k 帧、lr 5e-5。
+  结果 **base10 73.3%（88/120），对象 46.0%**（7/8/9/10/11 = 30/70/40/30/60%），与 v6b（75.0%/50.0%）无显著差异。
+  代码：`train_bc.py --bearing-prompt`、`eval/closed_loop.py --bearing-prompt {auto,on,off}`、`VLAConfig.bearing_prompt`。
+- 结论（v8+v9 合并）：把距离/方位的**真值**直接以文本 token 喂给模型都无效 → 两条可能：
+  ① 256M 模型对细粒度文本条件的利用能力弱；② 视觉 token 分辨率（4×4）导致的控制质量上限才是主因。
+- v10（进行中）：**512px × 2 帧**（8×8 网格 + 时序），验证纯粹提升空间分辨率+时序后的上限；
+  训练 bs4×累积4、24k 帧、lr 3e-4、峰值 3775 MiB，约 37 min。

@@ -1,0 +1,1170 @@
+{
+  "tag": "rtx5060_clean_final",
+  "env": {
+    "timestamp": "2026-11-23 15:51:38",
+    "python": "3.12.3",
+    "torch": "2.9.1+cu128",
+    "cuda": "12.8",
+    "transformers": "5.24.0",
+    "peft": "0.22.0",
+    "gpu_name": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "gpu_capability": [
+      12,
+      0
+    ],
+    "gpu_status_start": {
+      "name": "NVIDIA GeForce RTX 5060 Laptop GPU",
+      "mem_used_MiB": 3700,
+      "mem_total_MiB": 8151,
+      "util_pct": 16,
+      "compute_apps": [
+        {
+          "pid": "2779",
+          "name": "llama-server",
+          "mem_MiB": "3600"
+        }
+      ],
+      "load_avg": [
+        2.6650390625,
+        3.2802734375,
+        3.69677734375
+      ]
+    },
+    "gpu_status_end": {
+      "name": "NVIDIA GeForce RTX 5060 Laptop GPU",
+      "mem_used_MiB": 4701,
+      "mem_total_MiB": 8151,
+      "util_pct": 100,
+      "compute_apps": [
+        {
+          "pid": "2779",
+          "name": "llama-server",
+          "mem_MiB": "3600"
+        },
+        {
+          "pid": "90188",
+          "name": "python",
+          "mem_MiB": "996"
+        }
+      ],
+      "load_avg": [
+        5.201171875,
+        3.8955078125,
+        3.85986328125
+      ]
+    },
+    "gpu_samples": [
+      {
+        "name": "NVIDIA GeForce RTX 5060 Laptop GPU",
+        "mem_used_MiB": 3700,
+        "mem_total_MiB": 8151,
+        "util_pct": 16,
+        "compute_apps": [
+          {
+            "pid": "2779",
+            "name": "llama-server",
+            "mem_MiB": "3600"
+          }
+        ],
+        "load_avg": [
+          2.6650390625,
+          3.2802734375,
+          3.69677734375
+        ]
+      },
+      {
+        "name": "NVIDIA GeForce RTX 5060 Laptop GPU",
+        "mem_used_MiB": 3867,
+        "mem_total_MiB": 8151,
+        "util_pct": 50,
+        "compute_apps": [
+          {
+            "pid": "2779",
+            "name": "llama-server",
+            "mem_MiB": "3600"
+          },
+          {
+            "pid": "90188",
+            "name": "python",
+            "mem_MiB": "162"
+          }
+        ],
+        "load_avg": [
+          3.47802734375,
+          3.43017578125,
+          3.73974609375
+        ]
+      },
+      {
+        "name": "NVIDIA GeForce RTX 5060 Laptop GPU",
+        "mem_used_MiB": 3867,
+        "mem_total_MiB": 8151,
+        "util_pct": 51,
+        "compute_apps": [
+          {
+            "pid": "2779",
+            "name": "llama-server",
+            "mem_MiB": "3600"
+          },
+          {
+            "pid": "90188",
+            "name": "python",
+            "mem_MiB": "162"
+          }
+        ],
+        "load_avg": [
+          3.54541015625,
+          3.4482421875,
+          3.7421875
+        ]
+      },
+      {
+        "name": "NVIDIA GeForce RTX 5060 Laptop GPU",
+        "mem_used_MiB": 4149,
+        "mem_total_MiB": 8151,
+        "util_pct": 100,
+        "compute_apps": [
+          {
+            "pid": "2779",
+            "name": "llama-server",
+            "mem_MiB": "3600"
+          },
+          {
+            "pid": "90188",
+            "name": "python",
+            "mem_MiB": "444"
+          }
+        ],
+        "load_avg": [
+          3.30712890625,
+          3.39990234375,
+          3.72265625
+        ]
+      },
+      {
+        "name": "NVIDIA GeForce RTX 5060 Laptop GPU",
+        "mem_used_MiB": 4149,
+        "mem_total_MiB": 8151,
+        "util_pct": 63,
+        "compute_apps": [
+          {
+            "pid": "2779",
+            "name": "llama-server",
+            "mem_MiB": "3600"
+          },
+          {
+            "pid": "90188",
+            "name": "python",
+            "mem_MiB": "444"
+          }
+        ],
+        "load_avg": [
+          3.10546875,
+          3.353515625,
+          3.7041015625
+        ]
+      },
+      {
+        "name": "NVIDIA GeForce RTX 5060 Laptop GPU",
+        "mem_used_MiB": 4149,
+        "mem_total_MiB": 8151,
+        "util_pct": 60,
+        "compute_apps": [
+          {
+            "pid": "2779",
+            "name": "llama-server",
+            "mem_MiB": "3600"
+          },
+          {
+            "pid": "90188",
+            "name": "python",
+            "mem_MiB": "444"
+          }
+        ],
+        "load_avg": [
+          3.0166015625,
+          3.33056640625,
+          3.69482421875
+        ]
+      },
+      {
+        "name": "NVIDIA GeForce RTX 5060 Laptop GPU",
+        "mem_used_MiB": 4281,
+        "mem_total_MiB": 8151,
+        "util_pct": 100,
+        "compute_apps": [
+          {
+            "pid": "2779",
+            "name": "llama-server",
+            "mem_MiB": "3600"
+          },
+          {
+            "pid": "90188",
+            "name": "python",
+            "mem_MiB": "576"
+          }
+        ],
+        "load_avg": [
+          3.01513671875,
+          3.32470703125,
+          3.69091796875
+        ]
+      },
+      {
+        "name": "NVIDIA GeForce RTX 5060 Laptop GPU",
+        "mem_used_MiB": 4281,
+        "mem_total_MiB": 8151,
+        "util_pct": 36,
+        "compute_apps": [
+          {
+            "pid": "2779",
+            "name": "llama-server",
+            "mem_MiB": "3600"
+          },
+          {
+            "pid": "90188",
+            "name": "python",
+            "mem_MiB": "576"
+          }
+        ],
+        "load_avg": [
+          2.8583984375,
+          3.2802734375,
+          3.67236328125
+        ]
+      },
+      {
+        "name": "NVIDIA GeForce RTX 5060 Laptop GPU",
+        "mem_used_MiB": 4281,
+        "mem_total_MiB": 8151,
+        "util_pct": 37,
+        "compute_apps": [
+          {
+            "pid": "2779",
+            "name": "llama-server",
+            "mem_MiB": "3600"
+          },
+          {
+            "pid": "90188",
+            "name": "python",
+            "mem_MiB": "576"
+          }
+        ],
+        "load_avg": [
+          3.59521484375,
+          3.4208984375,
+          3.7138671875
+        ]
+      },
+      {
+        "name": "NVIDIA GeForce RTX 5060 Laptop GPU",
+        "mem_used_MiB": 4415,
+        "mem_total_MiB": 8151,
+        "util_pct": 99,
+        "compute_apps": [
+          {
+            "pid": "2779",
+            "name": "llama-server",
+            "mem_MiB": "3600"
+          },
+          {
+            "pid": "90188",
+            "name": "python",
+            "mem_MiB": "710"
+          }
+        ],
+        "load_avg": [
+          3.7080078125,
+          3.447265625,
+          3.72119140625
+        ]
+      },
+      {
+        "name": "NVIDIA GeForce RTX 5060 Laptop GPU",
+        "mem_used_MiB": 4415,
+        "mem_total_MiB": 8151,
+        "util_pct": 42,
+        "compute_apps": [
+          {
+            "pid": "2779",
+            "name": "llama-server",
+            "mem_MiB": "3600"
+          },
+          {
+            "pid": "90188",
+            "name": "python",
+            "mem_MiB": "710"
+          }
+        ],
+        "load_avg": [
+          3.9716796875,
+          3.50634765625,
+          3.7392578125
+        ]
+      },
+      {
+        "name": "NVIDIA GeForce RTX 5060 Laptop GPU",
+        "mem_used_MiB": 4415,
+        "mem_total_MiB": 8151,
+        "util_pct": 43,
+        "compute_apps": [
+          {
+            "pid": "2779",
+            "name": "llama-server",
+            "mem_MiB": "3600"
+          },
+          {
+            "pid": "90188",
+            "name": "python",
+            "mem_MiB": "710"
+          }
+        ],
+        "load_avg": [
+          4.29443359375,
+          3.5810546875,
+          3.76220703125
+        ]
+      },
+      {
+        "name": "NVIDIA GeForce RTX 5060 Laptop GPU",
+        "mem_used_MiB": 4547,
+        "mem_total_MiB": 8151,
+        "util_pct": 100,
+        "compute_apps": [
+          {
+            "pid": "2779",
+            "name": "llama-server",
+            "mem_MiB": "3600"
+          },
+          {
+            "pid": "90188",
+            "name": "python",
+            "mem_MiB": "842"
+          }
+        ],
+        "load_avg": [
+          4.43115234375,
+          3.62158203125,
+          3.7744140625
+        ]
+      },
+      {
+        "name": "NVIDIA GeForce RTX 5060 Laptop GPU",
+        "mem_used_MiB": 4547,
+        "mem_total_MiB": 8151,
+        "util_pct": 36,
+        "compute_apps": [
+          {
+            "pid": "2779",
+            "name": "llama-server",
+            "mem_MiB": "3600"
+          },
+          {
+            "pid": "90188",
+            "name": "python",
+            "mem_MiB": "842"
+          }
+        ],
+        "load_avg": [
+          4.66650390625,
+          3.69970703125,
+          3.798828125
+        ]
+      },
+      {
+        "name": "NVIDIA GeForce RTX 5060 Laptop GPU",
+        "mem_used_MiB": 4547,
+        "mem_total_MiB": 8151,
+        "util_pct": 37,
+        "compute_apps": [
+          {
+            "pid": "2779",
+            "name": "llama-server",
+            "mem_MiB": "3600"
+          },
+          {
+            "pid": "90188",
+            "name": "python",
+            "mem_MiB": "842"
+          }
+        ],
+        "load_avg": [
+          4.4833984375,
+          3.693359375,
+          3.7958984375
+        ]
+      },
+      {
+        "name": "NVIDIA GeForce RTX 5060 Laptop GPU",
+        "mem_used_MiB": 4679,
+        "mem_total_MiB": 8151,
+        "util_pct": 100,
+        "compute_apps": [
+          {
+            "pid": "2779",
+            "name": "llama-server",
+            "mem_MiB": "3600"
+          },
+          {
+            "pid": "90188",
+            "name": "python",
+            "mem_MiB": "974"
+          }
+        ],
+        "load_avg": [
+          4.4443359375,
+          3.69873046875,
+          3.79736328125
+        ]
+      },
+      {
+        "name": "NVIDIA GeForce RTX 5060 Laptop GPU",
+        "mem_used_MiB": 4679,
+        "mem_total_MiB": 8151,
+        "util_pct": 43,
+        "compute_apps": [
+          {
+            "pid": "2779",
+            "name": "llama-server",
+            "mem_MiB": "3600"
+          },
+          {
+            "pid": "90188",
+            "name": "python",
+            "mem_MiB": "974"
+          }
+        ],
+        "load_avg": [
+          4.32861328125,
+          3.68701171875,
+          3.79296875
+        ]
+      },
+      {
+        "name": "NVIDIA GeForce RTX 5060 Laptop GPU",
+        "mem_used_MiB": 4679,
+        "mem_total_MiB": 8151,
+        "util_pct": 42,
+        "compute_apps": [
+          {
+            "pid": "2779",
+            "name": "llama-server",
+            "mem_MiB": "3600"
+          },
+          {
+            "pid": "90188",
+            "name": "python",
+            "mem_MiB": "974"
+          }
+        ],
+        "load_avg": [
+          4.783203125,
+          3.7919921875,
+          3.82666015625
+        ]
+      }
+    ],
+    "args": {
+      "mode": "bench",
+      "tag": "rtx5060_clean_final",
+      "ckpts": "runs/bc_aux512/best.pt:512,runs/bc_v2/best.pt:256,runs/bc_v1/best.pt:256",
+      "ckpt": null,
+      "image_size": null,
+      "device": "cuda",
+      "warmup": 20,
+      "n": 100,
+      "image_kind": "random",
+      "instruction": "靠近红桶",
+      "breakdown": true,
+      "parity_images": 100,
+      "parity_real_images": 60,
+      "parity_graph": true
+    }
+  },
+  "results": [
+    {
+      "label": "bc_aux512@512|merge=off|proc=hf|graph=off",
+      "ckpt": "/home/czy/倒立摆/wheeltec_vla/runs/bc_aux512/best.pt",
+      "image_size": 512,
+      "merge_lora": false,
+      "fast_proc_flag": false,
+      "cuda_graph_flag": false,
+      "load_s": 1.16,
+      "n": 100,
+      "p50_ms": 50.19866400016326,
+      "p95_ms": 52.43196120072753,
+      "mean_ms": 50.26278478000677,
+      "min_ms": 47.371708000355284,
+      "max_ms": 53.2955740000034,
+      "throughput_sps": 19.895435646410384,
+      "graph_ready": false,
+      "graph_error": null,
+      "fast_error": null,
+      "infer_path": {
+        "merge_lora": false,
+        "fast_proc": false,
+        "cuda_graph": false,
+        "graph_error": null,
+        "fast_error": null,
+        "image_size": 512,
+        "image_seq_len": 64,
+        "instr_max_len": null,
+        "graph_count": 0,
+        "graph_max_diff": null,
+        "pad_len": null,
+        "device": "cuda",
+        "dtype": "torch.bfloat16"
+      },
+      "breakdown": {
+        "preproc_ms": 8.74923253999441,
+        "forward_ms": 41.986549149987695
+      }
+    },
+    {
+      "label": "bc_aux512@512|merge=off|proc=fast|graph=off",
+      "ckpt": "/home/czy/倒立摆/wheeltec_vla/runs/bc_aux512/best.pt",
+      "image_size": 512,
+      "merge_lora": false,
+      "fast_proc_flag": true,
+      "cuda_graph_flag": false,
+      "load_s": 0.85,
+      "n": 100,
+      "p50_ms": 45.70743200110883,
+      "p95_ms": 48.20811045101436,
+      "mean_ms": 45.91030931995192,
+      "min_ms": 41.85947500081966,
+      "max_ms": 64.54164999922796,
+      "throughput_sps": 21.781600141940565,
+      "graph_ready": false,
+      "graph_error": null,
+      "fast_error": null,
+      "infer_path": {
+        "merge_lora": false,
+        "fast_proc": true,
+        "cuda_graph": false,
+        "graph_error": null,
+        "fast_error": null,
+        "image_size": 512,
+        "image_seq_len": 64,
+        "instr_max_len": 98,
+        "graph_count": 0,
+        "graph_max_diff": null,
+        "pad_len": 104,
+        "device": "cuda",
+        "dtype": "torch.bfloat16"
+      },
+      "breakdown": {
+        "preproc_ms": 3.6595122199832986,
+        "forward_ms": 40.57131130999551
+      }
+    },
+    {
+      "label": "bc_aux512@512|merge=off|proc=fast|graph=on",
+      "ckpt": "/home/czy/倒立摆/wheeltec_vla/runs/bc_aux512/best.pt",
+      "image_size": 512,
+      "merge_lora": false,
+      "fast_proc_flag": true,
+      "cuda_graph_flag": true,
+      "load_s": 2.85,
+      "n": 100,
+      "p50_ms": 26.49845349969837,
+      "p95_ms": 28.557708350945177,
+      "mean_ms": 26.645151510019787,
+      "min_ms": 24.94360700075049,
+      "max_ms": 30.813842999123153,
+      "throughput_sps": 37.53028011959154,
+      "graph_ready": true,
+      "graph_error": null,
+      "fast_error": null,
+      "infer_path": {
+        "merge_lora": false,
+        "fast_proc": true,
+        "cuda_graph": true,
+        "graph_error": null,
+        "fast_error": null,
+        "image_size": 512,
+        "image_seq_len": 64,
+        "instr_max_len": 98,
+        "graph_count": 6,
+        "graph_max_diff": 0.0006260182708501816,
+        "pad_len": 104,
+        "device": "cuda",
+        "dtype": "torch.bfloat16"
+      },
+      "breakdown": {
+        "preproc_ms": 3.5228721400017093,
+        "forward_ms": 23.647297610004898
+      }
+    },
+    {
+      "label": "bc_aux512@512|merge=on|proc=hf|graph=off",
+      "ckpt": "/home/czy/倒立摆/wheeltec_vla/runs/bc_aux512/best.pt",
+      "image_size": 512,
+      "merge_lora": true,
+      "fast_proc_flag": false,
+      "cuda_graph_flag": false,
+      "load_s": 0.76,
+      "n": 100,
+      "p50_ms": 33.1276995002554,
+      "p95_ms": 34.81350460142494,
+      "mean_ms": 33.30846199009102,
+      "min_ms": 31.055085000843974,
+      "max_ms": 36.245113999029854,
+      "throughput_sps": 30.02240092314954,
+      "graph_ready": false,
+      "graph_error": null,
+      "fast_error": null,
+      "infer_path": {
+        "merge_lora": true,
+        "fast_proc": false,
+        "cuda_graph": false,
+        "graph_error": null,
+        "fast_error": null,
+        "image_size": 512,
+        "image_seq_len": 64,
+        "instr_max_len": null,
+        "graph_count": 0,
+        "graph_max_diff": null,
+        "pad_len": null,
+        "device": "cuda",
+        "dtype": "torch.bfloat16"
+      },
+      "breakdown": {
+        "preproc_ms": 9.613591130000714,
+        "forward_ms": 23.145961640002497
+      }
+    },
+    {
+      "label": "bc_aux512@512|merge=on|proc=fast|graph=off",
+      "ckpt": "/home/czy/倒立摆/wheeltec_vla/runs/bc_aux512/best.pt",
+      "image_size": 512,
+      "merge_lora": true,
+      "fast_proc_flag": true,
+      "cuda_graph_flag": false,
+      "load_s": 0.89,
+      "n": 100,
+      "p50_ms": 27.153990999977395,
+      "p95_ms": 29.274041800454143,
+      "mean_ms": 27.150226360117813,
+      "min_ms": 24.210691999542178,
+      "max_ms": 30.943969999498222,
+      "throughput_sps": 36.83210543942075,
+      "graph_ready": false,
+      "graph_error": null,
+      "fast_error": null,
+      "infer_path": {
+        "merge_lora": true,
+        "fast_proc": true,
+        "cuda_graph": false,
+        "graph_error": null,
+        "fast_error": null,
+        "image_size": 512,
+        "image_seq_len": 64,
+        "instr_max_len": 98,
+        "graph_count": 0,
+        "graph_max_diff": null,
+        "pad_len": 104,
+        "device": "cuda",
+        "dtype": "torch.bfloat16"
+      },
+      "breakdown": {
+        "preproc_ms": 3.6930527500044263,
+        "forward_ms": 22.609167700011312
+      }
+    },
+    {
+      "label": "bc_aux512@512|merge=on|proc=fast|graph=on",
+      "ckpt": "/home/czy/倒立摆/wheeltec_vla/runs/bc_aux512/best.pt",
+      "image_size": 512,
+      "merge_lora": true,
+      "fast_proc_flag": true,
+      "cuda_graph_flag": true,
+      "load_s": 2.05,
+      "n": 100,
+      "p50_ms": 20.160222499725933,
+      "p95_ms": 21.577033651374222,
+      "mean_ms": 20.38118009993923,
+      "min_ms": 19.603693999670213,
+      "max_ms": 23.606124999787426,
+      "throughput_sps": 49.06487235265546,
+      "graph_ready": true,
+      "graph_error": null,
+      "fast_error": null,
+      "infer_path": {
+        "merge_lora": true,
+        "fast_proc": true,
+        "cuda_graph": true,
+        "graph_error": null,
+        "fast_error": null,
+        "image_size": 512,
+        "image_seq_len": 64,
+        "instr_max_len": 98,
+        "graph_count": 6,
+        "graph_max_diff": 0.0005950927734375,
+        "pad_len": 104,
+        "device": "cuda",
+        "dtype": "torch.bfloat16"
+      },
+      "breakdown": {
+        "preproc_ms": 3.6661146100050246,
+        "forward_ms": 17.121434839991707
+      }
+    },
+    {
+      "label": "bc_v2@256|merge=off|proc=hf|graph=off",
+      "ckpt": "/home/czy/倒立摆/wheeltec_vla/runs/bc_v2/best.pt",
+      "image_size": 256,
+      "merge_lora": false,
+      "fast_proc_flag": false,
+      "cuda_graph_flag": false,
+      "load_s": 0.74,
+      "n": 100,
+      "p50_ms": 41.769181500967534,
+      "p95_ms": 46.92659899992577,
+      "mean_ms": 42.2534085701227,
+      "min_ms": 38.799108000603155,
+      "max_ms": 50.72202399969683,
+      "throughput_sps": 23.666729711058103,
+      "graph_ready": false,
+      "graph_error": null,
+      "fast_error": null,
+      "infer_path": {
+        "merge_lora": false,
+        "fast_proc": false,
+        "cuda_graph": false,
+        "graph_error": null,
+        "fast_error": null,
+        "image_size": 256,
+        "image_seq_len": 16,
+        "instr_max_len": null,
+        "graph_count": 0,
+        "graph_max_diff": null,
+        "pad_len": null,
+        "device": "cuda",
+        "dtype": "torch.bfloat16"
+      },
+      "breakdown": {
+        "preproc_ms": 2.999148269991565,
+        "forward_ms": 36.56218558000546
+      }
+    },
+    {
+      "label": "bc_v2@256|merge=off|proc=fast|graph=off",
+      "ckpt": "/home/czy/倒立摆/wheeltec_vla/runs/bc_v2/best.pt",
+      "image_size": 256,
+      "merge_lora": false,
+      "fast_proc_flag": true,
+      "cuda_graph_flag": false,
+      "load_s": 0.77,
+      "n": 100,
+      "p50_ms": 39.35102050036221,
+      "p95_ms": 42.56507370046165,
+      "mean_ms": 39.699556039977324,
+      "min_ms": 36.72349500084238,
+      "max_ms": 52.519273000143585,
+      "throughput_sps": 25.189198564160346,
+      "graph_ready": false,
+      "graph_error": null,
+      "fast_error": null,
+      "infer_path": {
+        "merge_lora": false,
+        "fast_proc": true,
+        "cuda_graph": false,
+        "graph_error": null,
+        "fast_error": null,
+        "image_size": 256,
+        "image_seq_len": 16,
+        "instr_max_len": 50,
+        "graph_count": 0,
+        "graph_max_diff": null,
+        "pad_len": 56,
+        "device": "cuda",
+        "dtype": "torch.bfloat16"
+      },
+      "breakdown": {
+        "preproc_ms": 1.1719342300057178,
+        "forward_ms": 36.94675647000622
+      }
+    },
+    {
+      "label": "bc_v2@256|merge=off|proc=fast|graph=on",
+      "ckpt": "/home/czy/倒立摆/wheeltec_vla/runs/bc_v2/best.pt",
+      "image_size": 256,
+      "merge_lora": false,
+      "fast_proc_flag": true,
+      "cuda_graph_flag": true,
+      "load_s": 2.44,
+      "n": 100,
+      "p50_ms": 12.321658500695776,
+      "p95_ms": 13.387501500073995,
+      "mean_ms": 12.41388806996838,
+      "min_ms": 11.753079999834881,
+      "max_ms": 13.909961000535986,
+      "throughput_sps": 80.55493930376215,
+      "graph_ready": true,
+      "graph_error": null,
+      "fast_error": null,
+      "infer_path": {
+        "merge_lora": false,
+        "fast_proc": true,
+        "cuda_graph": true,
+        "graph_error": null,
+        "fast_error": null,
+        "image_size": 256,
+        "image_seq_len": 16,
+        "instr_max_len": 50,
+        "graph_count": 6,
+        "graph_max_diff": 0.001690208911895752,
+        "pad_len": 56,
+        "device": "cuda",
+        "dtype": "torch.bfloat16"
+      },
+      "breakdown": {
+        "preproc_ms": 1.1947914399934234,
+        "forward_ms": 10.870418579997931
+      }
+    },
+    {
+      "label": "bc_v2@256|merge=on|proc=hf|graph=off",
+      "ckpt": "/home/czy/倒立摆/wheeltec_vla/runs/bc_v2/best.pt",
+      "image_size": 256,
+      "merge_lora": true,
+      "fast_proc_flag": false,
+      "cuda_graph_flag": false,
+      "load_s": 0.78,
+      "n": 100,
+      "p50_ms": 19.78842249900481,
+      "p95_ms": 21.68257264938802,
+      "mean_ms": 19.984443329940405,
+      "min_ms": 18.806568999934825,
+      "max_ms": 23.38297800088185,
+      "throughput_sps": 50.03892194994566,
+      "graph_ready": false,
+      "graph_error": null,
+      "fast_error": null,
+      "infer_path": {
+        "merge_lora": true,
+        "fast_proc": false,
+        "cuda_graph": false,
+        "graph_error": null,
+        "fast_error": null,
+        "image_size": 256,
+        "image_seq_len": 16,
+        "instr_max_len": null,
+        "graph_count": 0,
+        "graph_max_diff": null,
+        "pad_len": null,
+        "device": "cuda",
+        "dtype": "torch.bfloat16"
+      },
+      "breakdown": {
+        "preproc_ms": 2.9170203499961644,
+        "forward_ms": 16.598408139998355
+      }
+    },
+    {
+      "label": "bc_v2@256|merge=on|proc=fast|graph=off",
+      "ckpt": "/home/czy/倒立摆/wheeltec_vla/runs/bc_v2/best.pt",
+      "image_size": 256,
+      "merge_lora": true,
+      "fast_proc_flag": true,
+      "cuda_graph_flag": false,
+      "load_s": 0.79,
+      "n": 100,
+      "p50_ms": 18.867049499931454,
+      "p95_ms": 20.920853699226427,
+      "mean_ms": 19.02323043997967,
+      "min_ms": 17.411435999747482,
+      "max_ms": 22.912903001270024,
+      "throughput_sps": 52.56730728017553,
+      "graph_ready": false,
+      "graph_error": null,
+      "fast_error": null,
+      "infer_path": {
+        "merge_lora": true,
+        "fast_proc": true,
+        "cuda_graph": false,
+        "graph_error": null,
+        "fast_error": null,
+        "image_size": 256,
+        "image_seq_len": 16,
+        "instr_max_len": 50,
+        "graph_count": 0,
+        "graph_max_diff": null,
+        "pad_len": 56,
+        "device": "cuda",
+        "dtype": "torch.bfloat16"
+      },
+      "breakdown": {
+        "preproc_ms": 1.1762696100049652,
+        "forward_ms": 15.832867339995573
+      }
+    },
+    {
+      "label": "bc_v2@256|merge=on|proc=fast|graph=on",
+      "ckpt": "/home/czy/倒立摆/wheeltec_vla/runs/bc_v2/best.pt",
+      "image_size": 256,
+      "merge_lora": true,
+      "fast_proc_flag": true,
+      "cuda_graph_flag": true,
+      "load_s": 1.63,
+      "n": 100,
+      "p50_ms": 7.783115499478299,
+      "p95_ms": 8.892941149497346,
+      "mean_ms": 7.831772809895483,
+      "min_ms": 7.0330689995898865,
+      "max_ms": 9.729375000461005,
+      "throughput_sps": 127.68501133440633,
+      "graph_ready": true,
+      "graph_error": null,
+      "fast_error": null,
+      "infer_path": {
+        "merge_lora": true,
+        "fast_proc": true,
+        "cuda_graph": true,
+        "graph_error": null,
+        "fast_error": null,
+        "image_size": 256,
+        "image_seq_len": 16,
+        "instr_max_len": 50,
+        "graph_count": 6,
+        "graph_max_diff": 0.0033034086227416992,
+        "pad_len": 56,
+        "device": "cuda",
+        "dtype": "torch.bfloat16"
+      },
+      "breakdown": {
+        "preproc_ms": 1.1041199900137144,
+        "forward_ms": 6.06871953999871
+      }
+    },
+    {
+      "label": "bc_v1@256|merge=off|proc=hf|graph=off",
+      "ckpt": "/home/czy/倒立摆/wheeltec_vla/runs/bc_v1/best.pt",
+      "image_size": 256,
+      "merge_lora": false,
+      "fast_proc_flag": false,
+      "cuda_graph_flag": false,
+      "load_s": 0.71,
+      "n": 100,
+      "p50_ms": 40.263147000587196,
+      "p95_ms": 43.433875801019894,
+      "mean_ms": 40.381383940020896,
+      "min_ms": 37.41904299931775,
+      "max_ms": 46.59789900142641,
+      "throughput_sps": 24.76388628694142,
+      "graph_ready": false,
+      "graph_error": null,
+      "fast_error": null,
+      "infer_path": {
+        "merge_lora": false,
+        "fast_proc": false,
+        "cuda_graph": false,
+        "graph_error": null,
+        "fast_error": null,
+        "image_size": 256,
+        "image_seq_len": 16,
+        "instr_max_len": null,
+        "graph_count": 0,
+        "graph_max_diff": null,
+        "pad_len": null,
+        "device": "cuda",
+        "dtype": "torch.bfloat16"
+      },
+      "breakdown": {
+        "preproc_ms": 3.0410276299880934,
+        "forward_ms": 36.83575900999131
+      }
+    },
+    {
+      "label": "bc_v1@256|merge=off|proc=fast|graph=off",
+      "ckpt": "/home/czy/倒立摆/wheeltec_vla/runs/bc_v1/best.pt",
+      "image_size": 256,
+      "merge_lora": false,
+      "fast_proc_flag": true,
+      "cuda_graph_flag": false,
+      "load_s": 0.79,
+      "n": 100,
+      "p50_ms": 39.84409050008253,
+      "p95_ms": 44.99409499885587,
+      "mean_ms": 40.37018021004769,
+      "min_ms": 35.82285800075624,
+      "max_ms": 47.74854199968104,
+      "throughput_sps": 24.770758881851883,
+      "graph_ready": false,
+      "graph_error": null,
+      "fast_error": null,
+      "infer_path": {
+        "merge_lora": false,
+        "fast_proc": true,
+        "cuda_graph": false,
+        "graph_error": null,
+        "fast_error": null,
+        "image_size": 256,
+        "image_seq_len": 16,
+        "instr_max_len": 50,
+        "graph_count": 0,
+        "graph_max_diff": null,
+        "pad_len": 56,
+        "device": "cuda",
+        "dtype": "torch.bfloat16"
+      },
+      "breakdown": {
+        "preproc_ms": 1.1828498800059606,
+        "forward_ms": 36.358189180009504
+      }
+    },
+    {
+      "label": "bc_v1@256|merge=off|proc=fast|graph=on",
+      "ckpt": "/home/czy/倒立摆/wheeltec_vla/runs/bc_v1/best.pt",
+      "image_size": 256,
+      "merge_lora": false,
+      "fast_proc_flag": true,
+      "cuda_graph_flag": true,
+      "load_s": 2.39,
+      "n": 100,
+      "p50_ms": 12.209956501465058,
+      "p95_ms": 13.353326700143953,
+      "mean_ms": 12.333866949957155,
+      "min_ms": 11.754062999898451,
+      "max_ms": 13.751365999269183,
+      "throughput_sps": 81.07757316155204,
+      "graph_ready": true,
+      "graph_error": null,
+      "fast_error": null,
+      "infer_path": {
+        "merge_lora": false,
+        "fast_proc": true,
+        "cuda_graph": true,
+        "graph_error": null,
+        "fast_error": null,
+        "image_size": 256,
+        "image_seq_len": 16,
+        "instr_max_len": 50,
+        "graph_count": 6,
+        "graph_max_diff": 0.0012062788009643555,
+        "pad_len": 56,
+        "device": "cuda",
+        "dtype": "torch.bfloat16"
+      },
+      "breakdown": {
+        "preproc_ms": 1.2032240400003502,
+        "forward_ms": 10.843168409992359
+      }
+    },
+    {
+      "label": "bc_v1@256|merge=on|proc=hf|graph=off",
+      "ckpt": "/home/czy/倒立摆/wheeltec_vla/runs/bc_v1/best.pt",
+      "image_size": 256,
+      "merge_lora": true,
+      "fast_proc_flag": false,
+      "cuda_graph_flag": false,
+      "load_s": 0.79,
+      "n": 100,
+      "p50_ms": 19.9216589999196,
+      "p95_ms": 22.02110775060646,
+      "mean_ms": 20.072958530072356,
+      "min_ms": 18.775706999804243,
+      "max_ms": 23.565774999951827,
+      "throughput_sps": 49.81826662481504,
+      "graph_ready": false,
+      "graph_error": null,
+      "fast_error": null,
+      "infer_path": {
+        "merge_lora": true,
+        "fast_proc": false,
+        "cuda_graph": false,
+        "graph_error": null,
+        "fast_error": null,
+        "image_size": 256,
+        "image_seq_len": 16,
+        "instr_max_len": null,
+        "graph_count": 0,
+        "graph_max_diff": null,
+        "pad_len": null,
+        "device": "cuda",
+        "dtype": "torch.bfloat16"
+      },
+      "breakdown": {
+        "preproc_ms": 2.805057339992345,
+        "forward_ms": 16.159327200002735
+      }
+    },
+    {
+      "label": "bc_v1@256|merge=on|proc=fast|graph=off",
+      "ckpt": "/home/czy/倒立摆/wheeltec_vla/runs/bc_v1/best.pt",
+      "image_size": 256,
+      "merge_lora": true,
+      "fast_proc_flag": true,
+      "cuda_graph_flag": false,
+      "load_s": 0.81,
+      "n": 100,
+      "p50_ms": 18.65927000017109,
+      "p95_ms": 20.94527200124503,
+      "mean_ms": 18.82434117003868,
+      "min_ms": 17.110958999182913,
+      "max_ms": 21.565164001003723,
+      "throughput_sps": 53.12270910132178,
+      "graph_ready": false,
+      "graph_error": null,
+      "fast_error": null,
+      "infer_path": {
+        "merge_lora": true,
+        "fast_proc": true,
+        "cuda_graph": false,
+        "graph_error": null,
+        "fast_error": null,
+        "image_size": 256,
+        "image_seq_len": 16,
+        "instr_max_len": 50,
+        "graph_count": 0,
+        "graph_max_diff": null,
+        "pad_len": 56,
+        "device": "cuda",
+        "dtype": "torch.bfloat16"
+      },
+      "breakdown": {
+        "preproc_ms": 1.231896660010534,
+        "forward_ms": 15.946791910009777
+      }
+    },
+    {
+      "label": "bc_v1@256|merge=on|proc=fast|graph=on",
+      "ckpt": "/home/czy/倒立摆/wheeltec_vla/runs/bc_v1/best.pt",
+      "image_size": 256,
+      "merge_lora": true,
+      "fast_proc_flag": true,
+      "cuda_graph_flag": true,
+      "load_s": 1.62,
+      "n": 100,
+      "p50_ms": 7.821217500350031,
+      "p95_ms": 9.079900599317625,
+      "mean_ms": 7.98519606993068,
+      "min_ms": 7.192254000983667,
+      "max_ms": 9.953492999557056,
+      "throughput_sps": 125.23174024062267,
+      "graph_ready": true,
+      "graph_error": null,
+      "fast_error": null,
+      "infer_path": {
+        "merge_lora": true,
+        "fast_proc": true,
+        "cuda_graph": true,
+        "graph_error": null,
+        "fast_error": null,
+        "image_size": 256,
+        "image_seq_len": 16,
+        "instr_max_len": 50,
+        "graph_count": 6,
+        "graph_max_diff": 0.0023875832557678223,
+        "pad_len": 56,
+        "device": "cuda",
+        "dtype": "torch.bfloat16"
+      },
+      "breakdown": {
+        "preproc_ms": 1.1849174599956314,
+        "forward_ms": 6.061305020011787
+      }
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "ckpt": "/home/czy/倒立摆/wheeltec_vla/runs/bc_v2/best.pt",
+  "env_module": "sim.env_vla",
+  "episodes_per_instr": 1,
+  "instrs": [
+    0,
+    1
+  ],
+  "seed_base": 2026,
+  "batch_episodes": 8,
+  "action_ema": 0.0,
+  "image": {
+    "size": 256,
+    "seq_len": 16
+  },
+  "device": "cuda",
+  "batch_episodes_effective": 8,
+  "started_at": "2026-11-23 15:34:21",
+  "scenarios": {
+    "base": {
+      "scenario": "base",
+      "per_instr": {
+        "0": {
+          "instruction": "保持站立",
+          "episodes": 1,
+          "success": 1,
+          "rate": 1.0,
+          "fail_reasons": {},
+          "episodes_detail": [
+            {
+              "seed": 2026,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            }
+          ]
+        },
+        "1": {
+          "instruction": "向前走",
+          "episodes": 1,
+          "success": 1,
+          "rate": 1.0,
+          "fail_reasons": {},
+          "episodes_detail": [
+            {
+              "seed": 102029,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            }
+          ]
+        }
+      },
+      "overall": {
+        "success": 2,
+        "episodes": 2,
+        "rate": 1.0
+      },
+      "elapsed_s": 2.0,
+      "latency": {
+        "calls": 100,
+        "samples": 100,
+        "per_sample_ms_p50": 10.36201449960572,
+        "per_sample_ms_p95": 19.550173700372397,
+        "per_call_ms_p50": 10.36201449960572,
+        "per_call_ms_p95": 19.550173700372397
+      }
+    }
+  },
+  "baselines": {},
+  "latency": {},
+  "summary": {
+    "base": {
+      "overall_rate": 1.0,
+      "episodes": 2,
+      "delta_pp_vs_base": 0.0
+    }
+  },
+  "finished_at": "2026-11-23 15:34:24"
+}

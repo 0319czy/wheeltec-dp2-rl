@@ -1,0 +1,109 @@
+{
+  "tag": "parity256",
+  "env": {
+    "timestamp": "2026-11-23 15:27:14",
+    "python": "3.12.3",
+    "torch": "2.9.1+cu128",
+    "cuda": "12.8",
+    "transformers": "5.24.0",
+    "peft": "0.22.0",
+    "gpu_name": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "gpu_capability": [
+      12,
+      0
+    ],
+    "gpu_status_start": {
+      "name": "NVIDIA GeForce RTX 5060 Laptop GPU",
+      "mem_used_MiB": 6113,
+      "mem_total_MiB": 8151,
+      "util_pct": 38,
+      "mem_used_MiB_per_proc": [
+        {
+          "pid": "2779",
+          "name": "llama-server",
+          "mem_MiB": "3600"
+        },
+        {
+          "pid": "63282",
+          "name": "python",
+          "mem_MiB": "2408"
+        }
+      ],
+      "load_avg": [
+        5.33544921875,
+        4.8720703125,
+        4.1298828125
+      ]
+    },
+    "gpu_status_end": {
+      "name": "NVIDIA GeForce RTX 5060 Laptop GPU",
+      "mem_used_MiB": 6448,
+      "mem_total_MiB": 8151,
+      "util_pct": 92,
+      "mem_used_MiB_per_proc": [
+        {
+          "pid": "2779",
+          "name": "llama-server",
+          "mem_MiB": "3600"
+        },
+        {
+          "pid": "63282",
+          "name": "python",
+          "mem_MiB": "2408"
+        },
+        {
+          "pid": "74111",
+          "name": "python",
+          "mem_MiB": "330"
+        }
+      ],
+      "load_avg": [
+        5.31298828125,
+        5.0,
+        4.2421875
+      ]
+    }
+  },
+  "checks": {
+    "bc_v2@256": {
+      "merge": {
+        "pairs": 1200,
+        "dtype": "float32",
+        "max_abs_diff_norm": 0.004700750112533569,
+        "max_abs_diff_v": 0.0016452670097351074,
+        "max_abs_diff_w": 0.0027642250061035156,
+        "p50_abs_diff_norm": 1.0132789611816406e-06,
+        "p99_abs_diff_norm": 0.000975941598881036,
+        "pass_lt_1e_3_norm": false,
+        "note": "随机噪声图是 OOD,网络对 1e-7 级重排误差敏感;真实数据帧上同口径 max|diff| 约 1e-6 量级"
+      },
+      "fast_preproc": {
+        "images": 3,
+        "instructions": 12,
+        "pixel_values_max_abs_diff": 0.0,
+        "input_ids_exact_match": true,
+        "pass": true
+      },
+      "fast_vs_slow_act": {
+        "pairs": 100,
+        "fast_path": {
+          "merge_lora": true,
+          "fast_proc": true,
+          "cuda_graph": true,
+          "graph_error": null,
+          "fast_error": null,
+          "image_size": 256,
+          "image_seq_len": 16,
+          "instr_max_len": 50,
+          "pad_len": 56,
+          "device": "cuda",
+          "dtype": "torch.bfloat16"
+        },
+        "max_abs_diff_v": 0.021636173129081726,
+        "max_abs_diff_w": 0.009798526763916016,
+        "max_abs_diff": 0.021636173129081726,
+        "pass_lt_1e_3": false
+      }
+    }
+  }
+}

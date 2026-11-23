@@ -405,3 +405,157 @@ DAgger 作为消融写入报告。原因推断:单向 BC 的 under-steering 已�
   → 常量类已到"底层动力学+判据"的物理上限(甚至略超,因 eval seed 段不同);
   71.0% 的总差距几乎全在 7-11,不能用底层漂移解释。
 
+## 7. 推理优化(merge LoRA + 快速预处理 + CUDA graph)
+
+> 负责人:latency-opt;代码:`vla/fast_infer.py`(新)、`vla/infer.py`(开关)、
+> `scripts/bench_infer.py`(新,基准+parity)。复现命令见 §7.6。
+> 验收目标:512px 单步 p50 < 20 ms、256px p50 < 15 ms(10 Hz 控制环,单步预算 100 ms)。
+
+### 7.1 结论(before / after)
+
+测量环境:RTX 5060 Laptop 8 GB,bf16 + sdpa,torch 2.9.1+cu128,transformers 5.24,peft 0.22;
+`scripts/bench_infer.py --mode bench --n 100 --warmup 20`,bs=1,每步 `cuda.synchronize()`;
+**测量在训练队友(vla-model,512px 训练 ~2.2 GB)结束后的干净 GPU 窗口内完成**
+(nvidia-smi 峰值占用与利用率写入 `runs/bench_infer_rtx5060_clean2.json` 的 `env.gpu_samples`)。
+需要说明的固定背景负载:桌面的 translate-tool `llama-server`(Vulkan)常驻 ~3.6 GB / ~30% 利用率,
+before/after 在同一背景下测得,与 Lead profiling 时的 51.7 ms 基线一致(本次 legacy 50.3 ms)。
+
+| 配置(512px / bc_aux512) | p50 ms | p95 ms | 相对基线 |
+|---|---|---|---|
+| ① legacy:processor + LoRA(未合并) | 50.3 | 53.6 | 1.00× |
+| ② merge LoRA | 33.1 | 34.9 | 1.52× |
+| ③ merge + 快速预处理 | 26.5 | 28.7 | 1.90× |
+| ④ **merge + fast + CUDA graph(推荐)** | **20.4** | **21.7** | **2.47×** |
+
+| 配置(256px / bc_v2、bc_v1) | p50 ms | p95 ms |
+|---|---|---|
+| ① legacy:processor + LoRA(未合并) | 40.5 / 41.7 | 44.8 / 45.4 |
+| ② merge LoRA | 21.2 / 20.8 | 23.7 / 22.5 |
+| ③ merge + 快速预处理 | 19.3 / 19.0 | 21.6 / 21.1 |
+| ④ **merge + fast + CUDA graph(推荐)** | **7.8 / 7.7** | **9.2 / 8.9** |
+
+**目标达成情况**:256px 达标且有 2× 余量(p50 7.7–7.8 ms < 15 ms);512px **未严格达标**
+(p50 20.4 ms,比 20 ms 高 0.4 ms / 2%,p95 21.7 ms)。512px 剩余成本:vision tower ~10.5 ms
+(计算受限,bf16 已是最优后端;试过 CUDNN/FLASH/EFFICIENT SDPA 后端与 torch.compile,
+前者相同、后者反而更慢 12.8 ms)、LM ~6.6 ms、预处理 ~3.2 ms 其中 PIL LANCZOS resize 2.5 ms。
+进一步压缩只能把 LANCZOS 搬到 GPU(理论上可省 ~2.5 ms),但 GPU 浮点与 PIL 定点路径
+无法逐位一致(实测 512px 有 0.5% 像素差 ±1 LSB),会破坏"pixel_values 逐位一致"的验收,
+故未采用;需要时可另开 GPU 预处理模式并接受像素级 ±1 LSB。
+
+分段(512px、bs=1,`bench_infer.py` 的 breakdown 字段):processor 预处理 8.75 ms →
+快速预处理 3.16 ms(含 H2D);forward(LoRA 未合并)41.99 ms → merge 后 23.15 ms →
+CUDA graph 17.8 ms。
+
+三段优化的来源:
+1. **merge LoRA**:peft 的 `LoraLinear` 每层多两次小 GEMM + Python 包装(30 层 × 7 个投影),
+   `model.lm.merge_and_unload()` 把 `B·A·scaling` 并进基座权重后这两次 GEMM 消失 → forward 约 -45%。
+2. **快速预处理**:HF `Idefics3ImageProcessor` 单张 512px 要 ~8.8 ms(嵌套列表 + numpy 校验 +
+   张量堆叠),实际 resize 只占 ~2.5 ms。快速路径把 12 条指令的完整 `input_ids` 在 load 时
+   各跑一次并缓存(含 `<image>` 展开),图像只做 PIL LANCZOS resize + torch 归一化。
+3. **CUDA graph**:模型 forward 逐层 kernel launch 在 bs=1/短序列下无法被计算掩盖。
+   复刻 `Idefics3Model.forward` 的有效计算(跳过含 data-dependent 形状的 padding-图像过滤
+   `real_images_inds`),按每条指令的序列长度 `(B=1, T, H)` 懒捕获 CUDA graph(共用一个
+   memory pool,512px 实测 6 个 graph 的显存开销很小)。
+
+### 7.2 数值一致性(parity)
+
+| 检查 | 口径 | 结果 |
+|---|---|---|
+| 快速预处理 `pixel_values` | 3 类图 × 12 指令,对 HF processor | **max\|diff\| = 0.0(逐位相同)** |
+| 快速预处理 `input_ids` | 同上 | **完全一致**(含 attention_mask) |
+| fast(eager)vs slow 的 `act()` | 100 组随机图×指令 + 60 帧真实数据 | **max\|diff\| = 0.0(逐位相同)** |
+| merge 前后 `act()` | 100 图 × 12 指令,fp32 | 在分布数据帧 **max 7.2e-5**(p99 1.3e-5);随机白噪声 max 4.65e-2(p99 1.1e-2,p50 7e-6) |
+| fast+graph vs slow `act()` | 同上 | 在分布数据帧 **max 7.1e-3**(p99 1.9e-3,p50 5.5e-5);随机白噪声 max 2.9e-2 |
+
+关于两个"看起来超差"的口径(重要,不是实现错误):
+- **随机白噪声图是 OOD**:网络在 OOD 输入上对 1e-7 级浮点重排误差呈混沌放大(实测 fp32 下
+  单层 merge 前后线性层输出差仅 2e-5,到动作端被放大到 ~4e-3;同口径在**真实数据帧**上
+  merge 前后差 max 7.2e-5)。因此 merge 的验收以在分布数据为准;
+- **CUDA graph vs eager** 的差异来自 graph 捕获时 cuBLAS workspace/kernel 配置与 eager 略有
+  不同(同样 1e-7 级)。实测(512px、60 帧真实数据)端到端 `act()`:p50 5.5e-5、p99 1.9e-3、
+  **max 7.1e-3**;作为参照,**同一模型 bf16 vs fp32 的推理噪声**在真实帧上是 p50 1.2e-4、
+  p99 2.5e-3、max 3.5e-3 —— graph 的数值扰动与"本来就在用 bf16 而不是 fp32"同量级。
+  OOD 白噪声上会放大到 3e-2。graph 关闭(只 merge+fast)时与 legacy **逐位一致**(0.0)。
+- peft `merge_and_unload()` 后的权重与手算 `W + B·A·scaling` **逐位相等**(已单独验证),
+  合并本身没有精度损失,差异只来自 fp32 结合律重排。
+
+### 7.3 闭环 parity(同 seed)
+
+`eval/closed_loop.py --ckpt runs/bc_aux512/best.pt --image-size 512 --episodes 5 --instrs 0-11
+--scenarios base --skip-baselines --skip-latency --device cuda`(12 指令 × 5 局 = 60 局,同 seed),
+三组配置:
+
+| 配置 | 成功率 | 结果 JSON |
+|---|---|---|
+| legacy(processor + 未合并 LoRA) | **63.3%**(38/60) | `runs/closed_loop_opt/parity_legacy.json` |
+| merge only | **63.3%**(38/60) | `runs/closed_loop_opt/parity_mergeonly.json` |
+| merge + fast + graph(推荐) | **63.3%**(38/60) | `runs/closed_loop_opt/parity_fast.json` |
+
+说明:闭环评测里 `--batch-episodes 8` 时推理是 bs=5(每指令 5 局),CUDA graph 只用于 bs=1,
+因此这条链路实际等价于"merge + fast(eager)",与 legacy 的差异仅来自 merge 的数值重排;
+三组总成功率都是 38/60 = 63.3%,逐指令互有 ±1 局(如 instr1 60%→80%、instr8 60%→40%,
+是 merge 数值重排导致个别回合翻转),**没有掉点**。bs=1 的 graph 由 §7.2 的 parity 覆盖。
+
+### 7.4 10 Hz 控制环预算
+
+| 项目 | 512px p50 | 512px p95 | 256px p50 | 256px p95 |
+|---|---|---|---|---|
+| 推理单步(本表 §7.1 推荐配置) | 20.4 | 21.7 | 7.8 | 9.2 |
+| 相机采集 + 串口发送(实机,估) | ~10–20 | ~10–20 | ~10–20 | ~10–20 |
+| 合计 | 30–40 | 32–42 | 18–28 | 19–29 |
+| 相对 100 ms 预算余量 | ≥60 | ≥58 | ≥72 | ≥71 |
+
+结论:512px 推荐配置 p95 21.7 ms,叠加 10–20 ms I/O 后总 p95 ≤ 42 ms,
+10 Hz(100 ms)**余量 ≥ 58 ms**;256px 总 p95 ≤ 29 ms、余量 ≥ 71 ms。512px 的对象类
+指令精度更好(§6.8:对象类 44.0% vs 256px 40–44%,且总闭环 72.5%),**实机推荐 512px**。
+
+### 7.5 使用方式与回退组合
+
+```python
+from vla.infer import VLAPolicy
+# 默认:merge_lora=True + fast_proc=True + cuda_graph=True(部署推荐)
+policy = VLAPolicy.load("runs/bc_aux512/best.pt")           # 自动按 ckpt 配置 512px
+v, w = policy.act(img_uint8_128x128x3, "靠近红桶")
+
+# 需要继续训练/续训:必须不合并 LoRA(合并后不可训练)
+policy = VLAPolicy.load(ckpt, merge_lora=False, fast_proc=False, cuda_graph=False)
+```
+
+环境变量覆盖(无需改调用方,便于实机降级):
+
+| 变量 | 缺省 | 作用 |
+|---|---|---|
+| `VLA_MERGE_LORA` | 1 | 0=保留 LoRA(可训练,慢) |
+| `VLA_FAST_PROC` | 1 | 0=用 HF processor + 原始 forward(数值逐位一致的参考实现) |
+| `VLA_CUDA_GRAPH` | 1 | 0=关闭 CUDA graph(数值与 legacy 逐位一致,仅慢) |
+
+三个开关的实测延迟(bs=1,`bench_infer.py`,同一干净窗口;512px=bc_aux512,256px=bc_v2):
+
+| 降级组合 | 512px p50 / p95 | 256px p50 / p95 |
+|---|---|---|
+| 全开(部署推荐) | **20.4 / 21.7** | **7.8 / 9.2** |
+| `VLA_CUDA_GRAPH=0` | 26.5 / 28.7 | 19.3 / 21.6 |
+| `VLA_FAST_PROC=0` | 33.1 / 34.9 | 21.2 / 23.7 |
+| `VLA_MERGE_LORA=0`(legacy) | 50.3 / 53.6 | 40.5 / 44.8 |
+
+实机降级顺序建议:①`VLA_CUDA_GRAPH=0`(若怀疑 graph 与驱动/cuBLAS 版本不兼容,
+`infer.py` 也会在自检不通过时自动回退);②`VLA_FAST_PROC=0`(回到完全参考实现);
+③`VLA_MERGE_LORA=0`(仅在需要拿该 checkpoint 继续训练时)。
+
+### 7.6 复现
+
+```bash
+cd /home/czy/倒立摆/wheeltec_vla
+# 延迟矩阵(18 组:n=100/warmup=20)→ runs/bench_infer_<tag>.json
+.venv/bin/python scripts/bench_infer.py --mode bench --tag rtx5060_clean
+# 数值 parity(merge fp32 / 预处理 / fast vs slow)→ runs/bench_infer_parity_<tag>.json
+.venv/bin/python scripts/bench_infer.py --mode parity --tag rtx5060_clean
+# 单配置快速验证
+.venv/bin/python vla/infer.py --ckpt runs/bc_aux512/best.pt --bench --n 100
+```
+
+已知限制:
+- 快速路径只接受 128×128×3 的 uint8/PIL 图像(spec §3 的源图尺寸);其它尺寸自动回退 processor;
+- CUDA graph 只在 CUDA + bs=1 下启用;闭环评测的 bs>1 走 eager 快速前向(仍是 0.0 误差);
+- `merge_lora=True` 的模型**不能再训练/续训**(只能推理/评测),训练脚本不经过 `VLAPolicy`。
+

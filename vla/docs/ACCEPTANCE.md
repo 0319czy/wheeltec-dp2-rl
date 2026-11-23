@@ -101,6 +101,22 @@
 | 恒零动作 | 11.7% |
 | VLA（bc_aux512） | 71.8% |
 
+### 4.6 推理延迟优化（2026-11-23，`vla/fast_infer.py`）
+
+在不改模型/权重的前提下，把单步推理从 **50.3 ms 降到 20.4 ms**（512px，2.47×）：
+
+| 路径 | 512px p50 / p95 | 256px p50 / p95 |
+|---|---|---|
+| legacy（HF processor + LoRA 适配器） | 50.3 / 53.6 ms | 40.5–41.7 / 44.8–45.4 ms |
+| + LoRA 合并（`merge_and_unload`） | 33.1 / 34.9 ms | 21.2 / 23.7 ms |
+| + 快速预处理（缓存 instruction tokens、GPU 端 resize/normalize） | 26.5 / 28.7 ms | 19.3 / 21.6 ms |
+| + CUDA graph（固定 batch/尺寸，懒捕获） | **20.4 / 21.7 ms** | **7.8 / 9.2 ms** |
+
+- 数值一致性：快速预处理 `pixel_values` 与 HF processor **逐位相同（max|diff|=0）**、`input_ids` 完全一致；fast vs slow `act()` 在 100 组随机 + 60 帧真实数据上 **0.0**；LoRA 合并在在分布数据上 max 7.2e-5；CUDA graph vs eager 在 60 帧真实数据 p50 5.5e-5 / p99 1.9e-3 / max 7.1e-3（与「模型本来用 bf16 vs fp32」的 3.5e-3 同量级，已如实记录）。
+- 闭环一致性：同 seed 12×5 局，legacy / merge-only / fast+graph 均 **63.3%（38/60）**，无掉点（`runs/closed_loop_opt/parity_*.json`）。
+- 10 Hz 预算：512px p95 21.7 ms + 相机/串口 10–20 ms ≈ 总 p95 ≤42 ms，**余量 ≥58 ms**。
+- 降级开关：`VLA_CUDA_GRAPH=0` → 26.5 ms；`VLA_FAST_PROC=0` → 33.1 ms；`VLA_MERGE_LORA=0` → 50.3 ms（512px p50）。训练必须 `merge_lora=False`。
+
 ## 5. 与验收标准（spec §7）的差距
 
 | 标准 | 目标 | 当前 | 状态 |
@@ -108,7 +124,7 @@
 | 12 指令总体成功率 | ≥80% | 71.8% | ❌ |
 | 单指令成功率 | ≥70% | 5 条未达（7–11） | ❌ |
 | 亮度/遮挡扰动掉点 | ≤10 / ≤15 pp | 无显著下降（v1 实测） | ✅ |
-| 推理延迟 p95 | <100 ms | 51.2–77.2 ms（多次测量） | ✅ |
+| 推理延迟 p95 | <100 ms | **21.7 ms（优化后，512px）**；优化前 51.2–77.2 ms | ✅ |
 | 灰图消融显著下降 | 要 | 对象类 0%（v1 实测） | ✅ |
 
 ## 6. 结论与后续

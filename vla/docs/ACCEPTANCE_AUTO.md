@@ -1,6 +1,6 @@
 # 自动验收报告（quick 模式）
 
-> 生成时间: 2026-11-24 21:15:43　｜　命令: `bash scripts/acceptance.sh quick`
+> 生成时间: 2026-11-24 21:22:54　｜　命令: `bash scripts/acceptance.sh quick`
 > 官方模型: `runs/bc_v6b_lowlr/best.pt`（2 帧 256px，fast 路径）
 
 ## 闭环成功率

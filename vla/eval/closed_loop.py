@@ -180,6 +180,22 @@ def apply_perturbation(img, kind, rng, size=128):
         return out
     if kind == "gray":
         return np.full_like(img, 128)
+    if kind in ("crop90", "wide110", "shift5"):
+        # 模拟"实机相机与仿真相机不一致"的三类常见偏差（分辨率不变，只改视场/安装角）
+        from PIL import Image
+        im = Image.fromarray(img)
+        w, h = im.size
+        if kind == "crop90":
+            c = int(round(min(w, h) * 0.05))
+            im2 = im.crop((c, c, w - c, h - c)).resize((w, h), Image.LANCZOS)
+        elif kind == "wide110":
+            sw = sh = int(round(size * 0.9))
+            im2 = Image.new("RGB", (size, size), (128, 128, 128))
+            im2.paste(im.resize((sw, sh), Image.LANCZOS), ((size - sw) // 2, (size - sh) // 2))
+        else:  # shift5: 图像整体上移 6 px（模拟相机俯仰装偏约 5%）
+            im2 = Image.new("RGB", (size, size), (110, 110, 110))
+            im2.paste(im, (0, -6))
+        return np.asarray(im2, dtype=np.uint8)
     raise ValueError(f"未知扰动: {kind}")
 
 
@@ -189,6 +205,9 @@ SCENARIOS = [
     ("bright_high", "亮度x1.3"),
     ("occlusion", "10%遮挡"),
     ("gray", "固定灰图(视觉消融)"),
+    ("crop90", "视场收窄10%(相机焦距偏长)"),
+    ("wide110", "视场放宽10%(相机焦距偏短)"),
+    ("shift5", "画面上移5%(相机俯仰偏)"),
 ]
 
 # 场景别名 -> 规范名(命令行可用 bright0.7 / bright1.3 / occlusion10 等写法)
@@ -198,6 +217,9 @@ SCENARIO_ALIASES = {
     "bright1.3": "bright_high", "bright_high": "bright_high", "bright_13": "bright_high",
     "occlusion10": "occlusion", "occlusion": "occlusion", "occ10": "occlusion",
     "gray": "gray", "grey": "gray", "gray_image": "gray",
+    "crop90": "crop90", "crop_90": "crop90", "zoom_in": "crop90",
+    "wide110": "wide110", "wide_110": "wide110", "zoom_out": "wide110",
+    "shift5": "shift5", "shift_5": "shift5", "pitch": "shift5",
 }
 
 

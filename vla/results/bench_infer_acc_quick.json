@@ -1,7 +1,7 @@
 {
   "tag": "acc_quick",
   "env": {
-    "timestamp": "2026-11-24 21:15:08",
+    "timestamp": "2026-11-24 21:22:15",
     "python": "3.12.3",
     "torch": "2.9.1+cu128",
     "cuda": "12.8",
@@ -25,9 +25,9 @@
         }
       ],
       "load_avg": [
-        5.02685546875,
-        4.6875,
-        4.38818359375
+        5.34619140625,
+        4.423828125,
+        4.267578125
       ]
     },
     "gpu_status_end": {
@@ -42,15 +42,15 @@
           "mem_MiB": "3600"
         },
         {
-          "pid": "35462",
+          "pid": "40498",
           "name": "python",
           "mem_MiB": "576"
         }
       ],
       "load_avg": [
-        5.00244140625,
-        4.70361328125,
-        4.40185546875
+        5.00927734375,
+        4.44921875,
+        4.283203125
       ]
     },
     "gpu_samples": [
@@ -67,16 +67,16 @@
           }
         ],
         "load_avg": [
-          5.02685546875,
-          4.6875,
-          4.38818359375
+          5.34619140625,
+          4.423828125,
+          4.267578125
         ]
       },
       {
         "name": "NVIDIA GeForce RTX 5060 Laptop GPU",
         "mem_used_MiB": 3808,
         "mem_total_MiB": 8151,
-        "util_pct": 32,
+        "util_pct": 29,
         "compute_apps": [
           {
             "pid": "2743",
@@ -84,22 +84,22 @@
             "mem_MiB": "3600"
           },
           {
-            "pid": "35462",
+            "pid": "40498",
             "name": "python",
             "mem_MiB": "162"
           }
         ],
         "load_avg": [
-          4.8642578125,
-          4.6591796875,
-          4.38037109375
+          5.29931640625,
+          4.44287109375,
+          4.27587890625
         ]
       },
       {
         "name": "NVIDIA GeForce RTX 5060 Laptop GPU",
         "mem_used_MiB": 3808,
         "mem_total_MiB": 8151,
-        "util_pct": 31,
+        "util_pct": 26,
         "compute_apps": [
           {
             "pid": "2743",
@@ -107,22 +107,22 @@
             "mem_MiB": "3600"
           },
           {
-            "pid": "35462",
+            "pid": "40498",
             "name": "python",
             "mem_MiB": "162"
           }
         ],
         "load_avg": [
-          4.4970703125,
-          4.58740234375,
-          4.359375
+          5.09228515625,
+          4.427734375,
+          4.2724609375
         ]
       },
       {
         "name": "NVIDIA GeForce RTX 5060 Laptop GPU",
         "mem_used_MiB": 4090,
         "mem_total_MiB": 8151,
-        "util_pct": 77,
+        "util_pct": 99,
         "compute_apps": [
           {
             "pid": "2743",
@@ -130,22 +130,22 @@
             "mem_MiB": "3600"
           },
           {
-            "pid": "35462",
+            "pid": "40498",
             "name": "python",
             "mem_MiB": "444"
           }
         ],
         "load_avg": [
-          5.09814453125,
-          4.7109375,
-          4.40087890625
+          5.00439453125,
+          4.42041015625,
+          4.27099609375
         ]
       },
       {
         "name": "NVIDIA GeForce RTX 5060 Laptop GPU",
         "mem_used_MiB": 4090,
         "mem_total_MiB": 8151,
-        "util_pct": 41,
+        "util_pct": 36,
         "compute_apps": [
           {
             "pid": "2743",
@@ -153,22 +153,22 @@
             "mem_MiB": "3600"
           },
           {
-            "pid": "35462",
+            "pid": "40498",
             "name": "python",
             "mem_MiB": "444"
           }
         ],
         "load_avg": [
-          5.08984375,
-          4.7158203125,
-          4.404296875
+          4.923828125,
+          4.4130859375,
+          4.26953125
         ]
       },
       {
         "name": "NVIDIA GeForce RTX 5060 Laptop GPU",
         "mem_used_MiB": 4090,
         "mem_total_MiB": 8151,
-        "util_pct": 42,
+        "util_pct": 38,
         "compute_apps": [
           {
             "pid": "2743",
@@ -176,15 +176,15 @@
             "mem_MiB": "3600"
           },
           {
-            "pid": "35462",
+            "pid": "40498",
             "name": "python",
             "mem_MiB": "444"
           }
         ],
         "load_avg": [
-          5.00244140625,
-          4.70361328125,
-          4.40185546875
+          5.01025390625,
+          4.439453125,
+          4.279296875
         ]
       }
     ],
@@ -215,14 +215,14 @@
       "merge_lora": false,
       "fast_proc_flag": false,
       "cuda_graph_flag": false,
-      "load_s": 1.39,
+      "load_s": 1.62,
       "n": 50,
-      "p50_ms": 50.674565500003155,
-      "p95_ms": 54.670942350094265,
-      "mean_ms": 50.86921299999631,
-      "min_ms": 47.171511000215105,
-      "max_ms": 59.30600500005312,
-      "throughput_sps": 19.658255770539885,
+      "p50_ms": 54.9018189999515,
+      "p95_ms": 60.04646030016829,
+      "mean_ms": 55.60425199997553,
+      "min_ms": 49.95341499989081,
+      "max_ms": 62.675986000158446,
+      "throughput_sps": 17.98423616957279,
       "graph_ready": false,
       "graph_error": null,
       "fast_error": null,
@@ -243,8 +243,8 @@
         "dtype": "torch.bfloat16"
       },
       "breakdown": {
-        "preproc_ms": 6.229853499999081,
-        "forward_ms": 44.516455060002045
+        "preproc_ms": 6.869140460003109,
+        "forward_ms": 51.90061610000157
       }
     },
     {
@@ -255,14 +255,14 @@
       "merge_lora": false,
       "fast_proc_flag": true,
       "cuda_graph_flag": false,
-      "load_s": 1.08,
+      "load_s": 1.16,
       "n": 50,
-      "p50_ms": 45.79336150004565,
-      "p95_ms": 49.9302260500599,
-      "mean_ms": 46.09096122003393,
-      "min_ms": 43.28735500030234,
-      "max_ms": 51.62011900029029,
-      "throughput_sps": 21.696227926905095,
+      "p50_ms": 52.25518200018087,
+      "p95_ms": 56.70241214995713,
+      "mean_ms": 52.59284158002629,
+      "min_ms": 48.871001999941655,
+      "max_ms": 57.505350000155886,
+      "throughput_sps": 19.013994489694582,
       "graph_ready": false,
       "graph_error": null,
       "fast_error": null,
@@ -283,8 +283,8 @@
         "dtype": "torch.bfloat16"
       },
       "breakdown": {
-        "preproc_ms": 2.396004680003898,
-        "forward_ms": 44.47185635999631
+        "preproc_ms": 2.5508566799999244,
+        "forward_ms": 50.79548136000085
       }
     },
     {
@@ -295,14 +295,14 @@
       "merge_lora": false,
       "fast_proc_flag": true,
       "cuda_graph_flag": true,
-      "load_s": 2.82,
+      "load_s": 3.21,
       "n": 50,
-      "p50_ms": 16.28038249987185,
-      "p95_ms": 17.22053895002773,
-      "mean_ms": 16.357733639979415,
-      "min_ms": 15.807254999799625,
-      "max_ms": 17.25014800013014,
-      "throughput_sps": 61.13316318807954,
+      "p50_ms": 16.723820999914096,
+      "p95_ms": 17.600248649887362,
+      "mean_ms": 16.765863999999056,
+      "min_ms": 15.882830999998987,
+      "max_ms": 18.223097999907623,
+      "throughput_sps": 59.64500248839286,
       "graph_ready": true,
       "graph_error": null,
       "fast_error": null,
@@ -323,8 +323,8 @@
         "dtype": "torch.bfloat16"
       },
       "breakdown": {
-        "preproc_ms": 2.247011939998629,
-        "forward_ms": 13.557678040006067
+        "preproc_ms": 2.2863101799975993,
+        "forward_ms": 13.606735340008527
       }
     },
     {
@@ -335,14 +335,14 @@
       "merge_lora": true,
       "fast_proc_flag": false,
       "cuda_graph_flag": false,
-      "load_s": 1.14,
+      "load_s": 1.4,
       "n": 50,
-      "p50_ms": 28.41763599985825,
-      "p95_ms": 30.190964500184236,
-      "mean_ms": 28.601989899962064,
-      "min_ms": 27.21608499996364,
-      "max_ms": 33.150343999750476,
-      "throughput_sps": 34.96260237478534,
+      "p50_ms": 30.246036499875117,
+      "p95_ms": 32.15216715004772,
+      "mean_ms": 30.35733192000407,
+      "min_ms": 26.973018999797205,
+      "max_ms": 32.75872599988361,
+      "throughput_sps": 32.94097131576463,
       "graph_ready": false,
       "graph_error": null,
       "fast_error": null,
@@ -363,8 +363,8 @@
         "dtype": "torch.bfloat16"
       },
       "breakdown": {
-        "preproc_ms": 6.277636459999485,
-        "forward_ms": 21.66896380000253
+        "preproc_ms": 7.153172819998872,
+        "forward_ms": 22.818800800005192
       }
     },
     {
@@ -375,14 +375,14 @@
       "merge_lora": true,
       "fast_proc_flag": true,
       "cuda_graph_flag": false,
-      "load_s": 1.07,
+      "load_s": 1.21,
       "n": 50,
-      "p50_ms": 23.498635999885664,
-      "p95_ms": 28.928908099965145,
-      "mean_ms": 24.078173840025556,
-      "min_ms": 21.458016999986285,
-      "max_ms": 35.60005400004229,
-      "throughput_sps": 41.53138882724084,
+      "p50_ms": 24.984992999861788,
+      "p95_ms": 28.43421765003313,
+      "mean_ms": 25.279105779964084,
+      "min_ms": 22.42923299991162,
+      "max_ms": 32.0330389999981,
+      "throughput_sps": 39.55836130851543,
       "graph_ready": false,
       "graph_error": null,
       "fast_error": null,
@@ -403,8 +403,8 @@
         "dtype": "torch.bfloat16"
       },
       "breakdown": {
-        "preproc_ms": 2.518334180003876,
-        "forward_ms": 19.98408905999895
+        "preproc_ms": 2.5606953599981352,
+        "forward_ms": 21.580215180001687
       }
     },
     {
@@ -415,14 +415,14 @@
       "merge_lora": true,
       "fast_proc_flag": true,
       "cuda_graph_flag": true,
-      "load_s": 2.08,
+      "load_s": 2.39,
       "n": 50,
-      "p50_ms": 12.031386999979077,
-      "p95_ms": 12.441180149835418,
-      "mean_ms": 11.95932511997853,
-      "min_ms": 10.894884999743226,
-      "max_ms": 12.486659999922267,
-      "throughput_sps": 83.61675846820654,
+      "p50_ms": 12.024064500110399,
+      "p95_ms": 12.456113450093653,
+      "mean_ms": 11.970096820032268,
+      "min_ms": 10.984968000229856,
+      "max_ms": 12.849519999690528,
+      "throughput_sps": 83.54151307502158,
       "graph_ready": true,
       "graph_error": null,
       "fast_error": null,
@@ -443,8 +443,8 @@
         "dtype": "torch.bfloat16"
       },
       "breakdown": {
-        "preproc_ms": 2.489117539998915,
-        "forward_ms": 8.686758300000292
+        "preproc_ms": 2.305689879995043,
+        "forward_ms": 8.66090422000525
       }
     }
   ]

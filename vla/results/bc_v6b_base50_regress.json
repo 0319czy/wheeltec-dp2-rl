@@ -1,0 +1,4422 @@
+{
+  "ckpt": "/home/czy/倒立摆/wheeltec_vla/runs/bc_v6b_lowlr/best.pt",
+  "env_module": "sim.env_vla",
+  "episodes_per_instr": 50,
+  "instrs": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+  ],
+  "seed_base": 100002,
+  "batch_episodes": 8,
+  "action_ema": 0.0,
+  "image": {
+    "size": 256,
+    "seq_len": 16
+  },
+  "frames": 2,
+  "frame_stride": 1,
+  "dist_prompt": false,
+  "instr_override": null,
+  "frames_ckpt": 2,
+  "frame_stride_ckpt": 1,
+  "inference": {
+    "frames": 2,
+    "merge_lora": true,
+    "fast_proc": true,
+    "cuda_graph": true,
+    "fast_error": null,
+    "graph_error": null,
+    "graph_max_diff": 0.0017854571342468262
+  },
+  "policy_info": {
+    "merge_lora": true,
+    "fast_proc": true,
+    "cuda_graph": true,
+    "graph_error": null,
+    "fast_error": null,
+    "image_size": 256,
+    "image_seq_len": 16,
+    "frames": 2,
+    "instr_max_len": 69,
+    "graph_count": 6,
+    "graph_max_diff": 0.0017854571342468262,
+    "pad_len": 72,
+    "device": "cuda",
+    "dtype": "torch.bfloat16"
+  },
+  "device": "cuda",
+  "batch_episodes_effective": 8,
+  "started_at": "2026-11-24 16:48:45",
+  "scenarios": {
+    "base": {
+      "scenario": "base",
+      "per_instr": {
+        "0": {
+          "instruction": "保持站立",
+          "episodes": 50,
+          "success": 44,
+          "rate": 0.88,
+          "fail_reasons": {
+            "displaced": 6
+          },
+          "episodes_detail": [
+            {
+              "seed": 100002,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 100019,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 100036,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 100053,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 100070,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 100087,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 100104,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 100121,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 100138,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 100155,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 100172,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "displaced"
+            },
+            {
+              "seed": 100189,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 100206,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 100223,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 100240,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 100257,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 100274,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 100291,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 100308,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "displaced"
+            },
+            {
+              "seed": 100325,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "displaced"
+            },
+            {
+              "seed": 100342,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 100359,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 100376,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 100393,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "displaced"
+            },
+            {
+              "seed": 100410,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 100427,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 100444,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 100461,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 100478,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 100495,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 100512,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 100529,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 100546,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 100563,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 100580,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 100597,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "displaced"
+            },
+            {
+              "seed": 100614,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 100631,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 100648,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 100665,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 100682,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 100699,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 100716,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 100733,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "displaced"
+            },
+            {
+              "seed": 100750,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 100767,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 100784,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 100801,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 100818,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 100835,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            }
+          ]
+        },
+        "1": {
+          "instruction": "向前走",
+          "episodes": 50,
+          "success": 37,
+          "rate": 0.74,
+          "fail_reasons": {
+            "fall": 13
+          },
+          "episodes_detail": [
+            {
+              "seed": 200005,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 200022,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 200039,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 200056,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 200073,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 200090,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 200107,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 200124,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 200141,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 200158,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 200175,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 200192,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 200209,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 200226,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 200243,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 200260,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 200277,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 200294,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 200311,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 200328,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 200345,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 200362,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 200379,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 200396,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 200413,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 200430,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 200447,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 200464,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 200481,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 200498,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 200515,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 200532,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 200549,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 200566,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 200583,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 200600,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 200617,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 200634,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 200651,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 200668,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 200685,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 200702,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 200719,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 200736,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 200753,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 200770,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 200787,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 200804,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 200821,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 200838,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            }
+          ]
+        },
+        "2": {
+          "instruction": "向后退",
+          "episodes": 50,
+          "success": 50,
+          "rate": 1.0,
+          "fail_reasons": {},
+          "episodes_detail": [
+            {
+              "seed": 300008,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300025,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300042,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300059,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300076,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300093,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300110,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300127,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300144,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300161,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300178,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300195,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300212,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300229,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300246,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300263,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300280,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300297,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300314,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300331,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300348,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300365,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300382,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300399,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300416,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300433,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300450,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300467,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300484,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300501,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300518,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300535,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300552,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300569,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300586,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300603,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300620,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300637,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300654,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300671,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300688,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300705,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300722,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300739,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300756,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300773,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300790,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300807,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300824,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 300841,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            }
+          ]
+        },
+        "3": {
+          "instruction": "向左转",
+          "episodes": 50,
+          "success": 49,
+          "rate": 0.98,
+          "fail_reasons": {
+            "fall": 1
+          },
+          "episodes_detail": [
+            {
+              "seed": 400011,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400028,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400045,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400062,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400079,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400096,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400113,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400130,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400147,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400164,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400181,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400198,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400215,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400232,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400249,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400266,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400283,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400300,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 400317,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400334,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400351,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400368,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400385,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400402,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400419,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400436,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400453,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400470,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400487,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400504,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400521,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400538,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400555,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400572,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400589,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400606,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400623,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400640,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400657,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400674,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400691,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400708,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400725,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400742,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400759,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400776,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400793,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400810,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400827,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 400844,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            }
+          ]
+        },
+        "4": {
+          "instruction": "向右转",
+          "episodes": 50,
+          "success": 44,
+          "rate": 0.88,
+          "fail_reasons": {
+            "fall": 6
+          },
+          "episodes_detail": [
+            {
+              "seed": 500014,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 500031,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 500048,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 500065,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 500082,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 500099,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 500116,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 500133,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 500150,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 500167,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 500184,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 500201,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 500218,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 500235,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 500252,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 500269,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 500286,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 500303,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 500320,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 500337,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 500354,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 500371,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 500388,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 500405,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 500422,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 500439,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 500456,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 500473,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 500490,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 500507,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 500524,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 500541,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 500558,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 500575,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 500592,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 500609,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 500626,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 500643,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 500660,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 500677,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 500694,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 500711,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 500728,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 500745,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 500762,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 500779,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 500796,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 500813,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 500830,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 500847,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            }
+          ]
+        },
+        "5": {
+          "instruction": "原地左旋",
+          "episodes": 50,
+          "success": 50,
+          "rate": 1.0,
+          "fail_reasons": {},
+          "episodes_detail": [
+            {
+              "seed": 600017,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600034,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600051,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600068,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600085,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600102,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600119,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600136,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600153,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600170,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600187,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600204,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600221,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600238,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600255,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600272,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600289,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600306,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600323,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600340,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600357,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600374,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600391,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600408,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600425,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600442,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600459,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600476,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600493,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600510,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600527,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600544,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600561,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600578,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600595,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600612,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600629,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600646,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600663,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600680,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600697,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600714,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600731,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600748,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600765,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600782,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600799,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600816,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600833,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 600850,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            }
+          ]
+        },
+        "6": {
+          "instruction": "原地右旋",
+          "episodes": 50,
+          "success": 50,
+          "rate": 1.0,
+          "fail_reasons": {},
+          "episodes_detail": [
+            {
+              "seed": 700020,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700037,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700054,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700071,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700088,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700105,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700122,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700139,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700156,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700173,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700190,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700207,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700224,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700241,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700258,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700275,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700292,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700309,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700326,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700343,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700360,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700377,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700394,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700411,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700428,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700445,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700462,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700479,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700496,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700513,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700530,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700547,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700564,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700581,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700598,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700615,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700632,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700649,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700666,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700683,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700700,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700717,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700734,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700751,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700768,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700785,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700802,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700819,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700836,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 700853,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            }
+          ]
+        },
+        "7": {
+          "instruction": "面向红桶",
+          "episodes": 50,
+          "success": 33,
+          "rate": 0.66,
+          "fail_reasons": {
+            "heading_too_large": 17
+          },
+          "episodes_detail": [
+            {
+              "seed": 800023,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "heading_too_large"
+            },
+            {
+              "seed": 800040,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 800057,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 800074,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 800091,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 800108,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 800125,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 800142,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 800159,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 800176,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "heading_too_large"
+            },
+            {
+              "seed": 800193,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 800210,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 800227,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 800244,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 800261,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 800278,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 800295,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "heading_too_large"
+            },
+            {
+              "seed": 800312,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "heading_too_large"
+            },
+            {
+              "seed": 800329,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 800346,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 800363,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 800380,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "heading_too_large"
+            },
+            {
+              "seed": 800397,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "heading_too_large"
+            },
+            {
+              "seed": 800414,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 800431,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 800448,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "heading_too_large"
+            },
+            {
+              "seed": 800465,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 800482,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 800499,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 800516,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 800533,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "heading_too_large"
+            },
+            {
+              "seed": 800550,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "heading_too_large"
+            },
+            {
+              "seed": 800567,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 800584,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "heading_too_large"
+            },
+            {
+              "seed": 800601,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "heading_too_large"
+            },
+            {
+              "seed": 800618,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 800635,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "heading_too_large"
+            },
+            {
+              "seed": 800652,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 800669,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 800686,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 800703,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 800720,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 800737,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "heading_too_large"
+            },
+            {
+              "seed": 800754,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 800771,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "heading_too_large"
+            },
+            {
+              "seed": 800788,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "heading_too_large"
+            },
+            {
+              "seed": 800805,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "heading_too_large"
+            },
+            {
+              "seed": 800822,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 800839,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 800856,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "heading_too_large"
+            }
+          ]
+        },
+        "8": {
+          "instruction": "靠近红桶",
+          "episodes": 50,
+          "success": 22,
+          "rate": 0.44,
+          "fail_reasons": {
+            "fall": 3,
+            "red_not_reached": 25
+          },
+          "episodes_detail": [
+            {
+              "seed": 900026,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 900043,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 900060,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 900077,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 900094,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "red_not_reached"
+            },
+            {
+              "seed": 900111,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 900128,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "red_not_reached"
+            },
+            {
+              "seed": 900145,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "red_not_reached"
+            },
+            {
+              "seed": 900162,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 900179,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 900196,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "red_not_reached"
+            },
+            {
+              "seed": 900213,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "red_not_reached"
+            },
+            {
+              "seed": 900230,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "red_not_reached"
+            },
+            {
+              "seed": 900247,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "red_not_reached"
+            },
+            {
+              "seed": 900264,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "red_not_reached"
+            },
+            {
+              "seed": 900281,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 900298,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "red_not_reached"
+            },
+            {
+              "seed": 900315,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "red_not_reached"
+            },
+            {
+              "seed": 900332,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 900349,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 900366,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "red_not_reached"
+            },
+            {
+              "seed": 900383,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "red_not_reached"
+            },
+            {
+              "seed": 900400,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 900417,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 900434,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "red_not_reached"
+            },
+            {
+              "seed": 900451,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 900468,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "red_not_reached"
+            },
+            {
+              "seed": 900485,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "red_not_reached"
+            },
+            {
+              "seed": 900502,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 900519,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 900536,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 900553,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 900570,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "red_not_reached"
+            },
+            {
+              "seed": 900587,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 900604,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 900621,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "red_not_reached"
+            },
+            {
+              "seed": 900638,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 900655,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "red_not_reached"
+            },
+            {
+              "seed": 900672,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "red_not_reached"
+            },
+            {
+              "seed": 900689,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 900706,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "red_not_reached"
+            },
+            {
+              "seed": 900723,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 900740,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "red_not_reached"
+            },
+            {
+              "seed": 900757,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "red_not_reached"
+            },
+            {
+              "seed": 900774,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 900791,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "red_not_reached"
+            },
+            {
+              "seed": 900808,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "red_not_reached"
+            },
+            {
+              "seed": 900825,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 900842,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "red_not_reached"
+            },
+            {
+              "seed": 900859,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            }
+          ]
+        },
+        "9": {
+          "instruction": "靠近蓝桶",
+          "episodes": 50,
+          "success": 22,
+          "rate": 0.44,
+          "fail_reasons": {
+            "blue_not_reached": 25,
+            "fall": 3
+          },
+          "episodes_detail": [
+            {
+              "seed": 1000029,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1000046,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1000063,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1000080,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 1000097,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 1000114,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 1000131,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 1000148,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1000165,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 1000182,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1000199,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1000216,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1000233,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1000250,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 1000267,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 1000284,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1000301,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 1000318,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 1000335,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 1000352,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1000369,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1000386,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1000403,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 1000420,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1000437,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 1000454,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 1000471,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1000488,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 1000505,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 1000522,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1000539,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 1000556,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 1000573,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1000590,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1000607,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1000624,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 1000641,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1000658,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 1000675,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 1000692,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 1000709,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 1000726,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1000743,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 1000760,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 1000777,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 1000794,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 1000811,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 1000828,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 1000845,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1000862,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            }
+          ]
+        },
+        "10": {
+          "instruction": "靠近绿桶",
+          "episodes": 50,
+          "success": 23,
+          "rate": 0.46,
+          "fail_reasons": {
+            "green_not_reached": 22,
+            "fall": 5
+          },
+          "episodes_detail": [
+            {
+              "seed": 1100032,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "green_not_reached"
+            },
+            {
+              "seed": 1100049,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1100066,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "green_not_reached"
+            },
+            {
+              "seed": 1100083,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1100100,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1100117,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "green_not_reached"
+            },
+            {
+              "seed": 1100134,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "green_not_reached"
+            },
+            {
+              "seed": 1100151,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "green_not_reached"
+            },
+            {
+              "seed": 1100168,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1100185,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1100202,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1100219,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "green_not_reached"
+            },
+            {
+              "seed": 1100236,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1100253,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1100270,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "green_not_reached"
+            },
+            {
+              "seed": 1100287,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1100304,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "green_not_reached"
+            },
+            {
+              "seed": 1100321,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 1100338,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "green_not_reached"
+            },
+            {
+              "seed": 1100355,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1100372,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "green_not_reached"
+            },
+            {
+              "seed": 1100389,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1100406,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "green_not_reached"
+            },
+            {
+              "seed": 1100423,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 1100440,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1100457,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1100474,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1100491,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "green_not_reached"
+            },
+            {
+              "seed": 1100508,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1100525,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1100542,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1100559,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "green_not_reached"
+            },
+            {
+              "seed": 1100576,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "green_not_reached"
+            },
+            {
+              "seed": 1100593,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1100610,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "green_not_reached"
+            },
+            {
+              "seed": 1100627,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "green_not_reached"
+            },
+            {
+              "seed": 1100644,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "green_not_reached"
+            },
+            {
+              "seed": 1100661,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "green_not_reached"
+            },
+            {
+              "seed": 1100678,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 1100695,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1100712,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "green_not_reached"
+            },
+            {
+              "seed": 1100729,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "green_not_reached"
+            },
+            {
+              "seed": 1100746,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1100763,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1100780,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 1100797,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "green_not_reached"
+            },
+            {
+              "seed": 1100814,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1100831,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 1100848,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "green_not_reached"
+            },
+            {
+              "seed": 1100865,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            }
+          ]
+        },
+        "11": {
+          "instruction": "绕开红桶前往蓝桶",
+          "episodes": 50,
+          "success": 15,
+          "rate": 0.3,
+          "fail_reasons": {
+            "fall": 10,
+            "blue_not_reached": 17,
+            "red_too_close": 8
+          },
+          "episodes_detail": [
+            {
+              "seed": 1200035,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 1200052,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 1200069,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1200086,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1200103,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 1200120,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1200137,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 1200154,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 1200171,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 1200188,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 1200205,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1200222,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1200239,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "red_too_close"
+            },
+            {
+              "seed": 1200256,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1200273,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 1200290,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1200307,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 1200324,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1200341,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 1200358,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "red_too_close"
+            },
+            {
+              "seed": 1200375,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 1200392,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 1200409,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1200426,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1200443,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 1200460,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "red_too_close"
+            },
+            {
+              "seed": 1200477,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "red_too_close"
+            },
+            {
+              "seed": 1200494,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1200511,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 1200528,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1200545,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 1200562,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 1200579,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 1200596,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 1200613,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 1200630,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1200647,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 1200664,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1200681,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "red_too_close"
+            },
+            {
+              "seed": 1200698,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "red_too_close"
+            },
+            {
+              "seed": 1200715,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 1200732,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 1200749,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "red_too_close"
+            },
+            {
+              "seed": 1200766,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "red_too_close"
+            },
+            {
+              "seed": 1200783,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 1200800,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 1200817,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 1200834,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 1200851,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 1200868,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            }
+          ]
+        }
+      },
+      "overall": {
+        "success": 439,
+        "episodes": 600,
+        "rate": 0.7316666666666667
+      },
+      "elapsed_s": 396.0,
+      "latency": {
+        "calls": 4200,
+        "samples": 29603,
+        "per_sample_ms_p50": 8.432674999880874,
+        "per_sample_ms_p95": 14.127150349895599,
+        "per_call_ms_p50": 66.31210400064447,
+        "per_call_ms_p95": 71.56428480047907
+      }
+    }
+  },
+  "baselines": {},
+  "latency": {},
+  "summary": {
+    "base": {
+      "overall_rate": 0.7316666666666667,
+      "episodes": 600,
+      "delta_pp_vs_base": 0.0
+    }
+  },
+  "finished_at": "2026-11-24 16:55:22"
+}

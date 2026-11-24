@@ -25,7 +25,7 @@ for p in "runs/bc_v6b_lowlr/best.pt:hf/SmolVLM-256M-Instruct" ; do :; done
 
 echo "== C) 固件补丁物料 =="
 [ -f deploy/firmware-patch/vla_command_halwork.patch ] && pass "DP2_HAL_work 补丁文件" || bad "缺少固件补丁"
-[ -f deploy/firmware-patch/DP2_HAL_work_新固件.bin ] && pass "已编译固件 bin（可直接烧写）" || warn "还没有编译好的固件 bin（先按 deploy/firmware-patch/README.md 构建）"
+[ -f deploy/firmware-patch/DP2_HAL_work_vla_patch_firmware.bin ] && pass "预编译补丁固件 bin（deploy/firmware-patch/BUILD_INFO.md）" || warn "还没有编译好的固件 bin（先按 deploy/firmware-patch/README.md 构建）"
 [ -f deploy/firmware-patch/test_parse_vw.c ] && pass "解析单元测试源码（33 条断言）" || warn "缺 test_parse_vw.c"
 
 echo "== D) 相机 =="

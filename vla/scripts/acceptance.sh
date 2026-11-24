@@ -24,6 +24,9 @@ $PY scripts/check_env.py 2>&1 | tail -3 || FAIL=1
 say "[2/6] 单元测试"
 $PY -m unittest discover -s tests 2>&1 | tail -3 || FAIL=1
 
+say "[2b/6] 文档数字一致性"
+$PY scripts/check_docs.py 2>&1 | tail -3 || FAIL=1
+
 say "[3/6] 数据自检(流式 check-only)"
 $PY sim/gen_dataset.py --check-only --out data/dataset_v1 2>&1 | tail -4 || FAIL=1
 

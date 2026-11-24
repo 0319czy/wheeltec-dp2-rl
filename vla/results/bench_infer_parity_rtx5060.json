@@ -1,7 +1,7 @@
 {
   "tag": "rtx5060",
   "env": {
-    "timestamp": "2026-11-24 17:00:31",
+    "timestamp": "2026-11-24 17:03:45",
     "python": "3.12.3",
     "torch": "2.9.1+cu128",
     "cuda": "12.8",
@@ -16,7 +16,7 @@
       "name": "NVIDIA GeForce RTX 5060 Laptop GPU",
       "mem_used_MiB": 3692,
       "mem_total_MiB": 8151,
-      "util_pct": 27,
+      "util_pct": 16,
       "compute_apps": [
         {
           "pid": "3119",
@@ -25,16 +25,16 @@
         }
       ],
       "load_avg": [
-        6.2919921875,
-        4.923828125,
-        4.041015625
+        4.48486328125,
+        4.548828125,
+        4.05078125
       ]
     },
     "gpu_status_end": {
       "name": "NVIDIA GeForce RTX 5060 Laptop GPU",
       "mem_used_MiB": 4115,
       "mem_total_MiB": 8151,
-      "util_pct": 36,
+      "util_pct": 42,
       "compute_apps": [
         {
           "pid": "3119",
@@ -42,15 +42,15 @@
           "mem_MiB": "3600"
         },
         {
-          "pid": "105188",
+          "pid": "107678",
           "name": "python",
           "mem_MiB": "418"
         }
       ],
       "load_avg": [
-        5.453125,
-        4.8505859375,
-        4.04443359375
+        5.7509765625,
+        4.82958984375,
+        4.15625
       ]
     }
   },

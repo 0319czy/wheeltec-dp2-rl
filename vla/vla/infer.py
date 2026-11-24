@@ -92,6 +92,10 @@ class VLAPolicy:
             print("[VLAPolicy] 检测到 aux 条件化动作头: 强制关闭快速预处理/CUDA graph(走 eager 慢路径)")
             fast_proc = False
             cuda_graph = False
+        if int(getattr(model.cfg, "chunk", 1)) > 1 and fast_proc:
+            print("[VLAPolicy] 检测到动作块(chunk>1)动作头: 强制关闭快速预处理/CUDA graph(走 eager 慢路径)")
+            fast_proc = False
+            cuda_graph = False
         self.fast = None
         self.runner = None
         self.fast_error = None

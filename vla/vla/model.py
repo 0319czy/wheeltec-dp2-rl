@@ -97,6 +97,7 @@ class VLAConfig:
     aux_condition_action: bool = False  # True: 动作头额外吃 aux 预测(两阶段:先定位再决策)
     dist_prompt: bool = False     # True: 指令后附目标距离(需要数据/环境提供距离;测距传感器实验)
     bearing_prompt: bool = False  # True: 指令后附目标方位角(需要数据/环境提供方位;方位传感器实验)
+    chunk: int = 1                # >1 时动作头一次预测未来 chunk 步(动作块;推理只用第 0 步)
 
     def to_dict(self) -> dict:
         d = dict(self.__dict__)
@@ -211,13 +212,14 @@ class ActionHead(nn.Module):
     """
 
     def __init__(self, hidden_size: int = 576, mid: int = 256, action_dim: int = 2,
-                 extra_dim: int = 0):
+                 extra_dim: int = 0, chunk: int = 1):
         super().__init__()
         self.norm = nn.LayerNorm(hidden_size)
         self.extra_dim = int(extra_dim)
+        self.chunk = max(1, int(chunk))
         self.fc1 = nn.Linear(hidden_size + self.extra_dim, mid)
         self.act = nn.GELU()
-        self.fc2 = nn.Linear(mid, action_dim)
+        self.fc2 = nn.Linear(mid, action_dim * self.chunk)
 
     def forward(self, hidden: torch.Tensor, extra: torch.Tensor | None = None) -> torch.Tensor:
         x = self.norm(hidden)
@@ -279,7 +281,9 @@ class VLAModel(nn.Module):
         # 2) 内层 Idefics3Model(不含 lm_head),动作只需要 hidden state
         self.inner = base.model
         hidden_size = int(base.config.text_config.hidden_size)
-        self.action_head = ActionHead(hidden_size, cfg.head_hidden, cfg.action_dim)
+        self.action_head = ActionHead(hidden_size, cfg.head_hidden, cfg.action_dim,
+                                      chunk=int(getattr(cfg, "chunk", 1)))
+        self.chunk = max(1, int(getattr(cfg, "chunk", 1)))
         self.aux_head = AuxHead(hidden_size, cfg.head_hidden, cfg.aux_dim) if cfg.aux_dim > 0 else None
         self.extra_dim = int(cfg.aux_dim) if (cfg.aux_condition_action and cfg.aux_dim > 0) else 0
         if self.extra_dim > 0:
@@ -293,7 +297,8 @@ class VLAModel(nn.Module):
                   f"hidden={hidden_size} image={cfg.image_size}px seq={cfg.image_seq_len}")
 
     # -- 前向 ---------------------------------------------------------------
-    def forward(self, enc: Dict[str, torch.Tensor], return_aux: bool = False):
+    def forward(self, enc: Dict[str, torch.Tensor], return_aux: bool = False,
+                return_chunk: bool = False):
         """enc: prepare_inputs 的输出。
 
         默认返回 (归一化动作 [B,2], last hidden [B,H]);
@@ -314,7 +319,15 @@ class VLAModel(nn.Module):
         extra = None
         if self.extra_dim > 0 and aux_pred is not None:
             extra = aux_pred / float(self.cfg.aux_scale)    # 与训练标签同一归一化
-        actions = self.action_head(feat.float(), extra)     # 动作头用 fp32 更稳
+        raw = self.action_head(feat.float(), extra)         # 动作头用 fp32 更稳
+        chunk = None
+        if self.chunk > 1:
+            chunk = raw.view(-1, self.chunk, self.cfg.action_dim)
+            actions = chunk[:, 0]                           # 推理只用第 0 步
+        else:
+            actions = raw
+        if return_chunk:
+            return chunk, feat, aux_pred
         if return_aux and aux_pred is not None:
             return actions, feat, aux_pred
         return actions, feat
@@ -382,10 +395,11 @@ def load_action_head_partial(model, state: Dict[str, torch.Tensor]) -> List[str]
             skipped.append(k)
             continue
         if tuple(own[k].shape) != tuple(v.shape):
-            if own[k].dim() == 2 and v.dim() == 2 and own[k].shape[0] == v.shape[0]:
-                new = own[k].clone()
+            if own[k].dim() == 2 and v.dim() == 2:
+                new = torch.zeros_like(own[k])   # 新增的行/列置零 → 热启动时输出与旧模型一致
+                rows = min(new.shape[0], v.shape[0])
                 cols = min(new.shape[1], v.shape[1])
-                new[:, :cols] = v[:, :cols]
+                new[:rows, :cols] = v[:rows, :cols]
                 own[k] = new
             else:
                 skipped.append(k)

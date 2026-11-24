@@ -42,6 +42,7 @@ from vla.model import (  # noqa: E402
 )
 
 # 距离 prompt(可选):把"目标距离"拼到指令后面,用于验证"给了测距后 VLA 能到什么水平"
+CHUNK = 1          # 动作块长度(由 --chunk 设置)
 DIST_PROMPT = False
 TARGET_COLOR = {7: 0, 8: 0, 9: 1, 10: 2, 11: 1}   # 指令 -> 目标颜色(0 红 / 1 蓝 / 2 绿)
 
@@ -136,6 +137,16 @@ def _collate_impl(items, augment):
                        for t, it in zip(instr_texts, items)]
     enc = prepare_inputs(proc, images, instr_texts, device=None)
     actions = torch.from_numpy(np.stack([it["action"] for it in items]).astype(np.float32))
+    if any(it.get("action_chunk") is not None for it in items):
+        chunks = []
+        for it in items:
+            c = it.get("action_chunk")
+            if c is None:
+                c = np.stack([it["action"]] * CHUNK, axis=0)
+            chunks.append(c)
+        out_chunk = torch.from_numpy(np.stack(chunks).astype(np.float32))
+    else:
+        out_chunk = None
     meta = {
         "instr_id": np.array([it["instr_id"] for it in items], dtype=np.int16),
         "episode_id": np.array([it["episode_id"] for it in items], dtype=np.int32),
@@ -143,6 +154,8 @@ def _collate_impl(items, augment):
         "step_idx": np.array([it["step_idx"] for it in items], dtype=np.int16),
     }
     out = {"enc": enc, "actions": actions, "meta": meta}
+    if out_chunk is not None:
+        out["action_chunk"] = out_chunk
     aux_list = [it.get("aux") for it in items]
     if any(a is not None for a in aux_list):
         dim = len(next(a for a in aux_list if a is not None))
@@ -174,12 +187,14 @@ class ShardDataset(Dataset):
     (每个 shard 约 120 MB,只缓存最近 1-3 个)。
     """
 
-    def __init__(self, shard_paths, indices, cache_size=3, frames=1, frame_stride=1):
+    def __init__(self, shard_paths, indices, cache_size=3, frames=1, frame_stride=1,
+                 chunk=1):
         self.shard_paths = list(shard_paths)
         self.indices = indices            # [N,2] int64:(shard 下标, 行号)
         self.cache_size = int(cache_size)
         self.frames = max(1, int(frames))
         self.frame_stride = max(1, int(frame_stride))
+        self.chunk = max(1, int(chunk))
         self._cache = OrderedDict()
 
     def __len__(self):
@@ -229,9 +244,23 @@ class ShardDataset(Dataset):
                 elif idx < 0 or int(d["episode_ids"][idx]) != ep or off > step:
                     idx = ep_first
                 frames.append(d["images"][idx])
+        if self.chunk > 1:
+            # 未来 chunk-1 步动作(同一 episode;越界就重复最后一个可用动作)
+            ep_c = int(d["episode_ids"][row])
+            st_c = int(d["step_idx"][row])
+            acts = [np.asarray(d["actions"][row], dtype=np.float32)]
+            for k in range(1, self.chunk):
+                idx = row + k
+                ok = (idx < len(d["actions"]) and int(d["episode_ids"][idx]) == ep_c
+                      and int(d["step_idx"][idx]) == st_c + k)
+                acts.append(np.asarray(d["actions"][idx] if ok else acts[-1], dtype=np.float32))
+            chunk_arr = np.stack(acts, axis=0)
+        else:
+            chunk_arr = None
         item = {
             "images": frames,
             "image": cur_img,
+            "action_chunk": chunk_arr,
             "action": np.asarray(d["actions"][row], dtype=np.float32),
             "instr_id": int(d["instr_ids"][row]),
             "episode_id": int(d["episode_ids"][row]),
@@ -489,6 +518,7 @@ def evaluate(model, loader, device, v_max, w_max, max_batches=None):
 
 
 def main():
+    global CHUNK, DIST_PROMPT, BEARING_PROMPT
     ap = argparse.ArgumentParser(description="SmolVLM-256M 行为克隆训练")
     ap.add_argument("--data", required=True,
                     help="数据目录(含 shards/*.npz);可用逗号拼接多个目录,如 "
@@ -549,11 +579,14 @@ def main():
                          "需要数据 shard 里有 aux 键(gen_dataset.py --aux)")
     ap.add_argument("--bearing-prompt", action="store_true",
                     help="指令后附目标方位角(需要 shard 里有 aux;方位传感器可行性实验)")
+    ap.add_argument("--chunk", type=int, default=1,
+                    help="动作块长度: 一次预测未来 N 步动作(训练用;推理只用第 0 步)")
     ap.add_argument("--dist-prompt", action="store_true",
                     help="指令后附目标距离 x.xxm(需要 shard 里有 aux;测距传感器可行性实验)")
     ap.add_argument("--aux-condition", action="store_true",
                     help="两阶段:动作头额外吃 aux 预测(桶相对位置),需同时 >0 的 --aux-loss-weight")
     args = ap.parse_args()
+    CHUNK = max(1, int(getattr(args, "chunk", 1)))
 
     set_seed(args.seed)
     os.makedirs(args.out, exist_ok=True)
@@ -593,7 +626,7 @@ def main():
               f"{ {dirs_abs[d]: int((train_source == d).sum()) for d in range(len(dirs_abs))} }")
     val_idx = indices[val_mask]
     train_ds = ShardDataset(shard_paths, train_idx, cache_size=args.cache_shards,
-                            frames=args.frames, frame_stride=args.frame_stride)
+                            frames=args.frames, frame_stride=args.frame_stride, chunk=CHUNK)
     val_ds = ShardDataset(shard_paths, val_idx, cache_size=args.cache_shards,
                           frames=args.frames, frame_stride=args.frame_stride)
     _WORKER_CTX.update({
@@ -623,7 +656,8 @@ def main():
     cfg = VLAConfig.for_image_size(args.image_size)
     cfg.frames = int(args.frames)
     cfg.frame_stride = int(args.frame_stride)
-    global DIST_PROMPT, BEARING_PROMPT
+    if CHUNK > 1:
+        cfg.chunk = CHUNK
     DIST_PROMPT = bool(getattr(args, "dist_prompt", False))
     BEARING_PROMPT = bool(getattr(args, "bearing_prompt", False))
     if DIST_PROMPT:
@@ -795,10 +829,26 @@ def main():
             enc = {k: v.to(device, non_blocking=True) for k, v in batch["enc"].items()}
             target = normalize_actions(batch["actions"], cfg.v_max, cfg.w_max).to(device)
             aux_loss_val = 0.0
-            if cfg.aux_dim > 0 and args.aux_loss_weight > 0 and "aux" in batch:
-                pred, _feat, aux_pred = model(enc, return_aux=True)
+            use_aux = cfg.aux_dim > 0 and args.aux_loss_weight > 0 and "aux" in batch
+            if aux_loss_val == 0.0 and use_aux:
                 aux_t = (batch["aux"].to(device) / cfg.aux_scale)
                 aux_m = batch["aux_mask"].to(device)
+            if cfg.chunk > 1 and "action_chunk" in batch:
+                # 动作块监督: 一次预测未来 chunk 步(第 0 步就是当前动作)
+                chunk_pred, _feat, aux_pred = model(enc, return_chunk=True)
+                tgt = normalize_actions(batch["action_chunk"].reshape(-1, 2),
+                                        cfg.v_max, cfg.w_max).view(-1, cfg.chunk, 2).to(device)
+                pred = chunk_pred[:, 0]
+                mse = ((chunk_pred.float() - tgt.float()) ** 2).mean()
+                if use_aux and aux_pred is not None:
+                    aux_sq = ((aux_pred.float() - aux_t.float()) ** 2).mean(dim=-1) * aux_m
+                    aux_loss = aux_sq.sum() / aux_m.sum().clamp(min=1.0)
+                    aux_loss_val = float(aux_loss.item())
+                    loss = (mse + args.aux_loss_weight * aux_loss) / args.grad_accum
+                else:
+                    loss = mse / args.grad_accum
+            elif use_aux:
+                pred, _feat, aux_pred = model(enc, return_aux=True)
                 aux_sq = ((aux_pred.float() - aux_t.float()) ** 2).mean(dim=-1) * aux_m
                 aux_loss = aux_sq.sum() / aux_m.sum().clamp(min=1.0)
                 aux_loss_val = float(aux_loss.item())

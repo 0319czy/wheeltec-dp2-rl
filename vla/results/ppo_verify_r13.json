@@ -1,0 +1,104 @@
+{
+  "ckpt": "runs/ppo_state/ppo_state.zip",
+  "timesteps": 150000,
+  "n_envs": 4,
+  "frames": 1,
+  "obs": "privileged state (dist, heading, vel, instr onehot)",
+  "note": "state-based PPO baseline; NOT a fair-input comparison (VLA sees only 128x128 RGB + Chinese text)",
+  "duration_s": 5.7,
+  "scenarios": {
+    "base": {
+      "overall": {
+        "rate": 0.25,
+        "success": 3,
+        "episodes": 12
+      },
+      "per_instr": {
+        "0": {
+          "instruction": "保持站立",
+          "instruction_short": "保持站立",
+          "episodes": 1,
+          "success": 1,
+          "rate": 1.0
+        },
+        "1": {
+          "instruction": "向前走",
+          "instruction_short": "向前走",
+          "episodes": 1,
+          "success": 0,
+          "rate": 0.0
+        },
+        "2": {
+          "instruction": "向后退",
+          "instruction_short": "向后退",
+          "episodes": 1,
+          "success": 0,
+          "rate": 0.0
+        },
+        "3": {
+          "instruction": "向左转",
+          "instruction_short": "向左转",
+          "episodes": 1,
+          "success": 0,
+          "rate": 0.0
+        },
+        "4": {
+          "instruction": "向右转",
+          "instruction_short": "向右转",
+          "episodes": 1,
+          "success": 0,
+          "rate": 0.0
+        },
+        "5": {
+          "instruction": "原地左旋",
+          "instruction_short": "原地左旋",
+          "episodes": 1,
+          "success": 0,
+          "rate": 0.0
+        },
+        "6": {
+          "instruction": "原地右旋",
+          "instruction_short": "原地右旋",
+          "episodes": 1,
+          "success": 0,
+          "rate": 0.0
+        },
+        "7": {
+          "instruction": "面向红桶",
+          "instruction_short": "面向红桶",
+          "episodes": 1,
+          "success": 1,
+          "rate": 1.0
+        },
+        "8": {
+          "instruction": "靠近红桶",
+          "instruction_short": "靠近红桶",
+          "episodes": 1,
+          "success": 0,
+          "rate": 0.0
+        },
+        "9": {
+          "instruction": "靠近蓝桶",
+          "instruction_short": "靠近蓝桶",
+          "episodes": 1,
+          "success": 0,
+          "rate": 0.0
+        },
+        "10": {
+          "instruction": "靠近绿桶",
+          "instruction_short": "靠近绿桶",
+          "episodes": 1,
+          "success": 1,
+          "rate": 1.0
+        },
+        "11": {
+          "instruction": "绕开红桶前往蓝桶",
+          "instruction_short": "绕开红桶前往蓝桶",
+          "episodes": 1,
+          "success": 0,
+          "rate": 0.0
+        }
+      }
+    }
+  }
+}

@@ -36,6 +36,7 @@ sys.path.insert(0, PROJECT_ROOT)
 
 # 距离 prompt(可选,与 vla/train_bc.py 的 --dist-prompt 配套):目标距离拼到指令后
 DIST_PROMPT = False
+INSTR_OVERRIDE = None   # 语言消融:把所有回合的指令文本强制换成某条(任务判定仍用真实 instr_id)
 import math
 BEARING_PROMPT = False
 TARGET_COLOR = {7: 0, 8: 0, 9: 1, 10: 2, 11: 1}   # 指令 -> 目标颜色(0 红 / 1 蓝 / 2 绿)
@@ -258,7 +259,10 @@ def evaluate_scenario(env_cls, success_func, policy, instr_ids, episodes, max_st
     per_instr = {}
     total_ok, total_n = 0, 0
     for instr_id in instr_ids:
-        instruction = INSTRUCTIONS_DEFAULT[instr_id]
+        if INSTR_OVERRIDE is None:
+            instruction = INSTRUCTIONS_DEFAULT[instr_id]
+        else:
+            instruction = INSTRUCTIONS_DEFAULT[int(INSTR_OVERRIDE)]
         seeds = [seed_base + instr_id * 100003 + i * 17 for i in range(episodes)]
         ok = 0
         outcomes = []
@@ -550,6 +554,8 @@ def main():
                     help="动作一阶低通系数(0=关闭;0.5=对 (v,w) 做 a_t=ema*a_{t-1}+(1-ema)*a_new)")
     ap.add_argument("--bearing-prompt", choices=["auto", "on", "off"], default="auto",
                     help="指令后附目标方位角(与训练 --bearing-prompt 配套;auto=按 ckpt 配置)")
+    ap.add_argument("--instr-override", type=int, default=None,
+                    help="语言消融:把所有回合的指令文本强制换成该 id(任务与判定不变)")
     ap.add_argument("--dist-prompt", choices=["auto", "on", "off"], default="auto",
                     help="指令后附目标距离(与训练 --dist-prompt 配套;auto=按 ckpt 配置)")
     ap.add_argument("--frames", type=int, default=1, choices=[1, 2, 4],
@@ -614,6 +620,10 @@ def main():
     print(f"[policy] 加载 {args.ckpt} 用时 {load_s:.1f}s; 图像 {policy.cfg.image_size}px "
           f"seq={policy.cfg.image_seq_len} device={policy.device}")
     global DIST_PROMPT
+    global INSTR_OVERRIDE
+    INSTR_OVERRIDE = args.instr_override
+    if INSTR_OVERRIDE is not None:
+        print("[instr-override] 语言消融: 所有回合一律用指令 %r" % INSTRUCTIONS_DEFAULT[int(INSTR_OVERRIDE)])
     if args.dist_prompt == "on":
         DIST_PROMPT = True
     elif args.dist_prompt == "off":
@@ -647,6 +657,7 @@ def main():
         "frames": eff_frames,
         "frame_stride": eff_stride,
         "dist_prompt": bool(DIST_PROMPT),
+        "instr_override": INSTR_OVERRIDE,
         "frames_ckpt": ckpt_frames,
         "frame_stride_ckpt": ckpt_stride,
         "inference": {

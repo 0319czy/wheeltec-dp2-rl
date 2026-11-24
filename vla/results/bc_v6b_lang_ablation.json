@@ -1,0 +1,1074 @@
+{
+  "ckpt": "/home/czy/倒立摆/wheeltec_vla/runs/bc_v6b_lowlr/best.pt",
+  "env_module": "sim.env_vla",
+  "episodes_per_instr": 10,
+  "instrs": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+  ],
+  "seed_base": 2026,
+  "batch_episodes": 8,
+  "action_ema": 0.0,
+  "image": {
+    "size": 256,
+    "seq_len": 16
+  },
+  "frames": 2,
+  "frame_stride": 1,
+  "dist_prompt": false,
+  "instr_override": 1,
+  "frames_ckpt": 2,
+  "frame_stride_ckpt": 1,
+  "inference": {
+    "frames": 2,
+    "merge_lora": true,
+    "fast_proc": true,
+    "cuda_graph": true,
+    "fast_error": null,
+    "graph_error": null,
+    "graph_max_diff": 0.0017854571342468262
+  },
+  "policy_info": {
+    "merge_lora": true,
+    "fast_proc": true,
+    "cuda_graph": true,
+    "graph_error": null,
+    "fast_error": null,
+    "image_size": 256,
+    "image_seq_len": 16,
+    "frames": 2,
+    "instr_max_len": 69,
+    "graph_count": 6,
+    "graph_max_diff": 0.0017854571342468262,
+    "pad_len": 72,
+    "device": "cuda",
+    "dtype": "torch.bfloat16"
+  },
+  "device": "cuda",
+  "batch_episodes_effective": 8,
+  "started_at": "2026-11-24 16:45:06",
+  "scenarios": {
+    "base": {
+      "scenario": "base",
+      "per_instr": {
+        "0": {
+          "instruction": "向前走",
+          "episodes": 10,
+          "success": 0,
+          "rate": 0.0,
+          "fail_reasons": {
+            "fall": 1,
+            "displaced": 9
+          },
+          "episodes_detail": [
+            {
+              "seed": 2026,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 2043,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "displaced"
+            },
+            {
+              "seed": 2060,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "displaced"
+            },
+            {
+              "seed": 2077,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "displaced"
+            },
+            {
+              "seed": 2094,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "displaced"
+            },
+            {
+              "seed": 2111,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "displaced"
+            },
+            {
+              "seed": 2128,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "displaced"
+            },
+            {
+              "seed": 2145,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "displaced"
+            },
+            {
+              "seed": 2162,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "displaced"
+            },
+            {
+              "seed": 2179,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "displaced"
+            }
+          ]
+        },
+        "1": {
+          "instruction": "向前走",
+          "episodes": 10,
+          "success": 8,
+          "rate": 0.8,
+          "fail_reasons": {
+            "fall": 2
+          },
+          "episodes_detail": [
+            {
+              "seed": 102029,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 102046,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 102063,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 102080,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 102097,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 102114,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 102131,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 102148,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 102165,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 102182,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            }
+          ]
+        },
+        "2": {
+          "instruction": "向前走",
+          "episodes": 10,
+          "success": 0,
+          "rate": 0.0,
+          "fail_reasons": {
+            "backward_too_short": 8,
+            "fall": 2
+          },
+          "episodes_detail": [
+            {
+              "seed": 202032,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "backward_too_short"
+            },
+            {
+              "seed": 202049,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "backward_too_short"
+            },
+            {
+              "seed": 202066,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 202083,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 202100,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "backward_too_short"
+            },
+            {
+              "seed": 202117,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "backward_too_short"
+            },
+            {
+              "seed": 202134,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "backward_too_short"
+            },
+            {
+              "seed": 202151,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "backward_too_short"
+            },
+            {
+              "seed": 202168,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "backward_too_short"
+            },
+            {
+              "seed": 202185,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "backward_too_short"
+            }
+          ]
+        },
+        "3": {
+          "instruction": "向前走",
+          "episodes": 10,
+          "success": 0,
+          "rate": 0.0,
+          "fail_reasons": {
+            "yaw_not_in_range": 8,
+            "fall": 2
+          },
+          "episodes_detail": [
+            {
+              "seed": 302035,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "yaw_not_in_range"
+            },
+            {
+              "seed": 302052,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 302069,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "yaw_not_in_range"
+            },
+            {
+              "seed": 302086,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "yaw_not_in_range"
+            },
+            {
+              "seed": 302103,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "yaw_not_in_range"
+            },
+            {
+              "seed": 302120,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 302137,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "yaw_not_in_range"
+            },
+            {
+              "seed": 302154,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "yaw_not_in_range"
+            },
+            {
+              "seed": 302171,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "yaw_not_in_range"
+            },
+            {
+              "seed": 302188,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "yaw_not_in_range"
+            }
+          ]
+        },
+        "4": {
+          "instruction": "向前走",
+          "episodes": 10,
+          "success": 0,
+          "rate": 0.0,
+          "fail_reasons": {
+            "yaw_not_in_range": 8,
+            "fall": 2
+          },
+          "episodes_detail": [
+            {
+              "seed": 402038,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "yaw_not_in_range"
+            },
+            {
+              "seed": 402055,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "yaw_not_in_range"
+            },
+            {
+              "seed": 402072,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 402089,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "yaw_not_in_range"
+            },
+            {
+              "seed": 402106,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "yaw_not_in_range"
+            },
+            {
+              "seed": 402123,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "yaw_not_in_range"
+            },
+            {
+              "seed": 402140,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 402157,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "yaw_not_in_range"
+            },
+            {
+              "seed": 402174,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "yaw_not_in_range"
+            },
+            {
+              "seed": 402191,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "yaw_not_in_range"
+            }
+          ]
+        },
+        "5": {
+          "instruction": "向前走",
+          "episodes": 10,
+          "success": 0,
+          "rate": 0.0,
+          "fail_reasons": {
+            "yaw_not_in_range": 7,
+            "fall": 3
+          },
+          "episodes_detail": [
+            {
+              "seed": 502041,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "yaw_not_in_range"
+            },
+            {
+              "seed": 502058,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "yaw_not_in_range"
+            },
+            {
+              "seed": 502075,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 502092,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 502109,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 502126,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "yaw_not_in_range"
+            },
+            {
+              "seed": 502143,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "yaw_not_in_range"
+            },
+            {
+              "seed": 502160,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "yaw_not_in_range"
+            },
+            {
+              "seed": 502177,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "yaw_not_in_range"
+            },
+            {
+              "seed": 502194,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "yaw_not_in_range"
+            }
+          ]
+        },
+        "6": {
+          "instruction": "向前走",
+          "episodes": 10,
+          "success": 0,
+          "rate": 0.0,
+          "fail_reasons": {
+            "yaw_not_in_range": 9,
+            "fall": 1
+          },
+          "episodes_detail": [
+            {
+              "seed": 602044,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "yaw_not_in_range"
+            },
+            {
+              "seed": 602061,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "yaw_not_in_range"
+            },
+            {
+              "seed": 602078,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "yaw_not_in_range"
+            },
+            {
+              "seed": 602095,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "yaw_not_in_range"
+            },
+            {
+              "seed": 602112,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "yaw_not_in_range"
+            },
+            {
+              "seed": 602129,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 602146,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "yaw_not_in_range"
+            },
+            {
+              "seed": 602163,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "yaw_not_in_range"
+            },
+            {
+              "seed": 602180,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "yaw_not_in_range"
+            },
+            {
+              "seed": 602197,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "yaw_not_in_range"
+            }
+          ]
+        },
+        "7": {
+          "instruction": "向前走",
+          "episodes": 10,
+          "success": 1,
+          "rate": 0.1,
+          "fail_reasons": {
+            "heading_too_large": 5,
+            "fall": 4
+          },
+          "episodes_detail": [
+            {
+              "seed": 702047,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "heading_too_large"
+            },
+            {
+              "seed": 702064,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "heading_too_large"
+            },
+            {
+              "seed": 702081,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 702098,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 702115,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "heading_too_large"
+            },
+            {
+              "seed": 702132,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 702149,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "heading_too_large"
+            },
+            {
+              "seed": 702166,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 702183,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 702200,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "heading_too_large"
+            }
+          ]
+        },
+        "8": {
+          "instruction": "向前走",
+          "episodes": 10,
+          "success": 4,
+          "rate": 0.4,
+          "fail_reasons": {
+            "red_not_reached": 3,
+            "fall": 3
+          },
+          "episodes_detail": [
+            {
+              "seed": 802050,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 802067,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "red_not_reached"
+            },
+            {
+              "seed": 802084,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 802101,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "red_not_reached"
+            },
+            {
+              "seed": 802118,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 802135,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "red_not_reached"
+            },
+            {
+              "seed": 802152,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 802169,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 802186,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 802203,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            }
+          ]
+        },
+        "9": {
+          "instruction": "向前走",
+          "episodes": 10,
+          "success": 5,
+          "rate": 0.5,
+          "fail_reasons": {
+            "fall": 2,
+            "blue_not_reached": 3
+          },
+          "episodes_detail": [
+            {
+              "seed": 902053,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 902070,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 902087,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 902104,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 902121,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 902138,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 902155,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 902172,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 902189,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 902206,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            }
+          ]
+        },
+        "10": {
+          "instruction": "向前走",
+          "episodes": 10,
+          "success": 2,
+          "rate": 0.2,
+          "fail_reasons": {
+            "fall": 2,
+            "green_not_reached": 6
+          },
+          "episodes_detail": [
+            {
+              "seed": 1002056,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 1002073,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "green_not_reached"
+            },
+            {
+              "seed": 1002090,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "green_not_reached"
+            },
+            {
+              "seed": 1002107,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "green_not_reached"
+            },
+            {
+              "seed": 1002124,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1002141,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1002158,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "green_not_reached"
+            },
+            {
+              "seed": 1002175,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "green_not_reached"
+            },
+            {
+              "seed": 1002192,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "green_not_reached"
+            },
+            {
+              "seed": 1002209,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            }
+          ]
+        },
+        "11": {
+          "instruction": "向前走",
+          "episodes": 10,
+          "success": 6,
+          "rate": 0.6,
+          "fail_reasons": {
+            "blue_not_reached": 3,
+            "fall": 1
+          },
+          "episodes_detail": [
+            {
+              "seed": 1102059,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 1102076,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1102093,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1102110,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1102127,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "fall"
+            },
+            {
+              "seed": 1102144,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1102161,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1102178,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            },
+            {
+              "seed": 1102195,
+              "success": true,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": null
+            },
+            {
+              "seed": 1102212,
+              "success": false,
+              "steps": 50,
+              "judge_source": "env_info",
+              "fail_reason": "blue_not_reached"
+            }
+          ]
+        }
+      },
+      "overall": {
+        "success": 26,
+        "episodes": 120,
+        "rate": 0.21666666666666667
+      },
+      "elapsed_s": 85.7,
+      "latency": {
+        "calls": 1200,
+        "samples": 5848,
+        "per_sample_ms_p50": 10.966716499751783,
+        "per_sample_ms_p95": 15.337450575725596,
+        "per_call_ms_p50": 46.398046499234624,
+        "per_call_ms_p95": 71.68452830110255
+      }
+    }
+  },
+  "baselines": {},
+  "latency": {},
+  "summary": {
+    "base": {
+      "overall_rate": 0.21666666666666667,
+      "episodes": 120,
+      "delta_pp_vs_base": 0.0
+    }
+  },
+  "finished_at": "2026-11-24 16:46:33"
+}

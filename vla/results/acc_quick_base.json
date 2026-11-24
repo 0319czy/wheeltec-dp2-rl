@@ -56,7 +56,7 @@
   },
   "device": "cuda",
   "batch_episodes_effective": 8,
-  "started_at": "2026-11-24 20:36:45",
+  "started_at": "2026-11-24 20:40:36",
   "scenarios": {
     "base": {
       "scenario": "base",
@@ -1032,14 +1032,14 @@
         "episodes": 120,
         "rate": 0.75
       },
-      "elapsed_s": 92.5,
+      "elapsed_s": 92.8,
       "latency": {
         "calls": 1200,
         "samples": 5896,
-        "per_sample_ms_p50": 10.811806874983176,
-        "per_sample_ms_p95": 17.03756855001046,
-        "per_call_ms_p50": 51.994080499980555,
-        "per_call_ms_p95": 75.1478216999942
+        "per_sample_ms_p50": 10.799919499959287,
+        "per_sample_ms_p95": 16.772660199995922,
+        "per_call_ms_p50": 48.38349400000652,
+        "per_call_ms_p95": 74.11728944993001
       }
     }
   },
@@ -1052,5 +1052,5 @@
       "delta_pp_vs_base": 0.0
     }
   },
-  "finished_at": "2026-11-24 20:38:19"
+  "finished_at": "2026-11-24 20:42:10"
 }

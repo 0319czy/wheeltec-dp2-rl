@@ -84,8 +84,23 @@ def _get_worker_processor():
     return proc
 
 
-def _augment_image(img, rng):
-    """训练期轻量增强:亮度 ±20% + 10% 遮挡块(对应 spec 第 7 节的视觉扰动)。
+GEO_AUG = False   # --geo-aug: 训练期加"相机视场/安装偏差"几何增强
+
+
+def _apply_geo_aug(arr, scale, dx, dy):
+    """按 (scale, dx, dy) 做中心裁切+缩放+平移,模拟实机相机视场/安装偏差。"""
+    from PIL import Image
+    im = Image.fromarray(np.asarray(arr, dtype=np.uint8))
+    w, h = im.size
+    cw = max(8, min(w, int(round(w / max(0.5, float(scale))))))
+    ch = max(8, min(h, int(round(h / max(0.5, float(scale))))))
+    x0 = max(0, min(w - cw, (w - cw) // 2 + int(dx)))
+    y0 = max(0, min(h - ch, (h - ch) // 2 + int(dy)))
+    return np.asarray(im.crop((x0, y0, x0 + cw, y0 + ch)).resize((w, h), Image.LANCZOS))
+
+
+def _augment_image(img, rng, geo=None):
+    """训练期轻量增强:亮度 ±20% + 10% 遮挡块(+ 可选几何偏差,对应 spec 第 7 节)。
 
     只做亮度和遮挡,绝不做水平翻转(会破坏"向左转/向右转"的语义)。
     """
@@ -98,7 +113,10 @@ def _augment_image(img, rng):
         y = int(rng.integers(0, max(1, h - side)))
         x = int(rng.integers(0, max(1, w - side)))
         arr[y:y + side, x:x + side, :] = rng.uniform(0.0, 255.0)
-    return np.clip(arr, 0, 255).astype(np.uint8)
+    out = np.clip(arr, 0, 255).astype(np.uint8)
+    if geo is not None:
+        out = _apply_geo_aug(out, *geo)
+    return out
 
 
 def _collate_impl(items, augment):
@@ -115,8 +133,13 @@ def _collate_impl(items, augment):
             # 同一回合的多帧必须"同一次翻转/同一种颜色扰动决策"保持一致;亮度/遮挡逐帧独立
             flip = bool(flip_enabled and rng.random() < 0.5)
             frames = []
+            geo = None
+            if GEO_AUG and rng.random() < 0.5:
+                # 视场 ±10%、平移 ±6 px(同一帧序列用同一组几何参数,保持时序一致)
+                geo = (float(rng.uniform(0.9, 1.1)),
+                       int(rng.integers(-6, 7)), int(rng.integers(-6, 7)))
             for fr in it.get("images", [it["image"]]):
-                fr2 = _augment_image(fr, rng)
+                fr2 = _augment_image(fr, rng, geo=geo)
                 if flip:
                     fr2 = np.ascontiguousarray(fr2[:, ::-1, :])
                 frames.append(fr2)
@@ -518,7 +541,7 @@ def evaluate(model, loader, device, v_max, w_max, max_batches=None):
 
 
 def main():
-    global CHUNK, DIST_PROMPT, BEARING_PROMPT
+    global CHUNK, DIST_PROMPT, BEARING_PROMPT, GEO_AUG
     ap = argparse.ArgumentParser(description="SmolVLM-256M 行为克隆训练")
     ap.add_argument("--data", required=True,
                     help="数据目录(含 shards/*.npz);可用逗号拼接多个目录,如 "
@@ -572,6 +595,8 @@ def main():
     ap.add_argument("--augment", dest="augment", action="store_true", default=True,
                     help="训练期亮度/遮挡增强(默认开)")
     ap.add_argument("--no-augment", dest="augment", action="store_false")
+    ap.add_argument("--geo-aug", action="store_true",
+                    help="训练期加视场/安装偏差几何增强(±10%% 缩放、±6px 平移,模拟实机相机不一致)")
     ap.add_argument("--augment-flip", action="store_true", default=False,
                     help="训练期水平镜像增强(图像翻转 + ω 取反,任务在镜像下等变)")
     ap.add_argument("--aux-loss-weight", type=float, default=0.0,
@@ -587,6 +612,7 @@ def main():
                     help="两阶段:动作头额外吃 aux 预测(桶相对位置),需同时 >0 的 --aux-loss-weight")
     args = ap.parse_args()
     CHUNK = max(1, int(getattr(args, "chunk", 1)))
+    GEO_AUG = bool(getattr(args, "geo_aug", False))
 
     set_seed(args.seed)
     os.makedirs(args.out, exist_ok=True)
